@@ -9,22 +9,25 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float minY = -30f;
     [SerializeField] private float maxY = 60f;
     
-    private float rotationX = 0f;
-    private float rotationY = 0f;
+    private float rotationX;
+    private float rotationY;
 
     private void Awake()
     {
+        rotationX = transform.localEulerAngles.y;
+        rotationY = transform.localEulerAngles.x;
         Cursor.lockState = CursorLockMode.Locked;
     }
     
     void LateUpdate()
     {
+        Debug.Log("Rotation X: "+ rotationX + ", rotationY: " + rotationY);
+        
         rotationX += Input.GetAxis("Mouse X") * sensitivity;
         rotationY -= Input.GetAxis("Mouse Y") * sensitivity;
         rotationY = Mathf.Clamp(rotationY, minY, maxY);
         
-        transform.rotation = Quaternion.Euler(rotationY, rotationX, 0);
-        
+        transform.localRotation = Quaternion.Euler();
         // transform.LookAt(target);
     }
 }
