@@ -25,11 +25,12 @@ public class FishController : MonoBehaviour
         if (direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.transform.eulerAngles.y;
+            Debug.Log(camera.transform.eulerAngles.y);
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            rb.AddForce(transform.position + moveDirection.normalized * speed * Time.deltaTime, ForceMode.VelocityChange);
+            rb.AddForce(moveDirection.normalized * speed * Time.deltaTime, ForceMode.VelocityChange);
         }
     }
 }
