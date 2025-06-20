@@ -4,6 +4,7 @@ public class CameraController : MonoBehaviour
 {
     // [SerializeField] private Transform target;
     // [SerializeField] private float distanceFromTarget = 5f;
+    [SerializeField] private GameObject camera;
     [SerializeField] private float sensitivity = 5f;
     [SerializeField] private float distance = 5f;
     [SerializeField] private float minY = -30f;
