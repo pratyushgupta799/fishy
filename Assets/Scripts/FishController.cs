@@ -8,37 +8,76 @@ public class FishController : MonoBehaviour
     
     [SerializeField] private float speed = 5f;
     [SerializeField] private float maxSpeed = 10f;
+    private float vertical;
+    private float horizontal;
+    private float up;
+    private Vector3 gravity;
     
     [SerializeField] private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
     
     [SerializeField] private CharacterController characterController;
 
+    private bool inWater;
+
     private void Awake()
     {
+        gravity = Physics.gravity * 0.1f;
         Cursor.lockState = CursorLockMode.Locked;
         characterController = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
-        // float vertical = Input.GetAxisRaw("Vertical");
-        if (Input.GetKey(KeyCode.W))
-        {
-            MoveCharacter();
-        }
+        MoveCharacter();
+        Debug.Log(inWater);
     }
 
     private void MoveCharacter()
     {
-        Vector3 cameraForward = camera.transform.forward;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(cameraForward),
-            turnSmoothTime * Time.deltaTime);
-        
-        Vector3 forward = camera.transform.forward;
-        Vector3 swimDirection = forward.normalized;
-        
-        characterController.Move(swimDirection * speed * Time.deltaTime);
-        
+        vertical = Input.GetAxis("Vertical");
+        horizontal = Input.GetAxis("Horizontal");
+        up = Input.GetAxis("Up");
+        if (inWater)
+        {
+            Vector3 forward = vertical * camera.transform.forward;
+            Vector3 right = horizontal * camera.transform.right;
+            Vector3 Up = up * camera.transform.up;
+            
+            Vector3 swimDirection = (forward + right).normalized;
+
+            if (swimDirection.magnitude > 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection, camera.transform.up),
+                                turnSmoothTime * Time.deltaTime);
+            }
+            
+            var finalSwimDirection = (swimDirection + Up).normalized;
+
+            characterController.Move((finalSwimDirection * speed) * Time.deltaTime);
+        }
+        else
+        {
+            Debug.Log(gravity);
+            characterController.Move(gravity * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Water"))
+        {
+            inWater = true;
+            Debug.Log("In water");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Water"))
+        {
+            inWater = false;
+            Debug.Log("Outta water");
+        }
     }
 }
