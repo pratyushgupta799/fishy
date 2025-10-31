@@ -20,6 +20,9 @@ public class FishController : MonoBehaviour
 
     private bool inWater;
 
+    private bool surfaceMode;
+    private float surfaceHeight;
+
     private void Awake()
     {
         gravity = Physics.gravity * 0.1f;
@@ -30,7 +33,7 @@ public class FishController : MonoBehaviour
     private void Update()
     {
         MoveCharacter();
-        Debug.Log(inWater);
+        // Debug.Log(inWater);
     }
 
     private void MoveCharacter()
@@ -38,7 +41,27 @@ public class FishController : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
-        if (inWater)
+        if (surfaceMode)
+        {
+            Vector3 forward = vertical * camera.transform.forward;
+            Vector3 right = horizontal * camera.transform.right;
+            
+            Vector3 swimDirection = (forward + right).normalized;
+            swimDirection.y = 0f;
+            Debug.Log(swimDirection);
+            
+            if (swimDirection.magnitude > 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection,
+                        camera.transform.up),
+                    turnSmoothTime * Time.deltaTime);
+            }
+
+            characterController.Move((swimDirection * speed) * Time.deltaTime);
+            // transform.position = new Vector3(transform.position.x, surfaceHeight, transform.position.z);
+        }
+        else if (inWater)
         {
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
@@ -56,14 +79,20 @@ public class FishController : MonoBehaviour
         }
         else
         {
-            Debug.Log(gravity);
             characterController.Move(gravity * Time.deltaTime);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Water"))
+        if (other.CompareTag("WaterSurface"))
+        {
+            surfaceMode = true;
+            Debug.Log("Surface Mode");
+            surfaceHeight = other.transform.position.y;
+            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, surfaceHeight, transform.position.z), 1);
+        }
+        else if (other.CompareTag("Water"))
         {
             inWater = true;
             Debug.Log("In water");
@@ -72,7 +101,11 @@ public class FishController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Water"))
+        if (other.CompareTag("WaterSurface"))
+        {
+            surfaceMode = false;
+        }
+        else if (other.CompareTag("Water"))
         {
             inWater = false;
             Debug.Log("Outta water");
