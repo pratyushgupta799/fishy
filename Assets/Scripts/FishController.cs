@@ -42,19 +42,17 @@ public class FishController : MonoBehaviour
         {
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
-            Vector3 Up = up * camera.transform.up;
+            Vector3 Up = up * Vector3.up;
             
-            Vector3 swimDirection = (forward + right).normalized;
+            Vector3 swimDirection = (forward + right + Up).normalized;
 
             if (swimDirection.magnitude > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection, camera.transform.up),
                                 turnSmoothTime * Time.deltaTime);
             }
-            
-            var finalSwimDirection = (swimDirection + Up).normalized;
 
-            characterController.Move((finalSwimDirection * speed) * Time.deltaTime);
+            characterController.Move((swimDirection * speed) * Time.deltaTime);
         }
         else
         {
