@@ -18,6 +18,7 @@ public class FishController : MonoBehaviour
     private float turnSmoothVelocity;
     
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private Animator animator;
 
     private bool inWater;
 
@@ -63,6 +64,11 @@ public class FishController : MonoBehaviour
                     Quaternion.LookRotation(swimDirection,
                         Vector3.up),
                     turnSmoothTime * Time.deltaTime);
+                animator.SetBool("isSwiming", true);
+            }
+            else
+            {
+                animator.SetBool("isSwiming", false);
             }
 
             characterController.Move((swimDirection * speed) * Time.deltaTime);
@@ -84,6 +90,11 @@ public class FishController : MonoBehaviour
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection, camera.transform.up),
                                 turnSmoothTime * Time.deltaTime);
+                animator.SetBool("isSwiming", true);
+            }
+            else
+            {
+                animator.SetBool("isSwiming", false);
             }
 
             characterController.Move((swimDirection * speed) * Time.deltaTime);
