@@ -4,6 +4,7 @@ using UnityEngine;
 public class FishController : MonoBehaviour
 {
     [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject cineMachine;
     private Transform camForward;
     
     [SerializeField] private float speed = 5f;
@@ -45,21 +46,31 @@ public class FishController : MonoBehaviour
         {
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
+            if (up > 0)
+            {
+                up = 0;
+            }
+            Vector3 Up = up * Vector3.up;
             
             Vector3 swimDirection = (forward + right).normalized;
             swimDirection.y = 0f;
+            swimDirection = (swimDirection + Up).normalized;
             Debug.Log(swimDirection);
             
             if (swimDirection.magnitude > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(swimDirection,
-                        camera.transform.up),
+                        Vector3.up),
                     turnSmoothTime * Time.deltaTime);
             }
 
             characterController.Move((swimDirection * speed) * Time.deltaTime);
-            // transform.position = new Vector3(transform.position.x, surfaceHeight, transform.position.z);
+            if (up == 0)
+            {
+                transform.position = Vector3.Lerp(transform.position,
+                    new Vector3(transform.position.x, surfaceHeight, transform.position.z), 5f * Time.deltaTime);
+            }
         }
         else if (inWater)
         {
@@ -90,7 +101,7 @@ public class FishController : MonoBehaviour
             surfaceMode = true;
             Debug.Log("Surface Mode");
             surfaceHeight = other.transform.position.y;
-            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, surfaceHeight, transform.position.z), 1);
+            
         }
         else if (other.CompareTag("Water"))
         {
