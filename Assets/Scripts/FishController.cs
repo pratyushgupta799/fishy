@@ -88,8 +88,9 @@ public class FishController : MonoBehaviour
 
             if (swimDirection.magnitude > 0.1f)
             {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection, camera.transform.up),
-                                turnSmoothTime * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection, camera.transform.up),
+                    turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", true);
             }
             else
