@@ -57,13 +57,13 @@ public class FishController : MonoBehaviour
             Vector3 swimDirection = (forward + right).normalized;
             swimDirection.y = 0f;
             swimDirection = (swimDirection + Up).normalized;
-            Debug.Log(swimDirection);
+            // Debug.Log(swimDirection);
             
             if (swimDirection.magnitude > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(swimDirection,
-                        Vector3.up),
+                        transform.up),
                     turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", true);
             }
@@ -89,17 +89,21 @@ public class FishController : MonoBehaviour
             right.Normalize();
             
             Vector3 swimDirection = (forward + right + Up).normalized;
-
-            if (swimDirection.magnitude > 0.1f)
+            
+            if (swimDirection.magnitude < 0.01f)
             {
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(swimDirection, Vector3.up),
-                    turnSmoothTime * Time.deltaTime);
-                animator.SetBool("isSwiming", true);
+                swimDirection = Vector3.zero;
+                animator.SetBool("isSwiming", false);
             }
             else
             {
-                animator.SetBool("isSwiming", false);
+                swimDirection.Normalize();
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    Quaternion.LookRotation(swimDirection, Vector3.up),
+                    turnSmoothTime * Time.deltaTime
+                );
+                animator.SetBool("isSwiming", true);
             }
 
             characterController.Move((swimDirection * speed) * Time.deltaTime);
