@@ -25,6 +25,13 @@ public class FishController : MonoBehaviour
     private bool surfaceMode;
     private float surfaceHeight;
 
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float waterGravityScale = 0.1f;
+    [SerializeField] private float airGravityScale = 1f;
+    
+    private float verticalVelocity;
+    private bool isJumping;
+
     private void Awake()
     {
         gravity = Physics.gravity * 0.1f;
@@ -35,6 +42,9 @@ public class FishController : MonoBehaviour
     private void Update()
     {
         MoveCharacter();
+        Vector3 currentEuler = transform.eulerAngles;
+        currentEuler.z = 0f;
+        transform.eulerAngles = currentEuler;
         // Debug.Log(inWater);
     }
 
@@ -72,12 +82,24 @@ public class FishController : MonoBehaviour
                 animator.SetBool("isSwiming", false);
             }
 
-            characterController.Move((swimDirection * speed) * Time.deltaTime);
-            if (up == 0)
+            if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
             {
-                transform.position = Vector3.Lerp(transform.position,
-                    new Vector3(transform.position.x, surfaceHeight, transform.position.z), 5f * Time.deltaTime);
+                isJumping = true;
+                inWater = false;
+                surfaceMode = false;
+                verticalVelocity = jumpForce;
             }
+
+            if (!isJumping)
+            {
+                characterController.Move((swimDirection * speed) * Time.deltaTime);
+                if (up == 0)
+                {
+                    transform.position = Vector3.Lerp(transform.position,
+                        new Vector3(transform.position.x, surfaceHeight, transform.position.z), 5f * Time.deltaTime);
+                }
+            }
+
         }
         else if (inWater)
         {
@@ -112,12 +134,40 @@ public class FishController : MonoBehaviour
         {
             characterController.Move(gravity * Time.deltaTime);
         }
+
+        if (isJumping)
+        {
+            verticalVelocity += Physics.gravity.y * airGravityScale * Time.deltaTime;
+            Vector3 forward = vertical * camera.transform.forward;
+            Vector3 right = horizontal * camera.transform.right;
+            Vector3 Up = verticalVelocity * Vector3.up;
+            
+            Vector3 swimDirection = (forward + right).normalized;
+            swimDirection = (swimDirection + Up);
+            
+            if (swimDirection.magnitude > 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection,
+                        transform.up),
+                    turnSmoothTime * Time.deltaTime);
+                animator.SetBool("isSwiming", true);
+            }
+            
+            characterController.Move(swimDirection * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("WaterSurface"))
         {
+            if (isJumping)
+            {
+                isJumping = false;
+                inWater = true;
+                verticalVelocity = 0f;
+            }
             surfaceMode = true;
             Debug.Log("Surface Mode");
             surfaceHeight = other.transform.position.y;
