@@ -132,11 +132,6 @@ public class FishController : MonoBehaviour
         }
         else
         {
-            characterController.Move(gravity * Time.deltaTime);
-        }
-
-        if (isJumping)
-        {
             verticalVelocity += Physics.gravity.y * airGravityScale * Time.deltaTime;
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
