@@ -21,13 +21,16 @@ public class FishController : MonoBehaviour
     [SerializeField] private Animator animator;
 
     private bool inWater;
-
+    private bool isGrounded;
     private bool surfaceMode;
     private float surfaceHeight;
 
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float waterGravityScale = 0.1f;
     [SerializeField] private float airGravityScale = 1f;
+
+    [SerializeField] private float groundSpeedScale = 0.4f;
+    private Vector3 swimDirection;
     
     private float verticalVelocity;
     private bool isJumping;
@@ -50,9 +53,21 @@ public class FishController : MonoBehaviour
 
     private void MoveCharacter()
     {
+        if (characterController.isGrounded)
+        {
+            isGrounded = true;
+        }
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        {
+            isJumping = true;
+            inWater = false;
+            surfaceMode = false;
+            isGrounded = false;
+            verticalVelocity = jumpForce;
+        }
         if (surfaceMode)
         {
             Vector3 forward = vertical * camera.transform.forward;
@@ -64,7 +79,7 @@ public class FishController : MonoBehaviour
             }
             Vector3 Up = up * Vector3.up;
             
-            Vector3 swimDirection = (forward + right).normalized;
+            swimDirection = (forward + right).normalized;
             swimDirection.y = 0f;
             swimDirection = (swimDirection + Up).normalized;
             // Debug.Log(swimDirection);
@@ -81,15 +96,7 @@ public class FishController : MonoBehaviour
             {
                 animator.SetBool("isSwiming", false);
             }
-
-            if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
-            {
-                isJumping = true;
-                inWater = false;
-                surfaceMode = false;
-                verticalVelocity = jumpForce;
-            }
-
+            
             if (!isJumping)
             {
                 characterController.Move((swimDirection * speed) * Time.deltaTime);
@@ -130,6 +137,45 @@ public class FishController : MonoBehaviour
 
             characterController.Move((swimDirection * speed) * Time.deltaTime);
         }
+        else if (isGrounded)
+        {
+            // Debug.Log("is grounded");
+            isJumping = false;
+            inWater = false;
+            surfaceMode = false;
+            
+            Vector3 forward = vertical * camera.transform.forward;
+            Vector3 right = horizontal * camera.transform.right;
+            
+            Vector3 currentEuler = transform.rotation.eulerAngles;
+            // currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 5f * Time.deltaTime);
+            currentEuler.x = 0f;
+            transform.rotation = Quaternion.Euler(currentEuler);
+            
+            swimDirection = (forward + right).normalized;
+            // swimDirection.y = 0f;
+            
+            if (swimDirection.magnitude > 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection,
+                        camera.transform.up),
+                    turnSmoothTime * Time.deltaTime);
+                animator.SetBool("isSwiming", true);
+            }
+            else
+            {
+                animator.SetBool("isSwiming", false);
+            }
+            
+            if (!isJumping)
+            {
+                characterController.Move((swimDirection * groundSpeedScale) * Time.deltaTime);
+                Debug.Log(swimDirection);
+                // transform.position = Vector3.Lerp(transform.position,
+                //     new Vector3(transform.position.x, surfaceHeight, transform.position.z), 5f * Time.deltaTime);
+            }
+        }
         else
         {
             verticalVelocity += Physics.gravity.y * airGravityScale * Time.deltaTime;
@@ -137,7 +183,7 @@ public class FishController : MonoBehaviour
             Vector3 right = horizontal * camera.transform.right;
             Vector3 Up = verticalVelocity * Vector3.up;
             
-            Vector3 swimDirection = (forward + right).normalized;
+            swimDirection = (forward + right).normalized;
             swimDirection = (swimDirection + Up);
             
             if (swimDirection.magnitude > 0.1f)
@@ -151,6 +197,7 @@ public class FishController : MonoBehaviour
             
             characterController.Move(swimDirection * Time.deltaTime);
         }
+        Debug.Log(swimDirection);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -172,6 +219,15 @@ public class FishController : MonoBehaviour
         {
             inWater = true;
             Debug.Log("In water");
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.CompareTag("Ground"))
+        {
+            Debug.Log("On ground");
+            surfaceHeight = transform.position.y;
         }
     }
 
