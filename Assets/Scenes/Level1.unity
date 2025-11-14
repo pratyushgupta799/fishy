@@ -591,6 +591,10 @@ MonoBehaviour:
   turnSmoothTime: 10
   characterController: {fileID: 163617639}
   animator: {fileID: 49708837}
+  jumpForce: 7
+  waterGravityScale: 0.1
+  airGravityScale: 1
+  groundSpeedScale: 0.4
 --- !u!143 &163617639
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1172,7 +1176,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21388301, y: -5.6783304e-11, z: 1.2432684e-11, w: 0.97685933}
-  m_LocalPosition: {x: 0.8660002, y: 4.3370147, z: -8.146807}
+  m_LocalPosition: {x: 0.8660002, y: 4.7548814, z: -9.055315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2842,7 +2846,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 0.8
+  Radius: 1.8
   Orbits:
     Top:
       Radius: 2
@@ -2937,7 +2941,7 @@ Transform:
   m_GameObject: {fileID: 986127166}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21388298, y: -5.678329e-11, z: 1.2432663e-11, w: 0.97685933}
-  m_LocalPosition: {x: 0.8660002, y: 4.3370147, z: -8.146807}
+  m_LocalPosition: {x: 0.8660002, y: 4.7548814, z: -9.055315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
