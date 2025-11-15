@@ -106,7 +106,9 @@ public class FishController : MonoBehaviour
                     transform.position = Vector3.Lerp(transform.position,
                         new Vector3(transform.position.x, surfaceHeight, transform.position.z), 5f * Time.deltaTime);
                     
-                    transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, transform.eulerAngles.z);
+                    Vector3 currentEuler = transform.rotation.eulerAngles;
+                    currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
+                    transform.rotation = Quaternion.Euler(currentEuler);
                 }
             }
 
@@ -160,23 +162,27 @@ public class FishController : MonoBehaviour
             right.Normalize();
             
             Vector3 currentEuler = transform.rotation.eulerAngles;
-            // currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 5f * Time.deltaTime);
-            currentEuler.x = 0f;
+            currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
+            // currentEuler.x = 0f;
             transform.rotation = Quaternion.Euler(currentEuler);
             
             swimDirection = (forward + right).normalized;
             swimDirection += Up;
             
-            if (swimDirection.magnitude > 0.1f)
+            if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(swimDirection,
-                        camera.transform.up),
+                    Quaternion.LookRotation(new Vector3(swimDirection.x, 0f, swimDirection.z),
+                        Vector3.up),
                     turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", true);
             }
             else
             {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(new Vector3(camera.transform.forward.x, 0f, camera.transform.forward.z),
+                        Vector3.up),
+                    turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", false);
             }
             
