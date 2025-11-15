@@ -28,6 +28,7 @@ public class FishController : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float waterGravityScale = 0.1f;
     [SerializeField] private float airGravityScale = 1f;
+    [SerializeField] private float jumpMoveFactor;
 
     [SerializeField] private float groundSpeedScale = 0.4f;
     private Vector3 swimDirection;
@@ -189,6 +190,7 @@ public class FishController : MonoBehaviour
         }
         else
         {
+            // jump logic
             verticalVelocity += Physics.gravity.y * airGravityScale * Time.deltaTime;
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
@@ -201,6 +203,7 @@ public class FishController : MonoBehaviour
             right.Normalize();
             
             swimDirection = (forward + right).normalized;
+            swimDirection *= jumpMoveFactor;
             swimDirection = (swimDirection + Up);
             
             if (swimDirection.magnitude > 0.1f)
