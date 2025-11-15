@@ -144,8 +144,10 @@ public class FishController : MonoBehaviour
             inWater = false;
             surfaceMode = false;
             
+            verticalVelocity = Physics.gravity.y * airGravityScale;
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
+            Vector3 Up = verticalVelocity * Vector3.up;
             
             Vector3 currentEuler = transform.rotation.eulerAngles;
             // currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 5f * Time.deltaTime);
@@ -153,7 +155,7 @@ public class FishController : MonoBehaviour
             transform.rotation = Quaternion.Euler(currentEuler);
             
             swimDirection = (forward + right).normalized;
-            // swimDirection.y = 0f;
+            swimDirection += Up;
             
             if (swimDirection.magnitude > 0.1f)
             {
