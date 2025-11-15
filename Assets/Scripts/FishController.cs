@@ -183,6 +183,12 @@ public class FishController : MonoBehaviour
             Vector3 right = horizontal * camera.transform.right;
             Vector3 Up = verticalVelocity * Vector3.up;
             
+            forward.y = 0f;
+            forward.Normalize();
+            
+            right.y = 0f;
+            right.Normalize();
+            
             swimDirection = (forward + right).normalized;
             swimDirection = (swimDirection + Up);
             
