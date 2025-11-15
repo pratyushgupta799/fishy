@@ -254,15 +254,6 @@ public class FishController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.collider.CompareTag("Ground"))
-        {
-            Debug.Log("On ground");
-            surfaceHeight = transform.position.y;
-        }
-    }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("WaterSurface"))
