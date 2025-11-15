@@ -149,6 +149,12 @@ public class FishController : MonoBehaviour
             Vector3 right = horizontal * camera.transform.right;
             Vector3 Up = verticalVelocity * Vector3.up;
             
+            forward.y = 0f;
+            forward.Normalize();
+            
+            right.y = 0f;
+            right.Normalize();
+            
             Vector3 currentEuler = transform.rotation.eulerAngles;
             // currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 5f * Time.deltaTime);
             currentEuler.x = 0f;
