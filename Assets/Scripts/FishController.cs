@@ -205,14 +205,20 @@ public class FishController : MonoBehaviour
             swimDirection = (forward + right).normalized;
             swimDirection *= jumpMoveFactor;
             swimDirection = (swimDirection + Up);
-            
-            if (swimDirection.magnitude > 0.1f)
+
+            if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(swimDirection,
                         Vector3.up),
                     turnSmoothTime * Time.deltaTime);
-                animator.SetBool("isSwiming", true);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection + camera.transform.forward,
+                        Vector3.up),
+                    turnSmoothTime * Time.deltaTime);
             }
             
             characterController.Move(swimDirection * Time.deltaTime);
