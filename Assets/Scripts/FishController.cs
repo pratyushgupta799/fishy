@@ -60,7 +60,7 @@ public class FishController : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !(inWater && !surfaceMode))
         {
             isJumping = true;
             inWater = false;
@@ -104,9 +104,12 @@ public class FishController : MonoBehaviour
                 {
                     transform.position = Vector3.Lerp(transform.position,
                         new Vector3(transform.position.x, surfaceHeight, transform.position.z), 5f * Time.deltaTime);
+                    
+                    transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, transform.eulerAngles.z);
                 }
             }
 
+            
         }
         else if (inWater)
         {
@@ -204,7 +207,7 @@ public class FishController : MonoBehaviour
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(swimDirection,
-                        transform.up),
+                        Vector3.up),
                     turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", true);
             }
