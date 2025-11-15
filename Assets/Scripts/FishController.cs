@@ -54,7 +54,7 @@ public class FishController : MonoBehaviour
 
     private void MoveCharacter()
     {
-        if (characterController.isGrounded)
+        if (characterController.isGrounded && !inWater)
         {
             isGrounded = true;
         }
