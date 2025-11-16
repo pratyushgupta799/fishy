@@ -29,7 +29,9 @@ public class FishController : MonoBehaviour
     [SerializeField] private float jumpForceGround = 2f;
     [SerializeField] private float waterGravityScale = 0.1f;
     [SerializeField] private float airGravityScale = 1f;
-    [SerializeField] private float jumpMoveFactor;
+    private float jumpMoveFactor;
+    [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
+    [SerializeField] private float jumpMoveFactorFromGround = 0.5f;
 
     [SerializeField] private float groundSpeedScale = 0.4f;
     private Vector3 swimDirection;
@@ -67,10 +69,12 @@ public class FishController : MonoBehaviour
             if (isGrounded)
             {
                 verticalVelocity = jumpForceGround;
+                jumpMoveFactor = jumpMoveFactorFromGround;
             }
             else
             {
                 verticalVelocity = jumpForceWater;
+                jumpMoveFactor = jumpMoveFactorFromWater;
             }
             isJumping = true;
             inWater = false;
