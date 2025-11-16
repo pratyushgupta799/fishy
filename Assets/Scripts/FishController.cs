@@ -3,47 +3,51 @@ using UnityEngine;
 
 public class FishController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject camera;
     [SerializeField] private GameObject cineMachine;
-    private Transform camForward;
+    [SerializeField] private CharacterController characterController;
+    [SerializeField] private Animator animator;
     
+    [Header("Movement Settings")]
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float groundSpeedScale = 0.4f;
+    [SerializeField] private float turnSmoothTime = 0.1f;
+    
+    [Header("Jump Settings")]
+    [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
+    [SerializeField] private float jumpMoveFactorFromGround = 0.5f;
+    [SerializeField] private float jumpForceWater = 5f;
+    [SerializeField] private float jumpForceGround = 2f;
+    
+    [Header("Gravity")]
+    [SerializeField] private float airGravityScale = 1f;
+    
+    // Input
     private float vertical;
     private float horizontal;
     private float up;
-    private Vector3 gravity;
     
-    [SerializeField] private float turnSmoothTime = 0.1f;
-    private float turnSmoothVelocity;
+    // Jump
+    private float jumpMoveFactor;
+    private float verticalVelocity;
     
-    [SerializeField] private CharacterController characterController;
-    [SerializeField] private Animator animator;
-
+    // State
     private bool inWater;
     private bool isGrounded;
-    private bool surfaceMode;
-    private float surfaceHeight;
-
-    [SerializeField] private float jumpForceWater = 5f;
-    [SerializeField] private float jumpForceGround = 2f;
-    [SerializeField] private float waterGravityScale = 0.1f;
-    [SerializeField] private float airGravityScale = 1f;
-    private float jumpMoveFactor;
-    [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
-    [SerializeField] private float jumpMoveFactorFromGround = 0.5f;
-
-    [SerializeField] private float groundSpeedScale = 0.4f;
+    private bool isAtSurface;
+    private bool isJumping;
+    
+    // direction
     private Vector3 swimDirection;
     
-    private float verticalVelocity;
-    private bool isJumping;
+    // others
+    private float surfaceHeight;
 
     private void Awake()
     {
-        gravity = Physics.gravity * 0.1f;
         Cursor.lockState = CursorLockMode.Locked;
-        characterController = GetComponent<CharacterController>();
+        if (!characterController) characterController = GetComponent<CharacterController>();
     }
 
     private void Update()
@@ -52,7 +56,6 @@ public class FishController : MonoBehaviour
         Vector3 currentEuler = transform.eulerAngles;
         currentEuler.z = 0f;
         transform.eulerAngles = currentEuler;
-        // Debug.Log(inWater);
     }
 
     private void MoveCharacter()
@@ -64,7 +67,7 @@ public class FishController : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !(inWater && !surfaceMode))
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !(inWater && !isAtSurface))
         {
             if (isGrounded)
             {
@@ -78,10 +81,10 @@ public class FishController : MonoBehaviour
             }
             isJumping = true;
             inWater = false;
-            surfaceMode = false;
+            isAtSurface = false;
             isGrounded = false;
         }
-        if (surfaceMode)
+        if (isAtSurface)
         {
             isGrounded = false;
             Vector3 forward = vertical * camera.transform.forward;
@@ -162,7 +165,7 @@ public class FishController : MonoBehaviour
             // Debug.Log("is grounded");
             isJumping = false;
             inWater = false;
-            surfaceMode = false;
+            isAtSurface = false;
             
             verticalVelocity = Physics.gravity.y * airGravityScale;
             Vector3 forward = vertical * camera.transform.forward;
@@ -256,7 +259,7 @@ public class FishController : MonoBehaviour
                 inWater = true;
                 verticalVelocity = 0f;
             }
-            surfaceMode = true;
+            isAtSurface = true;
             Debug.Log("Surface Mode");
             surfaceHeight = other.transform.position.y;
             
@@ -272,7 +275,7 @@ public class FishController : MonoBehaviour
     {
         if (other.CompareTag("WaterSurface"))
         {
-            surfaceMode = false;
+            isAtSurface = false;
         }
         else if (other.CompareTag("Water"))
         {
