@@ -849,16 +849,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 330585543}
   cineMachine: {fileID: 986127166}
-  speed: 0.66
-  maxSpeed: 10
-  turnSmoothTime: 10
   characterController: {fileID: 163617639}
   animator: {fileID: 49708837}
-  jumpForce: 7
-  waterGravityScale: 0.1
-  airGravityScale: 1
-  jumpMoveFactor: 1.6
+  speed: 0.66
   groundSpeedScale: 0.4
+  turnSmoothTime: 10
+  jumpMoveFactorFromWater: 1.5
+  jumpMoveFactorFromGround: 0.5
+  jumpForceWater: 5
+  jumpForceGround: 2
+  airGravityScale: 1
 --- !u!143 &163617639
 CharacterController:
   m_ObjectHideFlags: 0
@@ -879,8 +879,8 @@ CharacterController:
   serializedVersion: 3
   m_Height: 0
   m_Radius: 0.15
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_SlopeLimit: 0.1
+  m_StepOffset: 0.0005
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
