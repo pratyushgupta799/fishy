@@ -83,6 +83,7 @@ public class FishController : MonoBehaviour
         }
         if (surfaceMode)
         {
+            isGrounded = false;
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
             
@@ -128,6 +129,7 @@ public class FishController : MonoBehaviour
         }
         else if (inWater)
         {
+            isGrounded = false;
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
             Vector3 Up = up * Vector3.up;
