@@ -25,7 +25,8 @@ public class FishController : MonoBehaviour
     private bool surfaceMode;
     private float surfaceHeight;
 
-    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float jumpForceWater = 5f;
+    [SerializeField] private float jumpForceGround = 2f;
     [SerializeField] private float waterGravityScale = 0.1f;
     [SerializeField] private float airGravityScale = 1f;
     [SerializeField] private float jumpMoveFactor;
@@ -63,11 +64,18 @@ public class FishController : MonoBehaviour
         up = Input.GetAxis("Up");
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !(inWater && !surfaceMode))
         {
+            if (isGrounded)
+            {
+                verticalVelocity = jumpForceGround;
+            }
+            else
+            {
+                verticalVelocity = jumpForceWater;
+            }
             isJumping = true;
             inWater = false;
             surfaceMode = false;
             isGrounded = false;
-            verticalVelocity = jumpForce;
         }
         if (surfaceMode)
         {
