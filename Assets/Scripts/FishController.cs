@@ -167,7 +167,7 @@ public class FishController : MonoBehaviour
             inWater = false;
             isAtSurface = false;
             
-            verticalVelocity = Physics.gravity.y * airGravityScale;
+            verticalVelocity = Physics.gravity.y;
             Vector3 forward = vertical * camera.transform.forward;
             Vector3 right = horizontal * camera.transform.right;
             Vector3 Up = verticalVelocity * Vector3.up;
