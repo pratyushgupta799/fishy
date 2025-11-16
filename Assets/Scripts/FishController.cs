@@ -212,7 +212,7 @@ public class FishController : MonoBehaviour
             swimDirection *= jumpMoveFactor;
             swimDirection = (swimDirection + Up);
 
-            if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
+            if (Math.Abs(swimDirection.x) > 0.1f || Math.Abs(swimDirection.z) > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(swimDirection,
