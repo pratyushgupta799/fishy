@@ -163,9 +163,6 @@
             "m_Id": "d20847a8998e40e39b0c0a97d8cdfd05"
         },
         {
-            "m_Id": "6396b710abe540cbb326fcd5655196f9"
-        },
-        {
             "m_Id": "e1395cd0ed244e7495d39553f62cc86e"
         },
         {
@@ -326,6 +323,9 @@
         },
         {
             "m_Id": "da469ef32aa34644a62536c734f23f19"
+        },
+        {
+            "m_Id": "d4f09ae349bb42c9bfac97bd6681d49c"
         }
     ],
     "m_GroupDatas": [
@@ -660,7 +660,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "6396b710abe540cbb326fcd5655196f9"
+                    "m_Id": "d4f09ae349bb42c9bfac97bd6681d49c"
                 },
                 "m_SlotId": 0
             }
@@ -1676,8 +1676,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 2948.000244140625,
-            "y": 228.00003051757813
+            "x": 3597.0,
+            "y": 383.0
         },
         "m_Blocks": [
             {
@@ -1693,8 +1693,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 2948.000244140625,
-            "y": 552.0000610351563
+            "x": 3572.0,
+            "y": 728.0000610351563
         },
         "m_Blocks": [
             {
@@ -1704,7 +1704,7 @@
                 "m_Id": "c9bbd8579332444cbce30663486942fd"
             },
             {
-                "m_Id": "6396b710abe540cbb326fcd5655196f9"
+                "m_Id": "d4f09ae349bb42c9bfac97bd6681d49c"
             }
         ]
     },
@@ -2157,7 +2157,7 @@
     "m_ObjectId": "1264ebb955e946c995ede1004580207b",
     "m_Title": "Depth Fade",
     "m_Position": {
-        "x": -2184.0,
+        "x": -2184.000244140625,
         "y": -568.0
     }
 }
@@ -2301,8 +2301,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 2133.0,
-            "y": 176.00003051757813,
+            "x": 2199.0,
+            "y": 232.00003051757813,
             "width": 208.0,
             "height": 301.9999694824219
         }
@@ -3826,8 +3826,8 @@
     "m_ObjectId": "37bb197aa30848adac5b5bbfe3cc983b",
     "m_Title": "Tiled Foam",
     "m_Position": {
-        "x": -2998.0,
-        "y": 1043.0
+        "x": -2998.00048828125,
+        "y": 1042.9998779296875
     }
 }
 
@@ -5552,40 +5552,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-    "m_ObjectId": "6396b710abe540cbb326fcd5655196f9",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "SurfaceDescription.Alpha",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "c59ace430112422d8fb1b667d88c375c"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SerializedDescriptor": "SurfaceDescription.Alpha"
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "65875d6ade954672a5fc7e2663a035ac",
     "m_Id": 1,
@@ -6685,7 +6651,7 @@
     "m_Title": "BaseColors",
     "m_Position": {
         "x": -2077.0,
-        "y": 335.0
+        "y": 335.0001220703125
     }
 }
 
@@ -7112,7 +7078,7 @@
     "m_ObjectId": "91029e39c23a4d248a57b50dc7b2179f",
     "m_Title": "New Group",
     "m_Position": {
-        "x": -1555.0,
+        "x": -1555.0003662109375,
         "y": -2536.0
     }
 }
@@ -8031,8 +7997,8 @@
     "m_ObjectId": "aa7530ee14434dd2b9c3daebf0d0336d",
     "m_Title": "Fresnel",
     "m_Position": {
-        "x": -1158.0,
-        "y": -302.0
+        "x": -1158.0001220703125,
+        "y": -302.0000305175781
     }
 }
 
@@ -9137,21 +9103,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "c59ace430112422d8fb1b667d88c375c",
-    "m_Id": 0,
-    "m_DisplayName": "Alpha",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Alpha",
-    "m_StageCapability": 2,
-    "m_Value": 1.0,
-    "m_DefaultValue": 1.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "c743c37ae39242aab4b96e2d315307b7",
     "m_Id": 0,
@@ -9852,6 +9803,40 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "d4f09ae349bb42c9bfac97bd6681d49c",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.Alpha",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "e3498e6d18fe4b5897404dbcaeef0481"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.Alpha"
 }
 
 {
@@ -10847,6 +10832,21 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "e3498e6d18fe4b5897404dbcaeef0481",
+    "m_Id": 0,
+    "m_DisplayName": "Alpha",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Alpha",
+    "m_StageCapability": 2,
+    "m_Value": 1.0,
+    "m_DefaultValue": 1.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "e35a0762d55a4aee9c011b081e61c85f",
     "m_Id": 4,
     "m_DisplayName": "Smooth Delta",
@@ -11192,7 +11192,7 @@
     "m_ObjectId": "eaf47705ddcc465db52e5c7c8629a3a6",
     "m_Title": "Vertex Color",
     "m_Position": {
-        "x": -1779.0,
+        "x": -1779.0001220703125,
         "y": -105.0
     }
 }
