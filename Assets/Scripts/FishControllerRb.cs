@@ -42,7 +42,7 @@ public class FishControllerRB : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.angularDamping = 0f;
+        // rb.angularDamping = 10f;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -85,39 +85,49 @@ public class FishControllerRB : MonoBehaviour
         Vector3 forward = vertical * camera.transform.forward;
         Vector3 right = horizontal * camera.transform.right;
         Vector3 upVec = up * Vector3.up;
-
-        forward.y = 0f;
-        right.y = 0f;
-
-        swimDirection = (forward + right).normalized;
+        
+        
 
         if (isAtSurface)
         {
+            isJumping = false;
             rb.useGravity = false;
-            swimDirection = (swimDirection + upVec).normalized;
-            rb.linearVelocity = swimDirection * speed + new Vector3(0, rb.linearVelocity.y, 0);
-            if (rb.linearVelocity.y >= 0)
+            
+            forward.y = 0f;
+            right.y = 0f;
+            
+            swimDirection = (forward + right).normalized;
+            
+            if(upVec.y > 0)
             {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+                upVec.y = 0;
             }
+            
+            swimDirection = (swimDirection + upVec).normalized;
+            rb.linearVelocity = swimDirection * speed;
             
             if (swimDirection.magnitude > 0.1f)
             {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection),
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection.normalized),
                     turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", true);
             }
             else animator.SetBool("isSwiming", false);
 
             // Keep near surface
-            if (up == 0)
+            if (up == 0 && !isJumping)
             {
                 rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight, rb.position.z),
                     5f * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.Euler(0f, transform.rotation.y, transform.rotation.z),
+                    turnSmoothTime * Time.deltaTime);
             }
         }
         else if (inWater)
         {
+            isJumping = false;
             rb.useGravity = false;
             
             Vector3 swimVel = (forward + right + upVec).normalized * speed;
@@ -125,7 +135,7 @@ public class FishControllerRB : MonoBehaviour
 
             if (swimVel.magnitude > 0.01f)
             {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimVel),
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
                     turnSmoothTime * Time.deltaTime);
                 animator.SetBool("isSwiming", true);
             }
@@ -133,6 +143,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else if (isGrounded)
         {
+            isJumping = false;
             rb.useGravity = true;
             rb.linearVelocity = new Vector3(swimDirection.x * groundSpeedScale, rb.linearVelocity.y,
                 swimDirection.z * groundSpeedScale);
@@ -143,6 +154,20 @@ public class FishControllerRB : MonoBehaviour
             // Air movement
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
+
+            if (swimDirection.magnitude > 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
+                    turnSmoothTime * Time.deltaTime);
+            }
+            else
+            {
+                Vector3 camLookFlat = camera.transform.forward;
+                camLookFlat.y = 0f;
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(camLookFlat + rb.linearVelocity),
+                    turnSmoothTime * Time.deltaTime);
+            }
         }
     }
 

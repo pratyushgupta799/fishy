@@ -6516,7 +6516,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!135 &3204954973020413166
 SphereCollider:
@@ -6525,7 +6525,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3204954973020413164}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 33c847f409fbebd4b9f469f95f0a070c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6553,14 +6553,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 330585543}
   animator: {fileID: 8886084277080721261}
-  speed: 5
+  speed: 2
   groundSpeedScale: 0.4
-  turnSmoothTime: 0.1
+  turnSmoothTime: 10
   jumpMoveFactorFromWater: 1.5
   jumpMoveFactorFromGround: 0.5
   jumpForceWater: 5
   jumpForceGround: 2
   airGravityScale: 1
+  groundCheck: {fileID: 0}
+  groundDistance: 0.2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3343586475397948473
 GameObject:
   m_ObjectHideFlags: 0
