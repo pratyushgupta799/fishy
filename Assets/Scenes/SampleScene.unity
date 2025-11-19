@@ -1350,6 +1350,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       insertIndex: -1
       addedObject: {fileID: 388969697}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 388969698}
   m_SourcePrefab: {fileID: 100100000, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
 --- !u!1 &388969694 stripped
 GameObject:
@@ -1391,7 +1394,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388969694}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1408,8 +1411,21 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 14
+  m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &388969698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388969694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f410465998cbe224e935155cea425753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  torqueForce: 30
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -5766,7 +5782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f8db21bb599180040bec3e6aba51c959, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f8db21bb599180040bec3e6aba51c959, type: 3}
       propertyPath: m_TagString
