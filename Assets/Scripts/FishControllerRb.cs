@@ -208,15 +208,20 @@ public class FishControllerRB : MonoBehaviour
     {
         if (other.CompareTag("WaterSurface"))
         {
-            if (isJumping) isJumping = false;
-            isAtSurface = true;
-            inWater = true;
-            rb.linearVelocity = Vector3.zero;
-            surfaceHeight = other.transform.position.y;
+            if (inWater)
+            {
+                if (isJumping) isJumping = false;
+                isAtSurface = true;
+                inWater = true;
+                rb.linearVelocity = Vector3.zero;
+                surfaceHeight = other.transform.position.y;
+            }
+
         }
         else if (other.CompareTag("Water"))
         {
             inWater = true;
+            Debug.Log("Water triggered");
         }
     }
 
