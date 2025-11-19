@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 public class FishControllerRB : MonoBehaviour
@@ -7,9 +8,10 @@ public class FishControllerRB : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject camera;
     [SerializeField] private Animator animator;
-
+    
     [Header("Movement Settings")]
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float moveForce = 2f;
     [SerializeField] private float groundSpeedScale = 0.4f;
     [SerializeField] private float turnSmoothTime = 0.1f;
 
@@ -25,7 +27,6 @@ public class FishControllerRB : MonoBehaviour
     [Header("Ground check parameters")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.2f;
-    [SerializeField] private LayerMask groundMask;
 
     private Rigidbody rb;
     private float vertical;
@@ -48,7 +49,20 @@ public class FishControllerRB : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, groundDistance, groundMask);
+        if (!inWater)
+        {
+            isGrounded = Physics.Raycast(
+                        groundCheck.position,
+                        Vector3.down,
+                        groundDistance,
+                        ~0,
+                        QueryTriggerInteraction.Ignore
+                    );
+        }
+        else
+        {
+            isGrounded = false;
+        }
     }
 
     private void Update()
@@ -86,8 +100,6 @@ public class FishControllerRB : MonoBehaviour
         Vector3 right = horizontal * camera.transform.right;
         Vector3 upVec = up * Vector3.up;
         
-        
-
         if (isAtSurface)
         {
             isJumping = false;
@@ -104,7 +116,7 @@ public class FishControllerRB : MonoBehaviour
             }
             
             swimDirection = (swimDirection + upVec).normalized;
-            rb.linearVelocity = swimDirection * speed;
+            rb.linearVelocity = swimDirection * maxSpeed;
             
             if (swimDirection.magnitude > 0.1f)
             {
@@ -130,7 +142,7 @@ public class FishControllerRB : MonoBehaviour
             isJumping = false;
             rb.useGravity = false;
             
-            Vector3 swimVel = (forward + right + upVec).normalized * speed;
+            Vector3 swimVel = (forward + right + upVec).normalized * maxSpeed;
             rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
 
             if (swimVel.magnitude > 0.01f)
@@ -143,10 +155,22 @@ public class FishControllerRB : MonoBehaviour
         }
         else if (isGrounded)
         {
+            forward.y = 0f;
+            right.y = 0f;
+            swimDirection = (forward + right).normalized;
+            
             isJumping = false;
             rb.useGravity = true;
             rb.linearVelocity = new Vector3(swimDirection.x * groundSpeedScale, rb.linearVelocity.y,
                 swimDirection.z * groundSpeedScale);
+            
+            if (swimDirection.magnitude > 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(swimDirection.normalized),
+                    turnSmoothTime * Time.deltaTime);
+                animator.SetBool("isSwiming", true);
+            }
         }
         else
         {

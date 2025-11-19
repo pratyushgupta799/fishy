@@ -6553,7 +6553,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 330585543}
   animator: {fileID: 8886084277080721261}
-  speed: 2
+  maxSpeed: 1
+  moveForce: 2
   groundSpeedScale: 0.4
   turnSmoothTime: 10
   jumpMoveFactorFromWater: 1.5
