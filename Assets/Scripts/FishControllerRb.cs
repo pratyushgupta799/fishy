@@ -98,6 +98,8 @@ public class FishControllerRB : MonoBehaviour
     {
         Vector3 forward = vertical * camera.transform.forward;
         Vector3 right = horizontal * camera.transform.right;
+        forward.y = 0;
+        right.y = 0;
         Vector3 upVec = up * Vector3.up;
         
         if (isAtSurface)
