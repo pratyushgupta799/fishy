@@ -120,9 +120,9 @@ public class FishControllerRB : MonoBehaviour
             {
                 rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight, rb.position.z),
                     5f * Time.deltaTime);
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.Euler(0f, transform.rotation.y, transform.rotation.z),
-                    turnSmoothTime * Time.deltaTime);
+                Vector3 currentEuler = transform.rotation.eulerAngles;
+                currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
+                transform.rotation = Quaternion.Euler(currentEuler);
             }
         }
         else if (inWater)
@@ -150,6 +150,13 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
+            forward.y = 0f;
+            forward.Normalize();
+
+            right.y = 0f;
+            right.Normalize();
+            
+            swimDirection = (forward + right).normalized;
             rb.useGravity = true;
             // Air movement
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
