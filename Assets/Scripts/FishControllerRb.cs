@@ -71,7 +71,7 @@ public class FishControllerRB : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !(inWater && !isAtSurface))
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && (isGrounded || isAtSurface))
         {
             rb.useGravity = true;
             if (isGrounded)
