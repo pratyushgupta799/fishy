@@ -216,7 +216,6 @@ public class FishControllerRB : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
             }
-
         }
         else if (other.CompareTag("Water"))
         {

@@ -3,30 +3,47 @@ using UnityEngine;
 public class GlassBehaviour : MonoBehaviour
 {
     private Rigidbody rb;
-    private bool canDrop;
-    [SerializeField] private float torqueForce;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] private GameObject waterMesh;
+    [SerializeField] private GameObject puddleMesh;
+    [SerializeField] private GameObject puddleCenter;
+
+    private bool hasSpilled;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        canDrop = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        float tiltX = Mathf.Abs(transform.rotation.eulerAngles.x);
+        float tiltZ = Mathf.Abs(transform.rotation.eulerAngles.z);
+
+        bool tilted = (tiltX > 70f && tiltX < 110f) || (tiltZ > 70f && tiltZ < 110f);
+
+        if (tilted)
+        {
+            TrySpill();
+        }
+    }
+
+    void TrySpill()
+    {
+        if (hasSpilled) return;
+        hasSpilled = true;
         
+        Ray ray = new Ray(puddleCenter.transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Instantiate(puddleMesh, hit.point, Quaternion.identity);
+            waterMesh.SetActive(false);
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && canDrop)
-        {
-            Debug.Log("hit");
-            Vector3 hitPoint = collision.contacts[0].point;
-            Vector3 dir = (transform.position - hitPoint).normalized;
-            rb.AddTorque(Vector3.Cross(Vector3.up, dir).normalized * torqueForce, ForceMode.Impulse);
-            canDrop = false;
-        }
+
     }
 }
