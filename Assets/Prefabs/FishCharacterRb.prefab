@@ -462,13 +462,14 @@ MonoBehaviour:
   moveForce: 2
   groundSpeedScale: 0.4
   turnSmoothTime: 10
-  jumpMoveFactorFromWater: 1.5
-  jumpMoveFactorFromGround: 0.5
+  jumpMoveFactorFromWater: 1.75
+  jumpMoveFactorFromGround: 1
   jumpForceWater: 7
   jumpForceGround: 4
   airGravityScale: 1
   groundCheck: {fileID: 4738349270000777829}
   groundDistance: 0.2
+  debugText: {fileID: 0}
 --- !u!135 &4923730549538644310
 SphereCollider:
   m_ObjectHideFlags: 0
