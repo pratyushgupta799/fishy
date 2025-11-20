@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -27,6 +28,9 @@ public class FishControllerRB : MonoBehaviour
     [Header("Ground check parameters")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.2f;
+
+    [Header("DebugUI")] 
+    [SerializeField] private TextMeshProUGUI debugText;
 
     private Rigidbody rb;
     private float vertical;
@@ -86,7 +90,7 @@ public class FishControllerRB : MonoBehaviour
             }
 
             isJumping = true;
-            inWater = false;
+            // inWater = false;
             isAtSurface = false;
             isGrounded = false;
         }
@@ -104,7 +108,8 @@ public class FishControllerRB : MonoBehaviour
         
         if (isAtSurface)
         {
-            isJumping = false;
+            debugText.SetText("IsOnSurface");
+            // isJumping = false;
             rb.useGravity = false;
             
             forward.y = 0f;
@@ -141,22 +146,28 @@ public class FishControllerRB : MonoBehaviour
         }
         else if (inWater)
         {
-            isJumping = false;
-            rb.useGravity = false;
-            
-            Vector3 swimVel = (forward + right + upVec).normalized * maxSpeed;
-            rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
-
-            if (swimVel.magnitude > 0.01f)
+            if (!isJumping)
             {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
-                    turnSmoothTime * Time.deltaTime);
-                animator.SetBool("isSwiming", true);
+                debugText.SetText("IsInWater");
+                // isJumping = false;
+                rb.useGravity = false;
+
+                Vector3 swimVel = (forward + right + upVec).normalized * maxSpeed;
+                rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
+
+                if (swimVel.magnitude > 0.01f)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation,
+                        Quaternion.LookRotation(rb.linearVelocity),
+                        turnSmoothTime * Time.deltaTime);
+                    animator.SetBool("isSwiming", true);
+                }
+                else animator.SetBool("isSwiming", false);
             }
-            else animator.SetBool("isSwiming", false);
         }
         else if (isGrounded)
         {
+            debugText.SetText("IsOnGround");
             forward.y = 0f;
             right.y = 0f;
             swimDirection = (forward + right).normalized;
@@ -176,6 +187,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
+            debugText.SetText("IsInAir");
             forward.y = 0f;
             forward.Normalize();
 
@@ -206,21 +218,22 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Water"))
+        {
+            inWater = true;
+            Debug.Log("Water triggered");
+            isJumping = false;
+        }
         if (other.CompareTag("WaterSurface"))
         {
+            Debug.Log("Surface trigger");
             if (inWater)
             {
                 if (isJumping) isJumping = false;
                 isAtSurface = true;
-                inWater = true;
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
             }
-        }
-        else if (other.CompareTag("Water"))
-        {
-            inWater = true;
-            Debug.Log("Water triggered");
         }
     }
 
