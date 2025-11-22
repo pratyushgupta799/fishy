@@ -309,6 +309,11 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("WaterSurface")) isAtSurface = false;
