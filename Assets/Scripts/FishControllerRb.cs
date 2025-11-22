@@ -181,7 +181,7 @@ public class FishControllerRB : MonoBehaviour
         // Keep near surface
         if (up == 0 && !isJumping)
         {
-            rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight, rb.position.z),
+            rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight + 0.07f, rb.position.z),
                 5f * Time.deltaTime);
             Vector3 currentEuler = transform.rotation.eulerAngles;
             currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
