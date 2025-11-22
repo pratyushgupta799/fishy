@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3502602497218665380}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: puddleCenter (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 5622123646698908654}
   - component: {fileID: 7439231508223755557}
   - component: {fileID: 4155350412294736239}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Surface (2)
   m_TagString: WaterSurface
   m_Icon: {fileID: 0}
@@ -220,6 +220,10 @@ PrefabInstance:
       value: WaterCoffeeMug
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7152d5b7ae7e1c34eba3be260647e566, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7152d5b7ae7e1c34eba3be260647e566, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -285,7 +289,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -300,7 +304,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0737e4f7e84c1d746a1ab32b0aaa5860, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.67
+      value: -10.103
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0737e4f7e84c1d746a1ab32b0aaa5860, type: 3}
       propertyPath: m_LocalPosition.y
@@ -308,7 +312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0737e4f7e84c1d746a1ab32b0aaa5860, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.39
+      value: 3.763
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0737e4f7e84c1d746a1ab32b0aaa5860, type: 3}
       propertyPath: m_LocalRotation.w
@@ -349,6 +353,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0737e4f7e84c1d746a1ab32b0aaa5860, type: 3}
       propertyPath: m_Name
       value: ComplexCoffeeMug
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0737e4f7e84c1d746a1ab32b0aaa5860, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
