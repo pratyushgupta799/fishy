@@ -31,6 +31,7 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float groundDistance = 0.2f;
     [SerializeField] private float wallDistance = 0.2f;
     [SerializeField] private LayerMask fishyLayer;
+    [SerializeField] private LayerMask interactibleLayer;
 
     [Header("DebugUI")] 
     [SerializeField] private TextMeshProUGUI debugText;
@@ -188,7 +189,7 @@ public class FishControllerRB : MonoBehaviour
                 wallCheck.position,
                 transform.forward,
                 wallDistance,
-                ~0,
+                ~interactibleLayer,
                 QueryTriggerInteraction.Ignore
             );
             if (canGo)
@@ -255,7 +256,7 @@ public class FishControllerRB : MonoBehaviour
                 wallCheck.position,
                 transform.forward,
                 wallDistance,
-                ~0,
+                ~interactibleLayer,
                 QueryTriggerInteraction.Ignore
             );
             if (canGo)
