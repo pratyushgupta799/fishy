@@ -18,10 +18,13 @@ public class GlassBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float tiltX = Mathf.Abs(transform.rotation.eulerAngles.x);
-        float tiltZ = Mathf.Abs(transform.rotation.eulerAngles.z);
+        float tiltX = transform.rotation.eulerAngles.x;
+        tiltX = (tiltX > 180f) ? tiltX - 360f : tiltX;
 
-        bool tilted = (tiltX > 70f && tiltX < 110f) || (tiltZ > 70f && tiltZ < 110f);
+        float tiltZ = transform.rotation.eulerAngles.z;
+        tiltZ = (tiltZ > 180f) ? tiltZ - 360f : tiltZ;
+
+        bool tilted = (tiltX > 70f || tiltX < -70f) || (tiltZ > 70f || tiltZ < -70f);
 
         if (tilted)
         {
@@ -44,6 +47,6 @@ public class GlassBehaviour : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-
+        
     }
 }
