@@ -131,6 +131,8 @@ public class FishControllerRB : MonoBehaviour
             {
                 upVec.y = 0;
             }
+
+            swimDirection += upVec;
             
             rb.linearVelocity = swimDirection * maxSpeed;
             
