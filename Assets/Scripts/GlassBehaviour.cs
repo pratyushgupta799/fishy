@@ -7,6 +7,8 @@ public class GlassBehaviour : MonoBehaviour
     [SerializeField] private GameObject waterMesh;
     [SerializeField] private GameObject puddleMesh;
     [SerializeField] private GameObject puddleCenter;
+    
+    [SerializeField, Range(0f, 180f)] private float minTiltToSpill = 70f;
 
     private bool hasSpilled;
 
@@ -24,7 +26,7 @@ public class GlassBehaviour : MonoBehaviour
         float tiltZ = transform.rotation.eulerAngles.z;
         tiltZ = (tiltZ > 180f) ? tiltZ - 360f : tiltZ;
 
-        bool tilted = (tiltX > 70f || tiltX < -70f) || (tiltZ > 70f || tiltZ < -70f);
+        bool tilted = Mathf.Abs(tiltX) >= minTiltToSpill || Mathf.Abs(tiltZ) >= minTiltToSpill;
 
         if (tilted)
         {
