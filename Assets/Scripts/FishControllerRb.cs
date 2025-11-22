@@ -35,15 +35,27 @@ public class FishControllerRB : MonoBehaviour
 
     [Header("DebugUI")] 
     [SerializeField] private TextMeshProUGUI debugText;
-
+    
+    // components reference
     private Rigidbody rb;
+    
+    // input axes
     private float vertical;
     private float horizontal;
     private float up;
+    
+    // input vectors
+    private Vector3 forward;
+    private Vector3 right;
+    private Vector3 Up;
+    
+    // states
     private bool inWater;
     private bool isAtSurface;
     private bool isGrounded;
     private bool isJumping;
+    
+    // others
     private float jumpMoveFactor;
     private Vector3 swimDirection;
     private float surfaceHeight;
@@ -51,25 +63,56 @@ public class FishControllerRB : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        // rb.angularDamping = 10f;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        
+        // Debug.DrawRay(wallCheck.position, transform.forward * wallDistance, Color.red);
+        MoveInput();
+        CheckGrounded();
+        JumpInput();
+        MoveCharacter();
     }
 
-    private void Update()
+    private void MoveCharacter()
+    {
+        if (isAtSurface)
+        {
+            SurfaceMovement();
+        }
+        else if (inWater)
+        {
+            if (!isJumping)
+            {
+                WaterMovement();
+            }
+        }
+        else if (isGrounded)
+        {
+            GroundMovement();
+        }
+        else
+        {
+            AirMovement();
+        }
+    }
+
+    private void MoveInput()
     {
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
         
-        Debug.DrawRay(wallCheck.position, transform.forward * wallDistance, Color.red);
-        // Gizmos.color = Color.green;
-        // Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
-        
+        forward = vertical * camera.transform.forward;
+        right = horizontal * camera.transform.right;
+        forward.y = 0;
+        right.y = 0;
+        Up = up * Vector3.up;
+    }
+
+    private void CheckGrounded()
+    {
         if (!inWater && !(isJumping && rb.linearVelocity.y > 0))
         {
             isGrounded = Physics.CheckSphere(
@@ -83,7 +126,10 @@ public class FishControllerRB : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
 
+    private void JumpInput()
+    {
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping && (isGrounded || isAtSurface))
         {
             rb.useGravity = true;
@@ -99,195 +145,176 @@ public class FishControllerRB : MonoBehaviour
             }
 
             isJumping = true;
-            // inWater = false;
             isAtSurface = false;
             isGrounded = false;
         }
-
-        MoveCharacter();
     }
 
-    private void MoveCharacter()
+    private void SurfaceMovement()
     {
-        Vector3 forward = vertical * camera.transform.forward;
-        Vector3 right = horizontal * camera.transform.right;
-        forward.y = 0;
-        right.y = 0;
-        Vector3 upVec = up * Vector3.up;
+        debugText.SetText("IsOnSurface");
+        rb.useGravity = false;
+            
+        forward.y = 0f;
+        right.y = 0f;
+            
+        swimDirection = (forward + right).normalized;
+            
+        if(Up.y > 0)
+        {
+            Up.y = 0;
+        }
+
+        swimDirection += Up;
+            
+        rb.linearVelocity = swimDirection * maxSpeed;
+            
+        if (swimDirection.magnitude > 0.1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(swimDirection.normalized),
+                turnSmoothTime * Time.deltaTime);
+            animator.SetBool("isSwiming", true);
+        }
+        else animator.SetBool("isSwiming", false);
+
+        // Keep near surface
+        if (up == 0 && !isJumping)
+        {
+            rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight, rb.position.z),
+                5f * Time.deltaTime);
+            Vector3 currentEuler = transform.rotation.eulerAngles;
+            currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(currentEuler);
+        }
+    }
+
+    private void WaterMovement()
+    {
+        debugText.SetText("IsInWater");
+        rb.useGravity = false;
+
+        Vector3 swimVel = (forward + right + Up).normalized * maxSpeed;
+        rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
+
+        if (swimVel.magnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(rb.linearVelocity),
+                turnSmoothTime * Time.deltaTime);
+            animator.SetBool("isSwiming", true);
+        }
+        else animator.SetBool("isSwiming", false);
+    }
+
+    private void GroundMovement()
+    {
+        debugText.SetText("IsOnGround");
+        forward.y = 0f;
+        right.y = 0f;
+        swimDirection = (forward + right).normalized;
+
+        isJumping = false;
+        rb.useGravity = true;
+        bool canGo = !Physics.Raycast(
+            wallCheck.position,
+            transform.forward,
+            wallDistance,
+            ~interactibleLayer,
+            QueryTriggerInteraction.Ignore
+        );
+        if (canGo)
+        {
+            rb.linearVelocity = new Vector3(swimDirection.x * groundSpeedScale, rb.linearVelocity.y,
+                swimDirection.z * groundSpeedScale);
+        }
+        else
+        {
+            Debug.Log("Something in the way");
+            rb.linearVelocity = Vector3.zero;
+        }
+
+        if (swimDirection.magnitude > 0.1f)
+        {
+            Quaternion lookRot = transform.rotation;
+            lookRot = Quaternion.LookRotation(swimDirection.normalized);
+
+            Quaternion slopeRot = lookRot;
+            if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
+                    groundDistance + 0.5f, ~0,
+                    QueryTriggerInteraction.Ignore))
+            {
+                slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
+            }
+
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                slopeRot,
+                turnSmoothTime * Time.deltaTime);
+            animator.SetBool("isSwiming", true);
+        }
+        else
+        {
+            Quaternion lookRot = transform.rotation;
+            Vector3 camForward = camera.transform.forward;
+            camForward.y = 0;
+            lookRot = Quaternion.LookRotation(camForward.normalized);
+
+            Quaternion slopeRot = lookRot;
+            if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
+                    groundDistance + 0.5f, ~0,
+                    QueryTriggerInteraction.Ignore))
+            {
+                slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
+            }
+
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                slopeRot,
+                turnSmoothTime * Time.deltaTime);
+        }
+    }
+
+    private void AirMovement()
+    {
+        debugText.SetText("IsInAir");
+        forward.y = 0f;
+        forward.Normalize();
+
+        right.y = 0f;
+        right.Normalize();
+            
+        swimDirection = (forward + right).normalized;
+        rb.useGravity = true;
         
-        if (isAtSurface)
+        bool canGo = !Physics.Raycast(
+            wallCheck.position,
+            transform.forward,
+            wallDistance,
+            ~interactibleLayer,
+            QueryTriggerInteraction.Ignore
+        );
+        if (canGo)
         {
-            debugText.SetText("IsOnSurface");
-            // Debug.Log("IsOnSurface");
-            // isJumping = false;
-            rb.useGravity = false;
-            
-            forward.y = 0f;
-            right.y = 0f;
-            
-            swimDirection = (forward + right).normalized;
-            
-            if(upVec.y > 0)
+            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
+                swimDirection.z * jumpMoveFactor);
+            if (rb.linearVelocity.magnitude > 0.1f)
             {
-                upVec.y = 0;
-            }
-
-            swimDirection += upVec;
-            
-            rb.linearVelocity = swimDirection * maxSpeed;
-            
-            if (swimDirection.magnitude > 0.1f)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(swimDirection.normalized),
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
                     turnSmoothTime * Time.deltaTime);
-                animator.SetBool("isSwiming", true);
-            }
-            else animator.SetBool("isSwiming", false);
-
-            // Keep near surface
-            if (up == 0 && !isJumping)
-            {
-                rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight, rb.position.z),
-                    5f * Time.deltaTime);
-                Vector3 currentEuler = transform.rotation.eulerAngles;
-                currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
-                transform.rotation = Quaternion.Euler(currentEuler);
-            }
-        }
-        else if (inWater)
-        {
-            if (!isJumping)
-            {
-                debugText.SetText("IsInWater");
-                // Debug.Log("IsInWater");
-                // isJumping = false;
-                rb.useGravity = false;
-
-                Vector3 swimVel = (forward + right + upVec).normalized * maxSpeed;
-                rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
-
-                if (swimVel.magnitude > 0.01f)
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation,
-                        Quaternion.LookRotation(rb.linearVelocity),
-                        turnSmoothTime * Time.deltaTime);
-                    animator.SetBool("isSwiming", true);
-                }
-                else animator.SetBool("isSwiming", false);
-            }
-        }
-        else if (isGrounded)
-        {
-            debugText.SetText("IsOnGround");
-            // Debug.Log("IsOnGround");
-            forward.y = 0f;
-            right.y = 0f;
-            swimDirection = (forward + right).normalized;
-            
-            isJumping = false;
-            rb.useGravity = true;
-            bool canGo = !Physics.Raycast(
-                wallCheck.position,
-                transform.forward,
-                wallDistance,
-                ~interactibleLayer,
-                QueryTriggerInteraction.Ignore
-            );
-            if (canGo)
-            {
-                rb.linearVelocity = new Vector3(swimDirection.x * groundSpeedScale, rb.linearVelocity.y,
-                    swimDirection.z * groundSpeedScale);
             }
             else
             {
-                Debug.Log("Something in the way");
-                rb.linearVelocity = Vector3.zero;
-            }
-
-            if (swimDirection.magnitude > 0.1f)
-            {
-                Quaternion lookRot = transform.rotation;
-                lookRot = Quaternion.LookRotation(swimDirection.normalized);
-
-                Quaternion slopeRot = lookRot;
-                if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
-                        groundDistance + 0.5f, ~0,
-                        QueryTriggerInteraction.Ignore)) 
-                {
-                    slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
-                }
+                Vector3 camLookFlat = camera.transform.forward;
+                camLookFlat.y = 0f;
                 transform.rotation = Quaternion.Slerp(transform.rotation,
-                    slopeRot,
-                    turnSmoothTime * Time.deltaTime);
-                animator.SetBool("isSwiming", true);
-            }
-            else
-            {
-                Quaternion lookRot = transform.rotation;
-                Vector3 camForward = camera.transform.forward;
-                camForward.y = 0;
-                lookRot = Quaternion.LookRotation(camForward.normalized);
-
-                Quaternion slopeRot = lookRot;
-                if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
-                        groundDistance + 0.5f, ~0,
-                        QueryTriggerInteraction.Ignore)) 
-                {
-                    slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
-                }
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    slopeRot,
+                    Quaternion.LookRotation(camLookFlat + rb.linearVelocity),
                     turnSmoothTime * Time.deltaTime);
             }
         }
         else
         {
-            debugText.SetText("IsInAir");
-            // Debug.Log("IsInAir");
-            forward.y = 0f;
-            forward.Normalize();
-
-            right.y = 0f;
-            right.Normalize();
-            
-            swimDirection = (forward + right).normalized;
-            rb.useGravity = true;
-            // Air movement
-            bool canGo = !Physics.Raycast(
-                wallCheck.position,
-                transform.forward,
-                wallDistance,
-                ~interactibleLayer,
-                QueryTriggerInteraction.Ignore
-            );
-            if (canGo)
-            {
-                rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
-                    swimDirection.z * jumpMoveFactor);
-                if (rb.linearVelocity.magnitude > 0.1f)
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
-                        turnSmoothTime * Time.deltaTime);
-                }
-                else
-                {
-                    Vector3 camLookFlat = camera.transform.forward;
-                    camLookFlat.y = 0f;
-                    transform.rotation = Quaternion.Slerp(transform.rotation,
-                        Quaternion.LookRotation(camLookFlat + rb.linearVelocity),
-                        turnSmoothTime * Time.deltaTime);
-                }
-            }
-            else
-            {
-                Debug.Log("Something in the way");
-                // rb.linearVelocity = Vector3.zero;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection),
-                    turnSmoothTime * Time.deltaTime);
-            }
-            
-            
+            Debug.Log("Something in the way");
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection),
+                turnSmoothTime * Time.deltaTime);
         }
     }
 
@@ -314,7 +341,15 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        
+        if (other.CompareTag("WaterSurface"))
+        {
+            if (inWater && !isJumping)
+            {
+                isAtSurface = true;
+                rb.linearVelocity = Vector3.zero;
+                surfaceHeight = other.transform.position.y;
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -323,6 +358,7 @@ public class FishControllerRB : MonoBehaviour
         if (other.CompareTag("Water")) inWater = false;
     }
     
+    #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         if (groundCheck == null) return;
@@ -330,9 +366,5 @@ public class FishControllerRB : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
     }
+    #endif
 }
-
-// What do I want:
-// 1. While on ground, the fish rotation should snap to ground's normal
-// 2. The fish should stop receiving move input if the input is in the direction where there is wall or something
-// 3. After jump is clicked, the fish should go to air mode irrespective of 
