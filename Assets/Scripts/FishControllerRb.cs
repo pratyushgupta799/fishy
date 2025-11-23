@@ -166,8 +166,22 @@ public class FishControllerRB : MonoBehaviour
         }
 
         swimDirection += Up;
-            
-        rb.linearVelocity = swimDirection * maxSpeed;
+        bool canGo = !Physics.Raycast(
+            wallCheck.position,
+            swimDirection.normalized,
+            wallDistance,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        );
+        if (canGo)
+        {
+            rb.linearVelocity = swimDirection * maxSpeed;
+        }
+        else
+        {
+            Debug.Log("Something in the way");
+            rb.linearVelocity = Vector3.zero;
+        }
             
         if (swimDirection.magnitude > 0.1f)
         {
@@ -195,12 +209,27 @@ public class FishControllerRB : MonoBehaviour
         rb.useGravity = false;
 
         Vector3 swimVel = (forward + right + Up).normalized * maxSpeed;
-        rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
+        bool canGo = !Physics.Raycast(
+            wallCheck.position,
+            swimVel.normalized,
+            wallDistance,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        );
+        if (canGo)
+        {
+            rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
+        }
+        else
+        {
+            Debug.Log("Something in the way");
+            rb.linearVelocity = Vector3.zero;
+        }
 
         if (swimVel.magnitude > 0.01f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(rb.linearVelocity),
+                Quaternion.LookRotation(swimVel.normalized),
                 turnSmoothTime * Time.deltaTime);
             animator.SetBool("isSwiming", true);
         }
