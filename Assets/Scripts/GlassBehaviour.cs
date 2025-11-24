@@ -7,6 +7,7 @@ public class GlassBehaviour : MonoBehaviour
     [SerializeField] private GameObject waterMesh;
     [SerializeField] private GameObject puddleMesh;
     [SerializeField] private GameObject puddleCenter;
+    [SerializeField] private GameObject surfaceMesh;
     
     [SerializeField, Range(0f, 180f)] private float minTiltToSpill = 70f;
 
@@ -43,6 +44,8 @@ public class GlassBehaviour : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Instantiate(puddleMesh, hit.point, Quaternion.identity);
+            waterMesh.GetComponent<Collider>().enabled = false;
+            surfaceMesh.GetComponent<Collider>().enabled = false;
             waterMesh.SetActive(false);
         }
     }

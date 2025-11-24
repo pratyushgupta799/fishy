@@ -60,6 +60,8 @@ public class FishControllerRB : MonoBehaviour
     private float jumpMoveFactor;
     private Vector3 swimDirection;
     private float surfaceHeight;
+    private bool onSurfaceThisFrame;
+    private bool inWaterThisFrame;
 
     private void Awake()
     {
@@ -384,19 +386,50 @@ public class FishControllerRB : MonoBehaviour
             if (inWater && !isJumping)
             {
                 isAtSurface = true;
+                onSurfaceThisFrame = true;
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
             }
+        }
+        if (other.CompareTag("Water"))
+        {
+            inWater = true;
+            inWaterThisFrame = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("WaterSurface")) isAtSurface = false;
-        if (other.CompareTag("Water")) inWater = false;
+        if (other.CompareTag("WaterSurface"))
+        {
+            Debug.Log("Surface trigger exit");
+            isAtSurface = false;
+        }
+
+        if (other.CompareTag("Water"))
+        {
+            Debug.Log("Water trigger exit");
+            inWater = false;
+        }
     }
-    
-    #if UNITY_EDITOR
+
+    private void LateUpdate()
+    {
+        if (!onSurfaceThisFrame && isAtSurface)
+        {
+            isAtSurface = false;
+        }
+
+        if (!inWaterThisFrame && inWater)
+        {
+            inWater = false;
+        }
+
+        inWaterThisFrame = false;
+        onSurfaceThisFrame = false;
+    }
+
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         if (groundCheck == null) return;
@@ -404,5 +437,5 @@ public class FishControllerRB : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
     }
-    #endif
+#endif
 }
