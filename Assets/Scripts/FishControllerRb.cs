@@ -62,6 +62,10 @@ public class FishControllerRB : MonoBehaviour
     private float surfaceHeight;
     private bool onSurfaceThisFrame;
     private bool inWaterThisFrame;
+    private float surfaceExitTime;
+    private float surfaceExitGrace = 0.05f;
+    private float waterExitTime;
+    private float waterExitGrace = 0.05f;
 
     private void Awake()
     {
@@ -389,12 +393,16 @@ public class FishControllerRB : MonoBehaviour
                 onSurfaceThisFrame = true;
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
+                
+                surfaceExitGrace = Time.time + surfaceExitGrace;
             }
         }
         if (other.CompareTag("Water"))
         {
             inWater = true;
             inWaterThisFrame = true;
+            
+            waterExitGrace = Time.time + waterExitGrace;
         }
     }
 
@@ -425,8 +433,15 @@ public class FishControllerRB : MonoBehaviour
             inWater = false;
         }
 
-        inWaterThisFrame = false;
-        onSurfaceThisFrame = false;
+        if (Time.time > waterExitGrace)
+        {
+            inWaterThisFrame = false;
+        }
+        
+        if (Time.time >= surfaceExitGrace)
+        {
+            onSurfaceThisFrame = false;
+        }
     }
 
 #if UNITY_EDITOR
