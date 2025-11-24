@@ -60,8 +60,8 @@ Transform:
   m_GameObject: {fileID: 5054033778390160019}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01307106, y: 0.12383461, z: 0.0040462017}
-  m_LocalScale: {x: 0.75966275, y: 0.006209021, z: 0.7635742}
+  m_LocalPosition: {x: 0.002, y: 0.12383461, z: 0}
+  m_LocalScale: {x: 0.705947, y: 0.005769981, z: 0.70958185}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5988640370796430187}
@@ -418,7 +418,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6204186552484618529}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 2.75
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -452,6 +452,8 @@ MonoBehaviour:
   waterMesh: {fileID: 6363652367624362449}
   puddleMesh: {fileID: 7635884892745060947, guid: 58325ee0ed5cd8f47861352a3621faf2, type: 3}
   puddleCenter: {fileID: 1586691887181826837}
+  surfaceMesh: {fileID: 0}
+  minTiltToSpill: 70
 --- !u!64 &7664219565075430071
 MeshCollider:
   m_ObjectHideFlags: 0
