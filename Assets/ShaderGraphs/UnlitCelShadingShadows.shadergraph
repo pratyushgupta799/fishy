@@ -44,6 +44,9 @@
         },
         {
             "m_Id": "718bc4a3b6ce4987b5166e121fb02028"
+        },
+        {
+            "m_Id": "5570d35bea2041939bf61e2c48a4868c"
         }
     ],
     "m_Keywords": [],
@@ -239,6 +242,9 @@
         },
         {
             "m_Id": "fe02f149bbfa4dcba8f7752dd14ad58f"
+        },
+        {
+            "m_Id": "57c13c592cb1446ab0997f8b306c1e2e"
         }
     ],
     "m_GroupDatas": [
@@ -561,6 +567,20 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "1561c2b805e4432bb1872c8038d81b51"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "57c13c592cb1446ab0997f8b306c1e2e"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "9ce458dffb614b2fb0548be1a981f63b"
                 },
                 "m_SlotId": 0
             }
@@ -1372,7 +1392,7 @@
     "m_Title": "Sun Controls",
     "m_Position": {
         "x": 1338.999755859375,
-        "y": 1013.9998779296875
+        "y": 1014.0
     }
 }
 
@@ -2454,6 +2474,9 @@
             "m_Id": "667ff57d3d4a44d98c935f5692a74521"
         },
         {
+            "m_Id": "5570d35bea2041939bf61e2c48a4868c"
+        },
+        {
             "m_Id": "718bc4a3b6ce4987b5166e121fb02028"
         }
     ]
@@ -3136,6 +3159,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "5570d35bea2041939bf61e2c48a4868c",
+    "m_Guid": {
+        "m_GuidSerialized": "324769e3-b741-4034-a585-544ab10b33ac"
+    },
+    "m_Name": "RimAmount",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "RimAmount",
+    "m_DefaultReferenceName": "_RimAmount",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.09000000357627869,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DotProductNode",
     "m_ObjectId": "56f4327afc544af9859c2519404e17cb",
@@ -3237,6 +3288,42 @@
     },
     "m_Property": {
         "m_Id": "74f091bb3e3043b0b60ae7e7aac7dca3"
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "57c13c592cb1446ab0997f8b306c1e2e",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 2632.0,
+            "y": 1103.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "6701c7110f6449e4bce912bd811747e5"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "5570d35bea2041939bf61e2c48a4868c"
     }
 }
 
@@ -3462,6 +3549,21 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "6701c7110f6449e4bce912bd811747e5",
+    "m_Id": 0,
+    "m_DisplayName": "RimAmount",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "67200b3469da4d34b2cb70748501f107",
     "m_Id": 4,
     "m_DisplayName": "R",
@@ -3618,7 +3720,7 @@
     "m_Title": "Specular",
     "m_Position": {
         "x": 424.0,
-        "y": -1151.0
+        "y": -1150.9998779296875
     }
 }
 
@@ -4907,8 +5009,8 @@
     "m_ObjectId": "a5d92055cb384ccca98a7f0cebea75fd",
     "m_Title": "AO",
     "m_Position": {
-        "x": 1451.999755859375,
-        "y": -111.00003051757813
+        "x": 1451.9998779296875,
+        "y": -111.0
     }
 }
 
@@ -7225,8 +7327,8 @@
     "m_ObjectId": "fa0da9d5124d48d2b3d76456305c0cb3",
     "m_Title": "Base Shader",
     "m_Position": {
-        "x": -1813.0,
-        "y": 237.9998779296875
+        "x": -1812.999755859375,
+        "y": 237.99998474121095
     }
 }
 
