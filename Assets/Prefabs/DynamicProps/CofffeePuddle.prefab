@@ -145,6 +145,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.992
       objectReference: {fileID: 0}
@@ -184,6 +196,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -191,7 +207,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1353982480388988958, guid: fba2dcca2637c9d469f5ae6fb18d50ac, type: 3}
+      objectReference: {fileID: -6664732773186837780, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
     - target: {fileID: 919132149155446097, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
       propertyPath: m_Name
       value: CofffeePuddle
@@ -245,7 +261,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1353982480388988958, guid: fba2dcca2637c9d469f5ae6fb18d50ac, type: 3}
+  m_Mesh: {fileID: -6664732773186837780, guid: e51fd58abc45c8549ad10faa4ce323f3, type: 3}
 --- !u!114 &1839701888203653660
 MonoBehaviour:
   m_ObjectHideFlags: 0
