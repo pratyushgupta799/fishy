@@ -381,6 +381,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (other.CompareTag("WaterSurface"))
         {
+            Debug.Log("Water surface trigger stay");
             if (inWater && !isJumping)
             {
                 isAtSurface = true;
@@ -388,15 +389,16 @@ public class FishControllerRB : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
                 
-                surfaceExitGrace = Time.time + surfaceExitGrace;
+                surfaceExitTime = Time.time + surfaceExitGrace;
             }
         }
         if (other.CompareTag("Water"))
         {
+            Debug.Log("Water trigger stay");
             inWater = true;
             inWaterThisFrame = true;
             
-            waterExitGrace = Time.time + waterExitGrace;
+            waterExitTime = Time.time + waterExitGrace;
         }
     }
 
@@ -421,20 +423,36 @@ public class FishControllerRB : MonoBehaviour
         {
             isAtSurface = false;
         }
+        else
+        {
+            // Debug.Log("is on surface this frame");
+        }
 
         if (!inWaterThisFrame && inWater)
         {
             inWater = false;
         }
+        else
+        {
+            // Debug.Log("is in water this frame");
+        }
 
-        if (Time.time > waterExitGrace)
+        if (Time.time > waterExitTime)
         {
             inWaterThisFrame = false;
         }
+        else
+        {
+            // Debug.Log("water grace " + waterExitGrace + " current time " + Time.time);
+        }
         
-        if (Time.time >= surfaceExitGrace)
+        if (Time.time > surfaceExitTime)
         {
             onSurfaceThisFrame = false;
+        }
+        else
+        {
+            // Debug.Log("surface grace " + surfaceExitGrace + " current time " + Time.time);
         }
     }
 
