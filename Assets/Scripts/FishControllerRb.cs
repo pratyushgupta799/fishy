@@ -174,22 +174,6 @@ public class FishControllerRB : MonoBehaviour
         }
 
         swimDirection += Up;
-        // bool canGo = !Physics.Raycast(
-        //     wallCheck.position,
-        //     swimDirection.normalized,
-        //     wallDistance,
-        //     ~0,
-        //     QueryTriggerInteraction.Ignore
-        // );
-        // if (canGo)
-        // {
-        //     rb.linearVelocity = swimDirection * maxSpeed;
-        // }
-        // else
-        // {
-        //     Debug.Log("Something in the way");
-        //     rb.linearVelocity = Vector3.zero;
-        // }
         
         rb.linearVelocity = swimDirection * maxSpeed;
             
@@ -220,22 +204,6 @@ public class FishControllerRB : MonoBehaviour
         rb.mass = underWaterMass;
 
         Vector3 swimVel = (forward + right + Up).normalized * maxSpeed;
-        // bool canGo = !Physics.Raycast(
-        //     wallCheck.position,
-        //     swimVel.normalized,
-        //     wallDistance,
-        //     ~0,
-        //     QueryTriggerInteraction.Ignore
-        // );
-        // if (canGo)
-        // {
-        //     rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
-        // }
-        // else
-        // {
-        //     Debug.Log("Something in the way");
-        //     rb.linearVelocity = Vector3.zero;
-        // }
         
         rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
 
