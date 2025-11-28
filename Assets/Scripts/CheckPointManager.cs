@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,13 +12,14 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField] private GameObject fishy;
     [SerializeField] private List<GameObject> checkPointTrigger;
     [SerializeField] private List<GameObject> checkPoint;
-    [SerializeField] private GameObject planeOfDeath;
     
     private int currentCheckpoint = 0;
 
     [SerializeField] [ReadOnly] private List<GameObject> changedPrefab;
     
     public int CurrentCheckpointIndex { get; private set; }
+    
+    [SerializeField] private TextMeshProUGUI checkPointText;
 
     private void Awake()
     {
@@ -29,6 +31,8 @@ public class CheckPointManager : MonoBehaviour
         {
             Instance = this;
         }
+        
+        checkPointText.text = currentCheckpoint.ToString();
     }
 
     public void SetCheckPoint(GameObject checkpointTrigger)
@@ -40,6 +44,7 @@ public class CheckPointManager : MonoBehaviour
                 if (currentCheckpoint < i)
                 {
                     currentCheckpoint = i;
+                    checkPointText.text = currentCheckpoint.ToString();
                 }
             }
         }
