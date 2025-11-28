@@ -52,7 +52,7 @@ public class FishControllerRB : MonoBehaviour
     // input vectors
     private Vector3 forward;
     private Vector3 right;
-    private Vector3 Up;
+    private Vector3 upward;
     
     // states
     private bool inWater;
@@ -127,11 +127,19 @@ public class FishControllerRB : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         up = Input.GetAxis("Up");
         
-        forward = vertical * camera.transform.forward;
-        right = horizontal * camera.transform.right;
+        Vector3 camForward = camera.transform.forward;
+        camForward.y = 0;
+        camForward.Normalize();
+
+        Vector3 camRight = camera.transform.right;
+        camRight.y = 0;
+        camRight.Normalize();
+
+        forward = camForward * vertical;
+        right = camRight * horizontal;
         forward.y = 0;
         right.y = 0;
-        Up = up * Vector3.up;
+        upward = up * Vector3.up;
     }
 
     private void CheckGrounded()
@@ -184,12 +192,12 @@ public class FishControllerRB : MonoBehaviour
             
         swimDirection = (forward + right).normalized;
             
-        if(Up.y > 0)
+        if(upward.y > 0)
         {
-            Up.y = 0;
+            upward.y = 0;
         }
 
-        swimDirection += Up;
+        swimDirection += upward;
         
         rb.linearVelocity = swimDirection * maxSpeed;
             
@@ -219,7 +227,7 @@ public class FishControllerRB : MonoBehaviour
         rb.useGravity = false;
         rb.mass = underWaterMass;
 
-        Vector3 swimVel = (forward + right + Up).normalized * maxSpeed;
+        Vector3 swimVel = (forward + right + upward).normalized * maxSpeed;
         
         rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
 
@@ -390,7 +398,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (other.CompareTag("WaterSurface"))
         {
-            Debug.Log("Water surface trigger stay");
+            // Debug.Log("Water surface trigger stay");
             if (inWater && !isJumping)
             {
                 isAtSurface = true;
@@ -403,7 +411,7 @@ public class FishControllerRB : MonoBehaviour
         }
         if (other.CompareTag("Water"))
         {
-            Debug.Log("Water trigger stay");
+            // Debug.Log("Water trigger stay");
             inWater = true;
             inWaterThisFrame = true;
             
