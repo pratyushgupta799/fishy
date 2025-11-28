@@ -73,6 +73,8 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     {
         if (CheckPointManager.Instance.CurrentCheckpointIndex <= checkpointIndex)
         {
+            Debug.Log("Current checkpoint: " + CheckPointManager.Instance.CurrentCheckpointIndex +
+                      " <= Glass checkpoint: " + checkpointIndex);
             transform.position = defaultPos;
             transform.rotation = defaultRot;
 

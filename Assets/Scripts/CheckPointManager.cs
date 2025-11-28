@@ -17,7 +17,7 @@ public class CheckPointManager : MonoBehaviour
 
     [SerializeField] [ReadOnly] private List<GameObject> changedPrefab;
     
-    public int CurrentCheckpointIndex { get; private set; }
+    public int CurrentCheckpointIndex { get { return currentCheckpoint; } private set { currentCheckpoint = value; } }
     
     [SerializeField] private TextMeshProUGUI checkPointText;
 
