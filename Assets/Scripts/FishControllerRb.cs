@@ -375,6 +375,15 @@ public class FishControllerRB : MonoBehaviour
         {
             CheckPointManager.Instance.SetCheckPoint(other.gameObject);
         }
+
+        if (other.CompareTag("Health"))
+        {
+            currentDeathTimer -= 2;
+            if (currentDeathTimer < 0)
+            {
+                currentDeathTimer = 0;
+            }
+        }
     }
 
     private void OnTriggerStay(Collider other)
