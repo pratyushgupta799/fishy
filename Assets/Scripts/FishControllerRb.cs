@@ -35,7 +35,11 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private LayerMask interactibleLayer;
 
     [Header("DebugUI")] 
-    [SerializeField] private TextMeshProUGUI debugText;
+    [SerializeField] private TextMeshProUGUI stateDebugText;
+    [SerializeField] private TextMeshProUGUI deathTimerText;
+
+    [Header("Death Settings")] 
+    [SerializeField] private int deathTime = 5;
     
     // components reference
     private Rigidbody rb;
@@ -66,6 +70,9 @@ public class FishControllerRB : MonoBehaviour
     private float surfaceExitGrace = 0.05f;
     private float waterExitTime;
     private float waterExitGrace = 0.05f;
+    
+    // death
+    private float currentDeathTimer = 0.0f;
 
     private void Awake()
     {
@@ -87,12 +94,14 @@ public class FishControllerRB : MonoBehaviour
         if (isAtSurface)
         {
             SurfaceMovement();
+            currentDeathTimer = 0;
         }
         else if (inWater)
         {
             if (!isJumping)
             {
                 WaterMovement();
+                currentDeathTimer = 0;
             }
         }
         else if (isGrounded)
@@ -102,6 +111,13 @@ public class FishControllerRB : MonoBehaviour
         else
         {
             AirMovement();
+        }
+        
+        currentDeathTimer += Time.deltaTime;
+        deathTimerText.text = ((int)currentDeathTimer).ToString();
+        if (currentDeathTimer >= deathTime)
+        {
+            CheckPointManager.Instance.LoadLastCheckpoint();
         }
     }
 
@@ -159,7 +175,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceMovement()
     {
-        debugText.SetText("IsOnSurface");
+        stateDebugText.SetText("IsOnSurface");
         rb.useGravity = false;
         rb.mass = underWaterMass;
             
@@ -199,7 +215,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void WaterMovement()
     {
-        debugText.SetText("IsInWater");
+        stateDebugText.SetText("IsInWater");
         rb.useGravity = false;
         rb.mass = underWaterMass;
 
@@ -220,7 +236,7 @@ public class FishControllerRB : MonoBehaviour
     private void GroundMovement()
     {
         rb.mass = 1f;
-        debugText.SetText("IsOnGround");
+        stateDebugText.SetText("IsOnGround");
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
@@ -287,7 +303,7 @@ public class FishControllerRB : MonoBehaviour
     private void AirMovement()
     {
         rb.mass = 1f;
-        debugText.SetText("IsInAir");
+        stateDebugText.SetText("IsInAir");
         forward.y = 0f;
         forward.Normalize();
 
