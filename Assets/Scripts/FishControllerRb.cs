@@ -349,6 +349,16 @@ public class FishControllerRB : MonoBehaviour
                 surfaceHeight = other.transform.position.y;
             }
         }
+        if (other.CompareTag("Death"))
+        {
+            CheckPointManager.Instance.LoadLastCheckpoint();
+            Debug.Log("Death trigger");
+        }
+
+        if (other.CompareTag("CheckpointTrigger"))
+        {
+            CheckPointManager.Instance.SetCheckPoint(other.gameObject);
+        }
     }
 
     private void OnTriggerStay(Collider other)
