@@ -496,6 +496,8 @@ MonoBehaviour:
   groundSpeedScale: 0.4
   turnSmoothTime: 10
   underWaterMass: 0.2
+  dashDuration: 0.2
+  dashSpeed: 5
   jumpMoveFactorFromWater: 1.75
   jumpMoveFactorFromGround: 0.75
   jumpForceWater: 7
@@ -511,7 +513,9 @@ MonoBehaviour:
   interactibleLayer:
     serializedVersion: 2
     m_Bits: 512
-  debugText: {fileID: 0}
+  stateDebugText: {fileID: 0}
+  deathTimerText: {fileID: 0}
+  deathTime: 10
 --- !u!135 &4923730549538644310
 SphereCollider:
   m_ObjectHideFlags: 0
