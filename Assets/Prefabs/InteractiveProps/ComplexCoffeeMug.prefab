@@ -418,7 +418,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6204186552484618529}
   serializedVersion: 4
-  m_Mass: 2.75
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -453,7 +453,8 @@ MonoBehaviour:
   puddleMesh: {fileID: 7635884892745060947, guid: 58325ee0ed5cd8f47861352a3621faf2, type: 3}
   puddleCenter: {fileID: 1586691887181826837}
   surfaceMesh: {fileID: 0}
-  minTiltToSpill: 58
+  minTiltToSpill: 55
+  checkpointIndex: 1
 --- !u!64 &7664219565075430071
 MeshCollider:
   m_ObjectHideFlags: 0
