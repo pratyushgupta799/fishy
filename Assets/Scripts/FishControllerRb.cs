@@ -118,6 +118,7 @@ public class FishControllerRB : MonoBehaviour
         if (currentDeathTimer >= deathTime)
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
+            currentDeathTimer = 0;
         }
     }
 
