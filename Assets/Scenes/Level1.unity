@@ -1107,11 +1107,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.422
+      value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.378
+      value: 6.09
       objectReference: {fileID: 0}
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3887,7 +3887,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21388301, y: -5.6783304e-11, z: 1.2432684e-11, w: 0.97685933}
-  m_LocalPosition: {x: -7.422, y: 4.130161, z: -10.230315}
+  m_LocalPosition: {x: 0.54, y: 6.8421607, z: -10.230315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -17948,7 +17948,7 @@ Transform:
   m_GameObject: {fileID: 986127166}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21388298, y: -5.678329e-11, z: 1.2432663e-11, w: 0.97685933}
-  m_LocalPosition: {x: -7.422, y: 4.130161, z: -10.230315}
+  m_LocalPosition: {x: 0.54, y: 6.8421607, z: -10.230315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -20066,11 +20066,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194545778}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1196187422 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 556191116606431268, guid: 1f596cdd627502d45bbfad124341a875, type: 3}
-  m_PrefabInstance: {fileID: 775185078790654467}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1197406472
 GameObject:
   m_ObjectHideFlags: 0
@@ -22900,44 +22895,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a0fd509802589842b7f386bf61cf376, type: 3}
---- !u!65 &1487016069
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1196187422}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 5.087481, y: 2.5268908, z: 2.7179115}
-  m_Center: {x: -0.00000023841858, y: -0.12265015, z: 0}
---- !u!114 &1487016070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1196187422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 0
-  priority: 0
-  blendDistance: 0.01
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 1d74c6100b3ccc143a6f870c8036b5bf, type: 2}
 --- !u!1 &1491525491
 GameObject:
   m_ObjectHideFlags: 0
@@ -31213,16 +31170,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aquarium
       objectReference: {fileID: 0}
+    - target: {fileID: 6234791541414346225, guid: 1f596cdd627502d45bbfad124341a875, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 556191116606431268, guid: 1f596cdd627502d45bbfad124341a875, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1487016070}
-    - targetCorrespondingSourceObject: {fileID: 556191116606431268, guid: 1f596cdd627502d45bbfad124341a875, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1487016069}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f596cdd627502d45bbfad124341a875, type: 3}
 --- !u!1001 &5181849862961463679
 PrefabInstance:
