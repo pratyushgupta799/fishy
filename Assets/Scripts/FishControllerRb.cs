@@ -114,7 +114,7 @@ public class FishControllerRB : MonoBehaviour
         }
         
         currentDeathTimer += Time.deltaTime;
-        deathTimerText.text = ((int)currentDeathTimer).ToString();
+        deathTimerText.text = ((int)currentDeathTimer).ToString() + " sec";
         if (currentDeathTimer >= deathTime)
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
