@@ -513,6 +513,11 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
+    public bool isDashing()
+    {
+        return (dashTime > 0);
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
