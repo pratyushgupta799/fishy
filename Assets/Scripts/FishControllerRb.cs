@@ -16,6 +16,8 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float groundSpeedScale = 0.4f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     [SerializeField] private float underWaterMass = 0.02f;
+    [SerializeField] private float dashDuration = 0.25f;
+    [SerializeField] private float dashSpeed = 0.5f;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -70,6 +72,7 @@ public class FishControllerRB : MonoBehaviour
     private float surfaceExitGrace = 0.05f;
     private float waterExitTime;
     private float waterExitGrace = 0.05f;
+    private float dashTime;
     
     // death
     private float currentDeathTimer = 0.0f;
@@ -86,6 +89,7 @@ public class FishControllerRB : MonoBehaviour
         MoveInput();
         CheckGrounded();
         JumpInput();
+        DashInput();
         MoveCharacter();
     }
 
@@ -124,10 +128,20 @@ public class FishControllerRB : MonoBehaviour
 
     private void MoveInput()
     {
-        vertical = Input.GetAxis("Vertical");
-        horizontal = Input.GetAxis("Horizontal");
-        up = Input.GetAxis("Up");
-        
+        if (dashTime > 0)
+        {
+            dashTime -= Time.deltaTime;
+            vertical = 0f;
+            horizontal = 0f;
+            up = 0f;
+        }
+        else
+        {
+            vertical = Input.GetAxis("Vertical");
+            horizontal = Input.GetAxis("Horizontal");
+            up = Input.GetAxis("Up");
+        }
+
         Vector3 camForward = camera.transform.forward;
         camForward.y = 0;
         camForward.Normalize();
@@ -182,11 +196,25 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
+    private void DashInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && inWater && dashTime <= 0f)
+        {
+            rb.AddForce(transform.forward * dashSpeed, ForceMode.VelocityChange);
+            dashTime = dashDuration;
+        }
+    }
+
     private void SurfaceMovement()
     {
         stateDebugText.SetText("IsOnSurface");
         rb.useGravity = false;
         rb.mass = underWaterMass;
+        
+        if (dashTime > 0)
+        {
+            return;
+        }
             
         forward.y = 0f;
         right.y = 0f;
@@ -199,8 +227,11 @@ public class FishControllerRB : MonoBehaviour
         }
 
         swimDirection += upward;
-        
-        rb.linearVelocity = swimDirection * maxSpeed;
+
+        if (dashTime <= 0f)
+        {
+            rb.linearVelocity = swimDirection * maxSpeed;
+        }
             
         if (swimDirection.magnitude > 0.1f)
         {
@@ -212,7 +243,7 @@ public class FishControllerRB : MonoBehaviour
         else animator.SetBool("isSwiming", false);
 
         // Keep near surface
-        if (up == 0 && !isJumping)
+        if (up == 0 && !isJumping && (dashTime <= 0f))
         {
             rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight + 0.07f, rb.position.z),
                 5f * Time.deltaTime);
@@ -227,11 +258,19 @@ public class FishControllerRB : MonoBehaviour
         stateDebugText.SetText("IsInWater");
         rb.useGravity = false;
         rb.mass = underWaterMass;
+        
+        if (dashTime > 0)
+        {
+            return;
+        }
 
         Vector3 swimVel = (forward + right + upward).normalized * maxSpeed;
-        
-        rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
 
+        if (dashTime <= 0f)
+        {
+            rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
+        }
+        
         if (swimVel.magnitude > 0.01f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation,
@@ -404,7 +443,7 @@ public class FishControllerRB : MonoBehaviour
             {
                 isAtSurface = true;
                 onSurfaceThisFrame = true;
-                rb.linearVelocity = Vector3.zero;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
                 surfaceHeight = other.transform.position.y;
                 
                 surfaceExitTime = Time.time + surfaceExitGrace;
