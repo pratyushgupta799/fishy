@@ -54,8 +54,10 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         hasSpilled = true;
         
         Ray ray = new Ray(puddleCenter.transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore)) 
         {
+            Debug.Log("water spilled on " + hit.transform.name);
             droppedPuddle = Instantiate(puddleMesh, hit.point, Quaternion.identity);
             waterMesh.SetActive(false);
         }
