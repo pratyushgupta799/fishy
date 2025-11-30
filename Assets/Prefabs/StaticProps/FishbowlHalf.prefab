@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 343792130936311447}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.006, y: 1.162, z: 0.023}
-  m_LocalScale: {x: 0.92047894, y: 0.0072959093, z: 0.92521834}
+  m_LocalPosition: {x: -0.006, y: 1.001, z: 0.023}
+  m_LocalScale: {x: 1.2995241, y: 0.010300301, z: 1.3062152}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5260189121025528786}
@@ -204,10 +204,6 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: de392d5c639f3ad4a9fa843794dbe63c, type: 2}
-    - target: {fileID: -5754084199372789682, guid: 0ca1764f882688d469ad846507424a0f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 3469110867208568329, guid: e6c169696210c56469d870546e50694c, type: 3}
     - target: {fileID: 919132149155446097, guid: 0ca1764f882688d469ad846507424a0f, type: 3}
       propertyPath: m_Name
       value: WaterFishbowl
@@ -277,7 +273,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 3469110867208568329, guid: e6c169696210c56469d870546e50694c, type: 3}
+  m_Mesh: {fileID: 4893368068264267868, guid: 0ca1764f882688d469ad846507424a0f, type: 3}
 --- !u!4 &5260189121025528786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0ca1764f882688d469ad846507424a0f, type: 3}
