@@ -416,6 +416,7 @@ public class FishControllerRB : MonoBehaviour
         if (other.CompareTag("Death"))
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
+            currentDeathTimer = 0f;
             Debug.Log("Death trigger");
         }
 
