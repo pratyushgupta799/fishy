@@ -75,10 +75,11 @@ public class FishControllerRB : MonoBehaviour
     private float dashTime;
     
     // death
-    private float currentDeathTimer = 0.0f;
+    private float currentDeathTimer;
 
     private void Awake()
     {
+        currentDeathTimer = deathTime;
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -98,14 +99,20 @@ public class FishControllerRB : MonoBehaviour
         if (isAtSurface)
         {
             SurfaceMovement();
-            currentDeathTimer = 0;
+            if(currentDeathTimer <= deathTime)
+            {
+                currentDeathTimer = deathTime;
+            }
         }
         else if (inWater)
         {
             if (!isJumping)
             {
                 WaterMovement();
-                currentDeathTimer = 0;
+                if(currentDeathTimer <= deathTime)
+                {
+                    currentDeathTimer = deathTime;
+                }
             }
         }
         else if (isGrounded)
@@ -116,13 +123,17 @@ public class FishControllerRB : MonoBehaviour
         {
             AirMovement();
         }
+
+        if (!inWater)
+        {
+            currentDeathTimer -= Time.deltaTime;
+        }
         
-        currentDeathTimer += Time.deltaTime;
-        deathTimerText.text = ((int)currentDeathTimer).ToString() + " sec";
-        if (currentDeathTimer >= deathTime)
+        deathTimerText.text = ((int)currentDeathTimer) + " sec";
+        if (currentDeathTimer <= 0)
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
-            currentDeathTimer = 0;
+            currentDeathTimer = deathTime;
         }
     }
 
@@ -416,7 +427,7 @@ public class FishControllerRB : MonoBehaviour
         if (other.CompareTag("Death"))
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
-            currentDeathTimer = 0f;
+            currentDeathTimer = deathTime;
             Debug.Log("Death trigger");
         }
 
@@ -427,11 +438,7 @@ public class FishControllerRB : MonoBehaviour
 
         if (other.CompareTag("Health"))
         {
-            currentDeathTimer -= 2;
-            if (currentDeathTimer < 0)
-            {
-                currentDeathTimer = 0;
-            }
+            currentDeathTimer += 2;
         }
     }
 
