@@ -206,7 +206,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b70930b1df29645448935e634cfba9bb, type: 2}
+      objectReference: {fileID: 2100000, guid: dd6bedddd64281c4a91212152aa1b511, type: 2}
     - target: {fileID: 919132149155446097, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_Name
       value: InteractiveGlass
@@ -302,6 +302,7 @@ MonoBehaviour:
   puddleCenter: {fileID: 3832719205245872733}
   surfaceMesh: {fileID: 0}
   minTiltToSpill: 70
+  checkpointIndex: 1
 --- !u!4 &1779948393736582875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}

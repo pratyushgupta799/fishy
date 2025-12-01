@@ -225,6 +225,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "8113c7ca295d4687b1e9ba05bd879b03"
+                },
+                "m_SlotId": 3
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "d8fb00d2ac5140a88fa7cf7c5e265b05"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "8cd6cc05ace44621a5c222a0b5254124"
                 },
                 "m_SlotId": 0
@@ -262,6 +276,20 @@
                     "m_Id": "c9fda5eff489476fbe21dcd5e49202e4"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "9279bd7c7ccb4a268cdb4b0bf4264d53"
+                },
+                "m_SlotId": 3
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "d8fb00d2ac5140a88fa7cf7c5e265b05"
+                },
+                "m_SlotId": 2
             }
         },
         {
@@ -819,6 +847,21 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "3b006e4288734558adc588aed8327c99",
+    "m_Id": 3,
+    "m_DisplayName": "Ran2",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Ran2",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -1808,6 +1851,21 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "949fec09674f449b85628b738534418f",
+    "m_Id": 2,
+    "m_DisplayName": "Ran1",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Ran1",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "9654444ce9944f0e802e60b6bbcb3b8b",
     "m_Id": 3,
     "m_DisplayName": "Out",
@@ -2320,6 +2378,12 @@
     "m_Slots": [
         {
             "m_Id": "81284bd6aeec48c58952e01107bea08b"
+        },
+        {
+            "m_Id": "949fec09674f449b85628b738534418f"
+        },
+        {
+            "m_Id": "3b006e4288734558adc588aed8327c99"
         }
     ],
     "synonyms": [],
