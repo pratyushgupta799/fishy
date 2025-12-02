@@ -42,9 +42,10 @@ public class FishControllerRB : MonoBehaviour
 
     [Header("Death Settings")] 
     [SerializeField] private int deathTime = 5;
-    
-    // components reference
-    private Rigidbody rb;
+	[SerializeField] private int foodTime = 2;
+
+	// components reference
+	private Rigidbody rb;
     
     // input axes
     private float vertical;
@@ -438,7 +439,7 @@ public class FishControllerRB : MonoBehaviour
 
         if (other.CompareTag("Health"))
         {
-            currentDeathTimer += 2;
+            currentDeathTimer += foodTime;
         }
     }
 
