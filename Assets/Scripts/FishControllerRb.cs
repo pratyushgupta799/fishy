@@ -24,6 +24,7 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float jumpMoveFactorFromGround = 0.5f;
     [SerializeField] private float jumpForceWater = 5f;
     [SerializeField] private float jumpForceGround = 2f;
+    [SerializeField] private float minJumpForceWater = 2f;
 
     [Header("Gravity")]
     [SerializeField] private float airGravityScale = 1f;
@@ -67,7 +68,7 @@ public class FishControllerRB : MonoBehaviour
     private bool isJumping;
     
     // checkpoint
-    private float holdTimer = 0f;
+    private float rholdTimer = 0f;
     
     // others
     private float jumpMoveFactor;
@@ -83,6 +84,9 @@ public class FishControllerRB : MonoBehaviour
     
     // death
     private float currentDeathTimer;
+    
+    // jump
+    private float jumpHoldTimer = 0f;
 
     private void Awake()
     {
@@ -149,18 +153,18 @@ public class FishControllerRB : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))
         {
-            holdTimer += Time.deltaTime;
+            rholdTimer += Time.deltaTime;
 
-            if (holdTimer >= rHoldTime)
+            if (rholdTimer >= rHoldTime)
             {
                 CheckPointManager.Instance.LoadLastCheckpoint();
                 currentDeathTimer = deathTime;
-                holdTimer = 0;
+                rholdTimer = 0;
             }
         }
         else
         {
-            holdTimer = 0f;
+            rholdTimer = 0f;
         }
     }
 
@@ -214,23 +218,37 @@ public class FishControllerRB : MonoBehaviour
 
     private void JumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && (isGrounded || isAtSurface))
+        if (Input.GetKey(KeyCode.Space))
         {
-            rb.useGravity = true;
-            if (isGrounded)
+            jumpHoldTimer += Time.deltaTime;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (!isJumping && (isGrounded || isAtSurface))
             {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
-                jumpMoveFactor = jumpMoveFactorFromGround;
-            }
-            else
-            {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceWater, rb.linearVelocity.z);
-                jumpMoveFactor = jumpMoveFactorFromWater;
+                rb.useGravity = true;
+                if (isGrounded)
+                {
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
+                    jumpMoveFactor = jumpMoveFactorFromGround;
+                }
+                else
+                {
+                    if (jumpHoldTimer >= 1f)
+                    {
+                        jumpHoldTimer = 1f;
+                    }
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x,
+                        Mathf.Lerp(minJumpForceWater, jumpForceWater, jumpHoldTimer), rb.linearVelocity.z);
+                    jumpMoveFactor = jumpMoveFactorFromWater;
+                }
+
+                isJumping = true;
+                isAtSurface = false;
+                isGrounded = false;
             }
 
-            isJumping = true;
-            isAtSurface = false;
-            isGrounded = false;
+            jumpHoldTimer = 0f;
         }
     }
 
