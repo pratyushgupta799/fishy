@@ -70,6 +70,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
                 Debug.Log("water spilled on " + hit.transform.name);
                 droppedPuddle = Instantiate(puddleMesh, hit.point, Quaternion.identity);
                 waterMesh.SetActive(false);
+                return;
             }
         }
     }
