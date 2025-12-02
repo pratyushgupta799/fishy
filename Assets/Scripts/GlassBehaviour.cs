@@ -57,7 +57,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         Ray ray = new Ray(puddleCenter.transform.position, Vector3.down);
         float distance = 200f;
         
-        RaycastHit[] hits = Physics.RaycastAll(ray, distance);
+        RaycastHit[] hits = Physics.RaycastAll(ray, distance, ~0, QueryTriggerInteraction.Ignore);
         
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
