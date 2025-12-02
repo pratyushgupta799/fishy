@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GlassBehaviour : MonoBehaviour, IInteractible
 {
@@ -11,6 +13,8 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     [SerializeField] private GameObject puddleCenter;
     [SerializeField] private GameObject surfaceMesh;
     [SerializeField] private float maxSlopeAngle = 10f;
+    [SerializeField] private float puddleHeightOffset = 0.2f;
+    [SerializeField] private float puddleRaiseDuration = 0.5f;
 
     private GameObject droppedPuddle;
     
@@ -68,10 +72,25 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
             if (angle <= maxSlopeAngle)
             {
                 Debug.Log("water spilled on " + hit.transform.name);
-                droppedPuddle = Instantiate(puddleMesh, hit.point, Quaternion.identity);
+                droppedPuddle = Instantiate(puddleMesh, hit.point + Vector3.down * puddleHeightOffset, Quaternion.identity);
+                StartCoroutine(PuddleRaise());
                 waterMesh.SetActive(false);
                 return;
             }
+        }
+    }
+
+    private IEnumerator PuddleRaise()
+    {
+        Vector3 start = droppedPuddle.transform.position;
+        Vector3 end = start + Vector3.up * puddleHeightOffset;
+        float t = 0f;
+
+        while (t < puddleRaiseDuration)
+        {
+            t += Time.deltaTime;
+            droppedPuddle.transform.position = Vector3.Lerp(start, end, t / puddleRaiseDuration);
+            yield return null;
         }
     }
 
