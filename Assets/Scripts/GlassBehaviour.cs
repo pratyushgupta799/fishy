@@ -10,6 +10,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     [SerializeField] private GameObject puddleMesh;
     [SerializeField] private GameObject puddleCenter;
     [SerializeField] private GameObject surfaceMesh;
+    [SerializeField] private float maxSlopeAngle = 10f;
 
     private GameObject droppedPuddle;
     
@@ -54,12 +55,22 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         hasSpilled = true;
         
         Ray ray = new Ray(puddleCenter.transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Physics.DefaultRaycastLayers,
-                QueryTriggerInteraction.Ignore)) 
+        float distance = 200f;
+        
+        RaycastHit[] hits = Physics.RaycastAll(ray, distance);
+        
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (RaycastHit hit in hits)
         {
-            Debug.Log("water spilled on " + hit.transform.name);
-            droppedPuddle = Instantiate(puddleMesh, hit.point, Quaternion.identity);
-            waterMesh.SetActive(false);
+            float angle = Vector3.Angle(hit.normal, Vector3.up);
+
+            if (angle <= maxSlopeAngle)
+            {
+                Debug.Log("water spilled on " + hit.transform.name);
+                droppedPuddle = Instantiate(puddleMesh, hit.point, Quaternion.identity);
+                waterMesh.SetActive(false);
+            }
         }
     }
 
