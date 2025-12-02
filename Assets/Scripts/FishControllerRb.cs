@@ -347,10 +347,11 @@ public class FishControllerRB : MonoBehaviour
             Debug.Log("Something in the way");
             rb.linearVelocity = Vector3.zero;
         }
+        
+        Quaternion lookRot = transform.rotation;
 
         if (swimDirection.magnitude > 0.1f)
         {
-            Quaternion lookRot = transform.rotation;
             lookRot = Quaternion.LookRotation(swimDirection.normalized);
 
             Quaternion slopeRot = lookRot;
@@ -368,10 +369,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
-            Quaternion lookRot = transform.rotation;
-            Vector3 camForward = camera.transform.forward;
-            camForward.y = 0;
-            lookRot = Quaternion.LookRotation(camForward.normalized);
+            lookRot.x = 0f;
 
             Quaternion slopeRot = lookRot;
             if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
@@ -411,7 +409,7 @@ public class FishControllerRB : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
-            if (rb.linearVelocity.magnitude > 0.1f)
+            if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
                     turnSmoothTime * Time.deltaTime);
