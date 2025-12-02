@@ -44,6 +44,9 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private int deathTime = 5;
 	[SerializeField] private int foodTime = 2;
 
+    [Header("Checkpoint")] 
+    [SerializeField] private float rHoldTime = 1f;
+
 	// components reference
 	private Rigidbody rb;
     
@@ -62,6 +65,9 @@ public class FishControllerRB : MonoBehaviour
     private bool isAtSurface;
     private bool isGrounded;
     private bool isJumping;
+    
+    // checkpoint
+    private float holdTimer = 0f;
     
     // others
     private float jumpMoveFactor;
@@ -88,6 +94,7 @@ public class FishControllerRB : MonoBehaviour
     private void Update()
     {
         // Debug.DrawRay(wallCheck.position, transform.forward * wallDistance, Color.red);
+        ReloadInput();
         MoveInput();
         CheckGrounded();
         JumpInput();
@@ -135,6 +142,25 @@ public class FishControllerRB : MonoBehaviour
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
             currentDeathTimer = deathTime;
+        }
+    }
+    
+    private void ReloadInput()
+    {
+        if (Input.GetKey(KeyCode.R))
+        {
+            holdTimer += Time.deltaTime;
+
+            if (holdTimer >= rHoldTime)
+            {
+                CheckPointManager.Instance.LoadLastCheckpoint();
+                currentDeathTimer = deathTime;
+                holdTimer = 0;
+            }
+        }
+        else
+        {
+            holdTimer = 0f;
         }
     }
 
