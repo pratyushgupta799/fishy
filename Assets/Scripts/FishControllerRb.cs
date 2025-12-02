@@ -255,12 +255,13 @@ public class FishControllerRB : MonoBehaviour
         else animator.SetBool("isSwiming", false);
 
         // Keep near surface
-        if (up == 0 && !isJumping && (dashTime <= 0f))
+        if (up >= 0 && !isJumping && (dashTime <= 0f))
         {
             rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight + 0.07f, rb.position.z),
                 5f * Time.deltaTime);
             Vector3 currentEuler = transform.rotation.eulerAngles;
             currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
+            currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEuler);
         }
     }
