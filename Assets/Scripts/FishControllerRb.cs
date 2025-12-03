@@ -218,15 +218,62 @@ public class FishControllerRB : MonoBehaviour
 
     private void JumpInput()
     {
+        if (isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.useGravity = true;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
+
+                isJumping = true;
+                isAtSurface = false;
+                isGrounded = false;
+            }
+
+            jumpHoldTimer = 0f;
+            return;
+        }
+
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     if (!isJumping && (isGrounded || isAtSurface))
+        //     {
+        //         rb.useGravity = true;
+        //         if (isGrounded)
+        //         {
+        //             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
+        //             jumpMoveFactor = jumpMoveFactorFromGround;
+        //         }
+        //         else
+        //         {
+        //             if (jumpHoldTimer >= 1f)
+        //             {
+        //                 jumpHoldTimer = 1f;
+        //             }
+        //
+        //             rb.linearVelocity = new Vector3(rb.linearVelocity.x,
+        //                 minJumpForceWater, rb.linearVelocity.z);
+        //             jumpMoveFactor = jumpMoveFactorFromWater;
+        //         }
+        //
+        //         isJumping = true;
+        //         isAtSurface = false;
+        //         isGrounded = false;
+        //     }
+        //
+        //     jumpHoldTimer = 0f;
+        // }
         if (Input.GetKey(KeyCode.Space))
         {
             jumpHoldTimer += Time.deltaTime;
+            if (jumpHoldTimer > 1f) jumpHoldTimer = 1f;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             if (!isJumping && (isGrounded || isAtSurface))
             {
                 rb.useGravity = true;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
                 if (isGrounded)
                 {
                     rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
