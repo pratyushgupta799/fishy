@@ -502,6 +502,7 @@ MonoBehaviour:
   jumpMoveFactorFromGround: 1.25
   jumpForceWater: 7
   jumpForceGround: 4
+  minJumpForceWater: 4
   airGravityScale: 1
   groundCheck: {fileID: 8335179064403096338}
   wallCheck: {fileID: 5879929320518313707}
@@ -517,6 +518,7 @@ MonoBehaviour:
   deathTimerText: {fileID: 0}
   deathTime: 10
   foodTime: 3
+  rHoldTime: 1
 --- !u!135 &4923730549538644310
 SphereCollider:
   m_ObjectHideFlags: 0
