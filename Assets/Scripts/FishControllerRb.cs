@@ -321,7 +321,7 @@ public class FishControllerRB : MonoBehaviour
             if (Input.GetKey(KeyCode.Space) && (jumpHoldTimer < maxAirCharge) && canCharge)
             {
                 jumpHoldTimer += Time.deltaTime;
-                float addedForce = airChargeForce * Time.deltaTime;
+                float addedForce = airChargeForce * 1/jumpHoldTimer * Time.deltaTime;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y + addedForce,
                     rb.linearVelocity.z);
             }
