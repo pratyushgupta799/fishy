@@ -25,6 +25,8 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float jumpForceWater = 5f;
     [SerializeField] private float jumpForceGround = 2f;
     [SerializeField] private float minJumpForceWater = 2f;
+    [SerializeField] private float maxAirCharge = 1f;
+    [SerializeField] private float airChargeForce = 3f;
 
     [Header("Gravity")]
     [SerializeField] private float airGravityScale = 1f;
@@ -65,6 +67,8 @@ public class FishControllerRB : MonoBehaviour
     private bool inWater;
     private bool isAtSurface;
     private bool isGrounded;
+    private bool isJumpingFromSurface;
+    private bool isJumpingFromGround;
     private bool isJumping;
     
     // checkpoint
@@ -87,6 +91,58 @@ public class FishControllerRB : MonoBehaviour
     
     // jump
     private float jumpHoldTimer = 0f;
+    private bool canCharge = false;
+    
+    // properties
+    public bool IsJumping
+    {
+        get
+        {
+            return isJumping;
+        }
+        set
+        {
+            if (value == false)
+            {
+                canCharge = false;
+                isJumping = false;
+                isJumpingFromGround = false;
+                isJumpingFromSurface = false;
+            }
+        }
+    }
+
+    public bool IsJumpingFromSurface
+    {
+        get
+        {
+            return isJumpingFromSurface;
+        }
+        set
+        {
+            if (value == true)
+            {
+                isJumping = true;
+                isJumpingFromSurface = true;
+            }
+        }
+    }
+    
+    public bool IsJumpingFromGround
+    {
+        get
+        {
+            return isJumpingFromGround;
+        }
+        set
+        {
+            if (value == true)
+            {
+                isJumping = true;
+                isJumpingFromGround = true;
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -118,7 +174,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else if (inWater)
         {
-            if (!isJumping)
+            if (!IsJumping)
             {
                 WaterMovement();
                 if(currentDeathTimer <= deathTime)
@@ -201,7 +257,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void CheckGrounded()
     {
-        if (!inWater && !(isJumping && rb.linearVelocity.y > 0))
+        if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0))
         {
             isGrounded = Physics.CheckSphere(
                 groundCheck.position,
@@ -209,6 +265,8 @@ public class FishControllerRB : MonoBehaviour
                 ~fishyLayer,
                 QueryTriggerInteraction.Ignore
             );
+            
+            IsJumping = !isGrounded;
         }
         else
         {
@@ -218,84 +276,61 @@ public class FishControllerRB : MonoBehaviour
 
     private void JumpInput()
     {
-        if (isGrounded)
+        if (!IsJumping && isGrounded)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
 
-                isJumping = true;
+                IsJumpingFromGround = true;
                 isAtSurface = false;
                 isGrounded = false;
+                
+                jumpMoveFactor = jumpMoveFactorFromGround;
+
+                jumpHoldTimer = 0f;
+                return;
             }
-
-            jumpHoldTimer = 0f;
-            return;
         }
 
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     if (!isJumping && (isGrounded || isAtSurface))
-        //     {
-        //         rb.useGravity = true;
-        //         if (isGrounded)
-        //         {
-        //             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
-        //             jumpMoveFactor = jumpMoveFactorFromGround;
-        //         }
-        //         else
-        //         {
-        //             if (jumpHoldTimer >= 1f)
-        //             {
-        //                 jumpHoldTimer = 1f;
-        //             }
-        //
-        //             rb.linearVelocity = new Vector3(rb.linearVelocity.x,
-        //                 minJumpForceWater, rb.linearVelocity.z);
-        //             jumpMoveFactor = jumpMoveFactorFromWater;
-        //         }
-        //
-        //         isJumping = true;
-        //         isAtSurface = false;
-        //         isGrounded = false;
-        //     }
-        //
-        //     jumpHoldTimer = 0f;
-        // }
-        if (Input.GetKey(KeyCode.Space))
+        if (!IsJumping && isAtSurface)
         {
-            jumpHoldTimer += Time.deltaTime;
-            if (jumpHoldTimer > 1f) jumpHoldTimer = 1f;
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            if (!isJumping && (isGrounded || isAtSurface))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 rb.useGravity = true;
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-                if (isGrounded)
-                {
-                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
-                    jumpMoveFactor = jumpMoveFactorFromGround;
-                }
-                else
-                {
-                    if (jumpHoldTimer >= 1f)
-                    {
-                        jumpHoldTimer = 1f;
-                    }
-                    rb.linearVelocity = new Vector3(rb.linearVelocity.x,
-                        Mathf.Lerp(minJumpForceWater, jumpForceWater, jumpHoldTimer), rb.linearVelocity.z);
-                    jumpMoveFactor = jumpMoveFactorFromWater;
-                }
+                
+                float startForce = minJumpForceWater;
 
-                isJumping = true;
-                isAtSurface = false;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, startForce, rb.linearVelocity.z);
+                
+                jumpMoveFactor = jumpMoveFactorFromWater;
+
+                IsJumpingFromSurface = true;
                 isGrounded = false;
-            }
+                isAtSurface = false;
+                
+                jumpHoldTimer = 0f;
 
-            jumpHoldTimer = 0f;
+                canCharge = true;
+            }
+        }
+
+        if (IsJumpingFromSurface)
+        {
+            if (Input.GetKey(KeyCode.Space) && (jumpHoldTimer < maxAirCharge) && canCharge)
+            {
+                jumpHoldTimer += Time.deltaTime;
+                float addedForce = airChargeForce * Time.deltaTime;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y + addedForce,
+                    rb.linearVelocity.z);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                jumpHoldTimer = 0f;
+                canCharge = false;
+            }
         }
     }
 
@@ -346,7 +381,7 @@ public class FishControllerRB : MonoBehaviour
         else animator.SetBool("isSwiming", false);
 
         // Keep near surface
-        if (up >= 0 && !isJumping && (dashTime <= 0f))
+        if (up >= 0 && !IsJumping && (dashTime <= 0f))
         {
             rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight + 0.07f, rb.position.z),
                 5f * Time.deltaTime);
@@ -474,6 +509,7 @@ public class FishControllerRB : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
+            Debug.Log(swimDirection);
             if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
@@ -502,14 +538,14 @@ public class FishControllerRB : MonoBehaviour
         {
             inWater = true;
             Debug.Log("Water triggered");
-            isJumping = false;
+            IsJumping = false;
         }
         if (other.CompareTag("WaterSurface"))
         {
             Debug.Log("Surface trigger");
             if (inWater)
             {
-                if (isJumping) isJumping = false;
+                if (IsJumping) IsJumping = false;
                 isAtSurface = true;
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
@@ -627,3 +663,7 @@ public class FishControllerRB : MonoBehaviour
     }
 #endif
 }
+
+// jump bugs
+// 1. if I stop and then press space again, it will start charging again
+// 2. jump charge is working with ground jump aswell
