@@ -5303,6 +5303,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fcb4c3873138884e80b217359f328c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fishy: {fileID: 0}
+  checkPointTrigger: []
+  checkPoint: []
+  changedPrefab: []
 --- !u!1001 &210826670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23367,7 +23371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.002
+      value: -11.418225
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
       propertyPath: m_LocalPosition.y
@@ -23375,7 +23379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.46
+      value: 1.4597454
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
       propertyPath: m_LocalRotation.w
@@ -28842,7 +28846,7 @@ Transform:
   m_GameObject: {fileID: 963040621}
   serializedVersion: 2
   m_LocalRotation: {x: 0.09596537, y: 0.8538331, z: -0.4618091, w: 0.22020924}
-  m_LocalPosition: {x: -21.27, y: -6.91, z: 10.05}
+  m_LocalPosition: {x: -21.627, y: -6.91, z: 10.264}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39869,6 +39873,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f6408ebd1e6e964a91628a847dd3a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactHitCollider: {fileID: 0}
+  meshCollider: {fileID: 0}
+  brokenGlassMesh: {fileID: 0}
+  breakSpeed: 5
 --- !u!1 &1266619555
 GameObject:
   m_ObjectHideFlags: 0
@@ -44682,6 +44690,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ddaef0bfe99f34ba8f29a63f7328e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axis: {x: 0, y: 1, z: 0}
+  speed: 50
+  clockwise: 1
 --- !u!136 &1517503611
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -52926,9 +52937,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1659229477}
   serializedVersion: 4
-  m_Mass: 1.25
+  m_Mass: 10
   m_Drag: 0
-  m_AngularDrag: 2.5
+  m_AngularDrag: 10
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -60550,6 +60561,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ddaef0bfe99f34ba8f29a63f7328e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axis: {x: 0, y: 1, z: 0}
+  speed: 50
+  clockwise: 1
 --- !u!1 &1969694858
 GameObject:
   m_ObjectHideFlags: 0
@@ -61163,6 +61177,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ddaef0bfe99f34ba8f29a63f7328e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axis: {x: 0, y: 1, z: 0}
+  speed: 50
+  clockwise: 1
 --- !u!136 &1995188168
 CapsuleCollider:
   m_ObjectHideFlags: 0
