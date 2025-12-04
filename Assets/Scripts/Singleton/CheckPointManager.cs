@@ -18,8 +18,6 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField] [ReadOnly] private List<GameObject> changedPrefab;
     
     public int CurrentCheckpointIndex { get { return currentCheckpoint; } private set { currentCheckpoint = value; } }
-    
-    [SerializeField] private TextMeshProUGUI checkPointText;
 
     private void Awake()
     {
@@ -32,7 +30,7 @@ public class CheckPointManager : MonoBehaviour
             Instance = this;
         }
         
-        checkPointText.text = currentCheckpoint.ToString();
+        DebugEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
     }
 
     public void SetCheckPoint(GameObject checkpointTrigger)
@@ -44,7 +42,7 @@ public class CheckPointManager : MonoBehaviour
                 if (currentCheckpoint < i)
                 {
                     currentCheckpoint = i;
-                    checkPointText.text = currentCheckpoint.ToString();
+                    DebugEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
                 }
             }
         }

@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 1597229031313392756}
   - component: {fileID: 3844291325454279035}
   m_Layer: 5
-  m_Name: WaterTimer
+  m_Name: DeathTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 4381800334509852457}
   - component: {fileID: 1458268201791064082}
   - component: {fileID: 5569069872039904645}
+  - component: {fileID: 1344918870473939201}
   m_Layer: 5
   m_Name: DebugUI
   m_TagString: Untagged
@@ -512,3 +513,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1344918870473939201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035040616508193137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba2f158401cc744cbac8eddde550593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateText: {fileID: 8623513710060214436}
+  deathTimerText: {fileID: 3844291325454279035}
+  checkpointText: {fileID: 7496643184771059681}

@@ -41,10 +41,6 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private LayerMask fishyLayer;
     [SerializeField] private LayerMask interactibleLayer;
 
-    [Header("DebugUI")] 
-    [SerializeField] private TextMeshProUGUI stateDebugText;
-    [SerializeField] private TextMeshProUGUI deathTimerText;
-
     [Header("Death Settings")] 
     [SerializeField] private int deathTime = 5;
 	[SerializeField] private int foodTime = 2;
@@ -197,7 +193,7 @@ public class FishControllerRB : MonoBehaviour
             currentDeathTimer -= Time.deltaTime;
         }
         
-        deathTimerText.text = ((int)currentDeathTimer) + " sec";
+        DebugEvents.OnDeathTimerChanged?.Invoke((int)currentDeathTimer);
         if (currentDeathTimer <= 0)
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
@@ -339,7 +335,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceMovement()
     {
-        stateDebugText.SetText("IsOnSurface");
+        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsOnSurface");
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
@@ -386,7 +382,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void WaterMovement()
     {
-        stateDebugText.SetText("IsInWater");
+        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsInWater");
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
@@ -413,7 +409,7 @@ public class FishControllerRB : MonoBehaviour
     private void GroundMovement()
     {
         rb.mass = 1f;
-        stateDebugText.SetText("IsOnGround");
+        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsOnGround");
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
@@ -474,7 +470,7 @@ public class FishControllerRB : MonoBehaviour
     private void AirMovement()
     {
         rb.mass = 1f;
-        stateDebugText.SetText("IsInAir");
+        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsInAir");
         forward.y = 0f;
         forward.Normalize();
 
