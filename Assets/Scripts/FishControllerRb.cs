@@ -96,7 +96,7 @@ public class FishControllerRB : MonoBehaviour
     private bool canCharge = false;
     
     // properties
-    public bool IsJumping
+    private bool IsJumping
     {
         get
         {
@@ -113,8 +113,7 @@ public class FishControllerRB : MonoBehaviour
             }
         }
     }
-
-    public bool IsJumpingFromSurface
+    private bool IsJumpingFromSurface
     {
         get
         {
@@ -129,8 +128,7 @@ public class FishControllerRB : MonoBehaviour
             }
         }
     }
-    
-    public bool IsJumpingFromGround
+    private bool IsJumpingFromGround
     {
         get
         {
@@ -242,16 +240,8 @@ public class FishControllerRB : MonoBehaviour
             up = Input.GetAxis("Up");
         }
 
-        Vector3 camForward = camera.transform.forward;
-        camForward.y = 0;
-        camForward.Normalize();
-
-        Vector3 camRight = camera.transform.right;
-        camRight.y = 0;
-        camRight.Normalize();
-
-        forward = camForward * vertical;
-        right = camRight * horizontal;
+        forward = CamForwardFlat() * vertical;
+        right = CamRightFlat() * horizontal;
         forward.y = 0;
         right.y = 0;
         upward = up * Vector3.up;
@@ -655,9 +645,23 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    public bool isDashing()
+    public bool IsDashing()
     {
         return (dashTime > 0);
+    }
+
+    Vector3 CamForwardFlat()
+    {
+        Vector3 camForward = camera.transform.forward;
+        camForward.y = 0f;
+        return camForward;
+    }
+    
+    Vector3 CamRightFlat()
+    {
+        Vector3 camRight = camera.transform.right;
+        camRight.y = 0f;
+        return camRight;
     }
 
 #if UNITY_EDITOR

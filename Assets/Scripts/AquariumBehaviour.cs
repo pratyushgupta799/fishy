@@ -26,7 +26,7 @@ public class AquariumBehaviour : MonoBehaviour
         
         Debug.Log("Aquarium hit by player");
 
-        if (col.gameObject.GetComponent<FishControllerRB>().isDashing())
+        if (col.gameObject.GetComponent<FishControllerRB>().IsDashing())
         {
             meshFilter.mesh = brokenGlassMesh;
             impactHitCollider.enabled = false;
