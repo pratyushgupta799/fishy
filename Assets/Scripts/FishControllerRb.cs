@@ -2,6 +2,8 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 [RequireComponent(typeof(Rigidbody))]
 public class FishControllerRB : MonoBehaviour
@@ -375,9 +377,7 @@ public class FishControllerRB : MonoBehaviour
             
         if (swimDirection.magnitude > 0.1f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(swimDirection.normalized),
-                turnSmoothTime * Time.deltaTime);
+            RotateTo(swimDirection.normalized);
             animator.SetBool("isSwiming", true);
         }
         else animator.SetBool("isSwiming", false);
@@ -414,9 +414,7 @@ public class FishControllerRB : MonoBehaviour
         
         if (swimVel.magnitude > 0.01f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(swimVel.normalized),
-                turnSmoothTime * Time.deltaTime);
+            RotateTo(swimVel.normalized);
             animator.SetBool("isSwiming", true);
         }
         else animator.SetBool("isSwiming", false);
@@ -463,10 +461,8 @@ public class FishControllerRB : MonoBehaviour
             {
                 slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
             }
-
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                slopeRot,
-                turnSmoothTime * Time.deltaTime);
+            
+            RotateTo(slopeRot);
             animator.SetBool("isSwiming", true);
         }
         else
@@ -480,10 +476,8 @@ public class FishControllerRB : MonoBehaviour
             {
                 slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
             }
-
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                slopeRot,
-                turnSmoothTime * Time.deltaTime);
+            
+            RotateTo(slopeRot);
         }
     }
 
@@ -521,17 +515,28 @@ public class FishControllerRB : MonoBehaviour
             {
                 Vector3 camLookFlat = camera.transform.forward;
                 camLookFlat.y = 0f;
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(camLookFlat + rb.linearVelocity),
-                    turnSmoothTime * Time.deltaTime);
+                RotateTo(camLookFlat + rb.linearVelocity);
             }
         }
         else
         {
             Debug.Log("Something in the way");
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(swimDirection),
-                turnSmoothTime * Time.deltaTime);
+            RotateTo(swimDirection);
         }
+    }
+
+    private void RotateTo(Vector3 target)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation, 
+            Quaternion.LookRotation(target),
+            turnSmoothTime * Time.deltaTime);
+    }
+
+    private void RotateTo(Quaternion target)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            target,
+            turnSmoothTime * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -665,7 +670,3 @@ public class FishControllerRB : MonoBehaviour
     }
 #endif
 }
-
-// jump bugs
-// 1. if I stop and then press space again, it will start charging again
-// 2. jump charge is working with ground jump aswell
