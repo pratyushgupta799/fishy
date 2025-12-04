@@ -643,7 +643,7 @@ public class FishControllerRB : MonoBehaviour
 
     public bool IsDashing()
     {
-        return (dashTime > 0);
+        return (dashTime > 0 && dashTime <= dashDuration);
     }
 
     Vector3 CamForwardFlat()
