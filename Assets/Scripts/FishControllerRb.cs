@@ -511,7 +511,7 @@ public class FishControllerRB : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
-            Debug.Log(swimDirection);
+            // Debug.Log(swimDirection);
             if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.linearVelocity),
