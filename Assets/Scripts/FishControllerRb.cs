@@ -465,6 +465,13 @@ public class FishControllerRB : MonoBehaviour
             
             RotateTo(slopeRot);
         }
+        
+        if (!IsJumping && (dashTime <= 0f))
+        {
+            Vector3 currentEuler = transform.rotation.eulerAngles;
+            currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(currentEuler);
+        }
     }
 
     private void AirMovement()

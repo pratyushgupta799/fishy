@@ -57,7 +57,14 @@ public class CheckPointManager : MonoBehaviour
         {
             if (changedPrefab[i].GetComponent<StateManager>() != null)
             {
-                changedPrefab[i].GetComponent<StateManager>().RestoreDefault();
+                try
+                {
+                    changedPrefab[i].GetComponent<StateManager>().RestoreDefault();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Problem in " + changedPrefab[i].transform.name + ": " + e.Message);
+                }
             }
             else
             {
