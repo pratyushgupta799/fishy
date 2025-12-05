@@ -665,6 +665,8 @@ public class FishControllerRB : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         transform.position = location;
         transform.rotation = rotation;
+        
+        Debug.Log("Fishy's position snapped to " + location);
     }
 
 #if UNITY_EDITOR

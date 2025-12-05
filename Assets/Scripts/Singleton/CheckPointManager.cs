@@ -50,6 +50,9 @@ public class CheckPointManager : MonoBehaviour
     
     public void LoadLastCheckpoint()
     {
+        fishy.GetComponent<FishControllerRB>().SnapFishyTo(checkPoint[currentCheckpoint].transform.position,
+            checkPoint[currentCheckpoint].transform.rotation);
+        
         for (int i = 0; i < changedPrefab.Count; i++)
         {
             if (changedPrefab[i].GetComponent<StateManager>() != null)
@@ -62,8 +65,6 @@ public class CheckPointManager : MonoBehaviour
             }
         }
 
-        fishy.GetComponent<FishControllerRB>().SnapFishyTo(checkPoint[currentCheckpoint].transform.position,
-            checkPoint[currentCheckpoint].transform.rotation);
     }
     
     public void AddChangedPrefab(GameObject prefab)
