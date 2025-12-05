@@ -503,8 +503,8 @@ MonoBehaviour:
   jumpForceWater: 7
   jumpForceGround: 4
   minJumpForceWater: 3.5
-  maxAirCharge: 0.4
-  airChargeForce: 19
+  maxAirCharge: 0.35
+  airChargeForce: 20
   airGravityScale: 1
   groundCheck: {fileID: 8335179064403096338}
   wallCheck: {fileID: 5879929320518313707}
@@ -516,8 +516,6 @@ MonoBehaviour:
   interactibleLayer:
     serializedVersion: 2
     m_Bits: 512
-  stateDebugText: {fileID: 0}
-  deathTimerText: {fileID: 0}
   deathTime: 10
   foodTime: 3
   rHoldTime: 1
