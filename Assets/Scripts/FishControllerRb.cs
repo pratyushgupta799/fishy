@@ -660,6 +660,13 @@ public class FishControllerRB : MonoBehaviour
         return camRight;
     }
 
+    public void SnapFishyTo(Vector3 location, Quaternion rotation)
+    {
+        rb.linearVelocity = Vector3.zero;
+        transform.position = location;
+        transform.rotation = rotation;
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {

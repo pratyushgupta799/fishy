@@ -61,8 +61,9 @@ public class CheckPointManager : MonoBehaviour
                 Debug.Log(changedPrefab[i].name + " doesnt have a StateManager component");
             }
         }
-        fishy.transform.position = checkPoint[currentCheckpoint].transform.position;
-        fishy.transform.rotation = checkPoint[currentCheckpoint].transform.rotation;
+
+        fishy.GetComponent<FishControllerRB>().SnapFishyTo(checkPoint[currentCheckpoint].transform.position,
+            checkPoint[currentCheckpoint].transform.rotation);
     }
     
     public void AddChangedPrefab(GameObject prefab)

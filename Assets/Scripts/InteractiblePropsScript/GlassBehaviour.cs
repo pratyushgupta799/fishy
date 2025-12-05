@@ -96,9 +96,9 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (transform.position != defaultPos || transform.rotation != defaultRot)
         {
-            SetDiry(CheckPointManager.Instance.CurrentCheckpointIndex);
+            SetDiry();
         }
     }
 
@@ -108,6 +108,9 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         {
             Debug.Log("Current checkpoint: " + CheckPointManager.Instance.CurrentCheckpointIndex +
                       " <= Glass checkpoint: " + checkpointIndex);
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            
             transform.position = defaultPos;
             transform.rotation = defaultRot;
 
@@ -126,7 +129,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         isDirty = false;
     }
     
-    public void SetDiry(int index)
+    public void SetDiry()
     {
         if (isDirty) return;
         isDirty = true;

@@ -13,7 +13,7 @@ public class WateringCanBehaviour : MonoBehaviour
     };
     
     [SerializeField] private float minAngle = 17f;
-    [SerializeField] private RotationAngle angleOfRotation ;
+    [SerializeField] private RotationAngle angleOfRotation;
     [SerializeField] private GameObject waterSpillMesh;
     [SerializeField] private GameObject waterMesh;
     [SerializeField] private float waterRaiseDuration = 1f;
