@@ -245,7 +245,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void CheckGrounded()
     {
-        if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0))
+        if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
         {
             isGrounded = Physics.CheckSphere(
                 groundCheck.position,
