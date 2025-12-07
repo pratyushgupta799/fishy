@@ -346,7 +346,8 @@ public class FishControllerRB : MonoBehaviour
             
         forward.y = 0f;
         right.y = 0f;
-            
+
+        Vector3 swimMovement = forward + right;
         swimDirection = (forward + right).normalized;
             
         if(upward.y > 0)
@@ -355,10 +356,11 @@ public class FishControllerRB : MonoBehaviour
         }
 
         swimDirection += upward;
+        swimMovement += upward;
 
         if (dashTime <= 0f)
         {
-            rb.linearVelocity = swimDirection * maxSpeed;
+            rb.linearVelocity = swimMovement * maxSpeed;
         }
             
         if (swimDirection.magnitude > 0.1f)
@@ -391,7 +393,7 @@ public class FishControllerRB : MonoBehaviour
             return;
         }
 
-        Vector3 swimVel = (forward + right + upward).normalized * maxSpeed;
+        Vector3 swimVel = (forward + right + upward) * maxSpeed;
 
         if (dashTime <= 0f)
         {
