@@ -30,7 +30,7 @@ public class CheckPointManager : MonoBehaviour
             Instance = this;
         }
         
-        DebugEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
+        FishyEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
     }
 
     public void SetCheckPoint(GameObject checkpointTrigger)
@@ -42,7 +42,7 @@ public class CheckPointManager : MonoBehaviour
                 if (currentCheckpoint < i)
                 {
                     currentCheckpoint = i;
-                    DebugEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
+                    FishyEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
                 }
             }
         }
@@ -52,6 +52,7 @@ public class CheckPointManager : MonoBehaviour
     {
         fishy.GetComponent<FishControllerRB>().SnapFishyTo(checkPoint[currentCheckpoint].transform.position,
             checkPoint[currentCheckpoint].transform.rotation);
+        FishyEvents.LastCheckpointLoaded?.Invoke();
         
         for (int i = 0; i < changedPrefab.Count; i++)
         {
@@ -71,7 +72,6 @@ public class CheckPointManager : MonoBehaviour
                 Debug.Log(changedPrefab[i].name + " doesnt have a StateManager component");
             }
         }
-
     }
     
     public void AddChangedPrefab(GameObject prefab)

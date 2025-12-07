@@ -1,4 +1,5 @@
 using System;
+using FishyUtilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -41,10 +42,6 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private LayerMask fishyLayer;
     [SerializeField] private LayerMask interactibleLayer;
 
-    [Header("Death Settings")] 
-    [SerializeField] private int deathTime = 5;
-	[SerializeField] private int foodTime = 2;
-
     [Header("Checkpoint")] 
     [SerializeField] private float rHoldTime = 1f;
 
@@ -83,9 +80,6 @@ public class FishControllerRB : MonoBehaviour
     private float waterExitTime;
     private float waterExitGrace = 0.05f;
     private float dashTime;
-    
-    // death
-    private float currentDeathTimer;
     
     // jump
     private float jumpHoldTimer = 0f;
@@ -142,7 +136,6 @@ public class FishControllerRB : MonoBehaviour
 
     private void Awake()
     {
-        currentDeathTimer = deathTime;
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -163,20 +156,12 @@ public class FishControllerRB : MonoBehaviour
         if (isAtSurface)
         {
             SurfaceMovement();
-            if(currentDeathTimer <= deathTime)
-            {
-                currentDeathTimer = deathTime;
-            }
         }
         else if (inWater)
         {
             if (!IsJumping)
             {
                 WaterMovement();
-                if(currentDeathTimer <= deathTime)
-                {
-                    currentDeathTimer = deathTime;
-                }
             }
         }
         else if (isGrounded)
@@ -186,18 +171,6 @@ public class FishControllerRB : MonoBehaviour
         else
         {
             AirMovement();
-        }
-
-        if (!inWater)
-        {
-            currentDeathTimer -= Time.deltaTime;
-        }
-        
-        DebugEvents.OnDeathTimerChanged?.Invoke((int)currentDeathTimer);
-        if (currentDeathTimer <= 0)
-        {
-            CheckPointManager.Instance.LoadLastCheckpoint();
-            currentDeathTimer = deathTime;
         }
     }
     
@@ -210,7 +183,6 @@ public class FishControllerRB : MonoBehaviour
             if (rholdTimer >= rHoldTime)
             {
                 CheckPointManager.Instance.LoadLastCheckpoint();
-                currentDeathTimer = deathTime;
                 rholdTimer = 0;
             }
         }
@@ -335,7 +307,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceMovement()
     {
-        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsOnSurface");
+        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.OnSurface);
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
@@ -384,7 +356,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void WaterMovement()
     {
-        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsInWater");
+        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.InWater);
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
@@ -411,7 +383,7 @@ public class FishControllerRB : MonoBehaviour
     private void GroundMovement()
     {
         rb.mass = 1f;
-        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsOnGround");
+        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.OnGround);
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
@@ -479,7 +451,7 @@ public class FishControllerRB : MonoBehaviour
     private void AirMovement()
     {
         rb.mass = 1f;
-        DebugEvents.OnFishyMoveStateChanged?.Invoke("IsInAir");
+        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.InAir);
         forward.y = 0f;
         forward.Normalize();
 
@@ -556,18 +528,12 @@ public class FishControllerRB : MonoBehaviour
         if (other.CompareTag("Death"))
         {
             CheckPointManager.Instance.LoadLastCheckpoint();
-            currentDeathTimer = deathTime;
             Debug.Log("Death trigger");
         }
 
         if (other.CompareTag("CheckpointTrigger"))
         {
             CheckPointManager.Instance.SetCheckPoint(other.gameObject);
-        }
-
-        if (other.CompareTag("Health"))
-        {
-            currentDeathTimer += foodTime;
         }
     }
 

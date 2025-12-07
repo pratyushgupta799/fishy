@@ -1,4 +1,5 @@
 using System.Data;
+using FishyUtilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -11,21 +12,21 @@ public class DebugUIController : MonoBehaviour
 
     void OnEnable()
     {
-        DebugEvents.OnFishyMoveStateChanged += UpdateState;
-        DebugEvents.OnDeathTimerChanged += UpdateDeathTimer;
-        DebugEvents.OnCheckpointChanged += UpdateCheckpoint;
+        FishyEvents.OnFishyMoveStateChanged += UpdateState;
+        FishyEvents.OnDeathTimerChanged += UpdateDeathTimer;
+        FishyEvents.OnCheckpointChanged += UpdateCheckpoint;
     }
 
     void OnDisable()
     {
-        DebugEvents.OnFishyMoveStateChanged -= UpdateState;
-        DebugEvents.OnDeathTimerChanged -= UpdateDeathTimer;
-        DebugEvents.OnCheckpointChanged -= UpdateCheckpoint;
+        FishyEvents.OnFishyMoveStateChanged -= UpdateState;
+        FishyEvents.OnDeathTimerChanged -= UpdateDeathTimer;
+        FishyEvents.OnCheckpointChanged -= UpdateCheckpoint;
     }
     
-    private void UpdateState(string state)
+    private void UpdateState(FishyStates state)
     {
-        stateText.text = state;
+        stateText.text = state.ToString();
     }
     
     private void UpdateDeathTimer(int time)
