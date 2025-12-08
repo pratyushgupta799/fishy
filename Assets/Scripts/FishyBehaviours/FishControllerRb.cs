@@ -625,6 +625,8 @@ public class FishControllerRB : MonoBehaviour
     {
         Vector3 camForward = camera.transform.forward;
         camForward.y = 0f;
+        camForward = camForward.normalized;
+        Debug.Log("CamForward: " + camForward);
         return camForward;
     }
     
@@ -632,6 +634,8 @@ public class FishControllerRB : MonoBehaviour
     {
         Vector3 camRight = camera.transform.right;
         camRight.y = 0f;
+        camRight = camRight.normalized;
+        Debug.Log("CamRight: " + camRight);
         return camRight;
     }
 
