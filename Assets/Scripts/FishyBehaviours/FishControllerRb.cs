@@ -238,7 +238,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (!IsJumping && isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
             {
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
@@ -256,7 +256,7 @@ public class FishControllerRB : MonoBehaviour
 
         if (!IsJumping && isAtSurface)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
             {
                 rb.useGravity = true;
                 
@@ -278,17 +278,21 @@ public class FishControllerRB : MonoBehaviour
 
         if (IsJumpingFromSurface)
         {
-            if (Input.GetKey(KeyCode.Space) && (jumpHoldTimer < maxAirCharge) && canCharge)
+            if (Input.GetKey(KeyCode.Space) || Input.GetButton("Submit") || Input.GetButton("Fire2"))
             {
-                jumpHoldTimer += Time.deltaTime;
-                float t = jumpHoldTimer / maxAirCharge;
-                float falloff = 1f - t;
-                float addedForce = airChargeForce * falloff * Time.deltaTime;
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y + addedForce,
-                    rb.linearVelocity.z);
+                if ((jumpHoldTimer < maxAirCharge) && canCharge)
+                {
+                    jumpHoldTimer += Time.deltaTime;
+                    float t = jumpHoldTimer / maxAirCharge;
+                    float falloff = 1f - t;
+                    float addedForce = airChargeForce * falloff * Time.deltaTime;
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y + addedForce,
+                        rb.linearVelocity.z);
+                }
             }
-            
-            if (Input.GetKeyUp(KeyCode.Space))
+
+
+            if (Input.GetKeyUp(KeyCode.Space) || Input.GetButtonUp("Submit") || Input.GetButtonUp("Fire2"))
             {
                 jumpHoldTimer = 0f;
                 canCharge = false;
@@ -452,11 +456,6 @@ public class FishControllerRB : MonoBehaviour
     {
         rb.mass = 1f;
         FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.InAir);
-        forward.y = 0f;
-        forward.Normalize();
-
-        right.y = 0f;
-        right.Normalize();
             
         swimDirection = (forward + right).normalized;
         rb.useGravity = true;
@@ -480,9 +479,7 @@ public class FishControllerRB : MonoBehaviour
             }
             else
             {
-                Vector3 camLookFlat = camera.transform.forward;
-                camLookFlat.y = 0f;
-                RotateTo(camLookFlat + rb.linearVelocity);
+                RotateTo(CamForwardFlat() + rb.linearVelocity);
             }
         }
         else
