@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
       propertyPath: m_LocalScale.y
-      value: 8.228694
+      value: 0.9900185
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
       propertyPath: m_LocalScale.z
@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
       propertyPath: m_Name
       value: Cactus
@@ -70,14 +74,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1197721682868080200}
+      addedObject: {fileID: 6588451755086920494}
   m_SourcePrefab: {fileID: 100100000, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
 --- !u!1 &3781267751948722006 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3f6608907097adc43b4c91b7d41dea49, type: 3}
   m_PrefabInstance: {fileID: 4087204873337446919}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &1197721682868080200
+--- !u!136 &6588451755086920494
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,7 +100,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.21
-  m_Height: 0.16747239
+  m_Radius: 0.2
+  m_Height: 1.2347333
   m_Direction: 1
-  m_Center: {x: 0.0000032186508, y: 0.08057435, z: -0.02686061}
+  m_Center: {x: 0.0000035315752, y: 0.52, z: -0.02945657}
