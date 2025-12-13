@@ -217,20 +217,39 @@ public class FishControllerRB : MonoBehaviour
 
     private void CheckGrounded()
     {
-        if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
+        if (isJumping)
         {
-            isGrounded = Physics.CheckSphere(
-                groundCheck.position,
-                groundDistance,
-                ~fishyLayer,
-                QueryTriggerInteraction.Ignore
-            );
-            
-            IsJumping = !isGrounded;
+            if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
+            {
+                isGrounded = Physics.CheckSphere(
+                    groundCheck.position,
+                    groundDistance,
+                    ~fishyLayer,
+                    QueryTriggerInteraction.Ignore
+                );
+
+                IsJumping = !isGrounded;
+            }
+            else
+            {
+                isGrounded = false;
+            }
         }
         else
         {
-            isGrounded = false;
+            if (!inWater)
+            {
+                isGrounded = Physics.CheckSphere(
+                    groundCheck.position,
+                    groundDistance,
+                    ~fishyLayer,
+                    QueryTriggerInteraction.Ignore
+                );
+            }
+            else
+            {
+                isGrounded = false;
+            }
         }
     }
 
@@ -423,33 +442,39 @@ public class FishControllerRB : MonoBehaviour
                     groundDistance + 0.5f, ~0,
                     QueryTriggerInteraction.Ignore))
             {
-                slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
+                Vector3 slopeDir = Vector3.ProjectOnPlane(swimDirection, hit.normal).normalized;
+                slopeRot = Quaternion.LookRotation(slopeDir, Vector3.up);
             }
+            
+            Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
             
             RotateTo(slopeRot);
             animator.SetBool("isSwiming", true);
         }
         else
         {
-            lookRot.x = 0f;
+            // lookRot.x = 0f;
 
             Quaternion slopeRot = lookRot;
             if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
                     groundDistance + 0.5f, ~0,
                     QueryTriggerInteraction.Ignore))
             {
-                slopeRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * lookRot;
+                Vector3 slopeDir = Vector3.ProjectOnPlane(transform.forward, hit.normal).normalized;
+                slopeRot = Quaternion.LookRotation(slopeDir, Vector3.up);
             }
+            
+            Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
             
             RotateTo(slopeRot);
         }
         
-        if (!IsJumping && (dashTime <= 0f))
-        {
-            Vector3 currentEuler = transform.rotation.eulerAngles;
-            currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(currentEuler);
-        }
+        // if (!IsJumping && (dashTime <= 0f))
+        // {
+        //     Vector3 currentEuler = transform.rotation.eulerAngles;
+        //     currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
+        //     transform.rotation = Quaternion.Euler(currentEuler);
+        // }
     }
 
     private void AirMovement()
