@@ -11,14 +11,14 @@ public class ButtonBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExit
     void Start()
     {
         rect = GetComponent<RectTransform>();
-        startPos = transform.localPosition;
-        startScale = transform.localScale;
+        startPos = rect.anchoredPosition;
+        startScale = rect.localScale;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        rect.DOAnchorPosY(startPos.y + 10f, 0.2f).SetEase(Ease.OutBack);
-        rect.DOScale(startScale * 1.1f, 0.2f).SetEase(Ease.OutBack);
+        rect.DOAnchorPosY(startPos.y + 12f, 0.2f).SetEase(Ease.OutBack);
+        rect.DOScale(startScale * 1.05f, 0.2f).SetEase(Ease.OutBack);
     }
 
     public void OnPointerExit(PointerEventData eventData)
