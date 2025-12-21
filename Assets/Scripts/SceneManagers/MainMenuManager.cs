@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,16 +11,19 @@ public class MainMenuManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        start.onClick.AddListener(() =>
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Level1");
-            Debug.Log("Starting level 1");
-        });
+        start.onClick.AddListener(OnStartClicked);
     }
 
-    // Update is called once per frame
-    void Update()
+    async void OnStartClicked()
     {
-        
+        await ChangeScene();
+    }
+
+    public async Task ChangeScene()
+    {
+        Vector2 buttonPos = RectTransformUtility.WorldToScreenPoint(null, start.transform.position);
+        await CircleTransition.Instance.CircleIn(buttonPos);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level1");
+        Debug.Log("Starting level 1");
     }
 }
