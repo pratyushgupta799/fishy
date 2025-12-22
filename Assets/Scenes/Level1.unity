@@ -4292,7 +4292,7 @@ Transform:
   m_GameObject: {fileID: 155578659}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.94, y: 0, z: 0.19}
+  m_LocalPosition: {x: 22.53, y: 0, z: 0.19}
   m_LocalScale: {x: 17.418257, y: 0.655163, z: 46.31175}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4907,7 +4907,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 744fb78e1ab35884493165ab153221da, type: 2}
+  - {fileID: 2100000, guid: f88c984813c92f24bbc67ff43bbbf77f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38133,13 +38133,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963040621}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.9489815, y: 0.25362292, z: 0.09398942, w: 0.16209696}
-  m_LocalPosition: {x: -0.035, y: -0.147, z: 0.799}
+  m_LocalRotation: {x: -0.00008754289, y: 0.7077048, z: -0.7065083, w: 0.000071035225}
+  m_LocalPosition: {x: -0.022, y: 0.023, z: 0.72}
   m_LocalScale: {x: 0.57100433, y: 0.57100433, z: 0.57100433}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1659229476}
-  m_LocalEulerAnglesHint: {x: 56.189, y: 148.902, z: -4.072}
+  m_LocalEulerAnglesHint: {x: 90.096985, y: 180, z: 0.011993408}
 --- !u!114 &963040623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38172,15 +38172,15 @@ Light:
   m_GameObject: {fileID: 963040621}
   m_Enabled: 1
   serializedVersion: 11
-  m_Type: 2
-  m_Color: {r: 0.9245283, g: 0.18761097, b: 0.12646852, a: 1}
-  m_Intensity: 37
-  m_Range: 2.45
-  m_SpotAngle: 69.39458
-  m_InnerSpotAngle: 60.472973
+  m_Type: 0
+  m_Color: {r: 0.84313726, g: 0.008171155, b: 0, a: 1}
+  m_Intensity: 159.9
+  m_Range: 3.09
+  m_SpotAngle: 179
+  m_InnerSpotAngle: 170.0784
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -38213,7 +38213,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -51828,7 +51828,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 20544a6b28e38cf429d92729965c7766, type: 2}
+  - {fileID: 2100000, guid: 6dbf5d457cb529c4088eac2fdd182ab6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -65262,6 +65262,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0136b9d14233af94a87e56dac4044d6d, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fa1a8f3e5e7376442a268c706098e535, type: 2}
     - target: {fileID: 919132149155446097, guid: 0136b9d14233af94a87e56dac4044d6d, type: 3}
       propertyPath: m_Name
       value: LaptopScreen
@@ -73787,7 +73791,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 20544a6b28e38cf429d92729965c7766, type: 2}
+  - {fileID: 2100000, guid: 6dbf5d457cb529c4088eac2fdd182ab6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -77507,7 +77511,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c8fd050622c2ff34db66cc30d219b9d7, type: 2}
+  - {fileID: 2100000, guid: 6d0c97da81a13dc49aade98214b2ce58, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -77956,7 +77960,7 @@ PrefabInstance:
     - target: {fileID: 440768050625284786, guid: 047c048e8130e974781f742334999769, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 0b9c22ba1823adc47a97426eac249bf3, type: 2}
+      objectReference: {fileID: 2100000, guid: b55aa95349a000a4f8ccb2b5f2470390, type: 2}
     - target: {fileID: 533668096909495710, guid: 047c048e8130e974781f742334999769, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.808
