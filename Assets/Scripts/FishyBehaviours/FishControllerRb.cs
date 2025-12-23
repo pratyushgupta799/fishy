@@ -12,6 +12,7 @@ public class FishControllerRB : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject camera;
     [SerializeField] private Animator animator;
+    [SerializeField] private ParticleSystem bubblesps;
     
     [Header("Movement Settings")]
     [SerializeField] private float maxSpeed = 5f;
@@ -535,6 +536,7 @@ public class FishControllerRB : MonoBehaviour
             inWater = true;
             Debug.Log("Water triggered");
             IsJumping = false;
+            bubblesps.Play();
         }
         if (other.CompareTag("WaterSurface"))
         {
@@ -596,6 +598,7 @@ public class FishControllerRB : MonoBehaviour
         {
             Debug.Log("Water trigger exit");
             inWater = false;
+            bubblesps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
 
