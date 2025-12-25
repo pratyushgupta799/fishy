@@ -305,6 +305,7 @@ public class FishControllerRB : MonoBehaviour
                 jumpMoveFactor = jumpMoveFactorFromWater;
 
                 IsJumpingFromSurface = true;
+                FishyEvents.OnJumpFromWater?.Invoke();
                 isGrounded = false;
                 isAtSurface = false;
                 
@@ -348,7 +349,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceMovement()
     {
-        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.OnSurface);
+        FishyEvents.SetState(FishyStates.OnSurface);
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
@@ -397,7 +398,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void WaterMovement()
     {
-        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.InWater);
+        FishyEvents.SetState(FishyStates.InWater);
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
@@ -427,7 +428,7 @@ public class FishControllerRB : MonoBehaviour
     private void GroundMovement()
     {
         rb.mass = 1f;
-        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.OnGround);
+        FishyEvents.SetState(FishyStates.OnGround);
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
@@ -501,7 +502,7 @@ public class FishControllerRB : MonoBehaviour
     private void AirMovement()
     {
         rb.mass = 1f;
-        FishyEvents.OnFishyMoveStateChanged?.Invoke(FishyStates.InAir);
+        FishyEvents.SetState(FishyStates.InAir);
             
         swimDirection = (forward + right).normalized;
         rb.useGravity = true;
@@ -551,20 +552,23 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Water"))
+        if (other.CompareTag("Water") || other.CompareTag("WaterSurface"))
         {
-            if (!inWater)
+            if (!inWater && !isAtSurface)
             {
                 FishyEvents.OnWaterEntered?.Invoke();
             }
+        }
+        if (other.CompareTag("Water"))
+        {
             inWater = true;
-            Debug.Log("Water triggered");
+            // Debug.Log("Water triggered");
             IsJumping = false;
             bubblesps.Play();
         }
         if (other.CompareTag("WaterSurface"))
         {
-            Debug.Log("Surface trigger");
+            // Debug.Log("Surface trigger");
             if (inWater)
             {
                 if (IsJumping) IsJumping = false;
@@ -614,13 +618,13 @@ public class FishControllerRB : MonoBehaviour
     {
         if (other.CompareTag("WaterSurface"))
         {
-            Debug.Log("Surface trigger exit");
+            // Debug.Log("Surface trigger exit");
             isAtSurface = false;
         }
 
         if (other.CompareTag("Water"))
         {
-            Debug.Log("Water trigger exit");
+            // Debug.Log("Water trigger exit");
             FishyEvents.OnMovingWaterEnd?.Invoke();
             inWater = false;
             bubblesps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

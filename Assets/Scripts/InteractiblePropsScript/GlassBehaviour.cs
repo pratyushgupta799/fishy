@@ -26,6 +26,10 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
 
     private Vector3 defaultPos;
     private Quaternion defaultRot;
+
+    [Header("SFX")] 
+    [SerializeField] private AudioClip glassFall;
+    [SerializeField] private AudioClip waterSpillSFX;
     
     public int CheckpointIndex => checkpointIndex;
 
@@ -58,6 +62,8 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         if (hasSpilled) return;
         hasSpilled = true;
         
+        AudioManager.Instance.AudioPlayOneShotAt(glassFall, transform.position);
+        
         Ray ray = new Ray(puddleCenter.transform.position, Vector3.down);
         float distance = 200f;
         
@@ -71,6 +77,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
 
             if (angle <= maxSlopeAngle)
             {
+                AudioManager.Instance.AudioPlayOneShotAt(waterSpillSFX, transform.position);
                 Debug.Log("water spilled on " + hit.transform.name);
                 droppedPuddle = Instantiate(puddleMesh, hit.point + Vector3.down * puddleHeightOffset, Quaternion.identity);
                 StartCoroutine(PuddleRaise());

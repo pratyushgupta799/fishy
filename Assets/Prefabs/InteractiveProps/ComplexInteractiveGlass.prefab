@@ -161,15 +161,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.23
+      value: -17.763441
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.14631033
+      value: -0.1478219
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.94
+      value: -57.027084
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalRotation.w
@@ -319,7 +319,9 @@ MonoBehaviour:
   puddleHeightOffset: 0.2
   puddleRaiseDuration: 0.5
   minTiltToSpill: 70
-  checkpointIndex: 1
+  checkpointIndex: 4
+  glassFall: {fileID: 8300000, guid: 0d13298bad0ff734480c643f85f211db, type: 3}
+  waterSpillSFX: {fileID: 8300000, guid: 588f7b53b7d8d2a47960fb9275488063, type: 3}
 --- !u!64 &3642839926613239226
 MeshCollider:
   m_ObjectHideFlags: 0

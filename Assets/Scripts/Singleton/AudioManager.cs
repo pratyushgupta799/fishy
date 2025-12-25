@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
+    
     [SerializeField] private AudioSource SFXSource;
+    [SerializeField] private AudioSource MusicSource;
 
     [Header("Variations")] 
     [SerializeField] private float maxVolume;
@@ -24,6 +29,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip waterSpill;
     [SerializeField] private AudioClip wateringPlant;
     
+    [Header("Music")]
+    [SerializeField] private AudioClip musicIntro;
+    [SerializeField] private AudioClip musicLoop;
+    
     [Header("Pool")]
     [SerializeField] private AudioSource audioSourcePrefab;
     [SerializeField] private int initialPoolSize = 10;
@@ -36,9 +45,20 @@ public class AudioManager : MonoBehaviour
     
     private Coroutine fadeRoutine;
     private Coroutine swimStopRoutine;
+    
+    private AudioSource underwaterAudioSource;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         for (int i = 0; i < initialPoolSize; i++)
         {
             CreateSource();
@@ -50,6 +70,10 @@ public class AudioManager : MonoBehaviour
         FishyEvents.OnWaterEntered += PlayWaterSplashSound;
         FishyEvents.OnMovingWaterStart += StartWaterSwimLoop;
         FishyEvents.OnMovingWaterEnd += StopWaterSwimLoop;
+        FishyEvents.OnUnderwaterEnter += PlayUnderWaterLoop;
+        FishyEvents.OnUnderwaterExit += StopUnderWaterLoop;
+        FishyEvents.OnJumpFromWater += PlayJumpFromWater;
+        FishyEvents.OnSurfaceReachedFromUnderWater += PlaySurfaceNew;
     }
 
     private void OnDisable()
@@ -57,11 +81,74 @@ public class AudioManager : MonoBehaviour
         FishyEvents.OnWaterEntered -= PlayWaterSplashSound;
         FishyEvents.OnMovingWaterStart -= StartWaterSwimLoop;
         FishyEvents.OnMovingWaterEnd -= StopWaterSwimLoop;
+        FishyEvents.OnUnderwaterEnter -= PlayUnderWaterLoop;
+        FishyEvents.OnUnderwaterExit -= StopUnderWaterLoop;
+        FishyEvents.OnJumpFromWater -= PlayJumpFromWater;
+        FishyEvents.OnSurfaceReachedFromUnderWater -= PlaySurfaceNew;
+    }
+
+    private void Start()
+    {
+        StartMusic();
+    }
+
+    private void StartMusic()
+    {
+        StartCoroutine(PlayIntroThenLoop());
+    }
+    
+    private IEnumerator PlayIntroThenLoop()
+    {
+        MusicSource.loop = false;
+        MusicSource.clip = musicIntro;
+        MusicSource.Play();
+
+        while (MusicSource.isPlaying)
+        {
+            yield return null;
+        }
+        
+        MusicSource.clip = musicLoop;
+        MusicSource.loop = true;
+        MusicSource.Play();
     }
 
     private void PlayWaterSplashSound()
     {
-        AudioSourceVariate().PlayOneShot(waterLand);
+        Debug.Log("Water splash sound played");
+        var audioSource = AudioSourceVariate();
+        audioSource.spatialBlend = 0f;
+        audioSource.PlayOneShot(waterLand);
+    }
+
+    private void PlayUnderWaterLoop()
+    {
+        if (underwaterAudioSource == null)
+        {
+            Debug.Log("Underwater sound played");
+            underwaterAudioSource = AudioSourceVariate();
+            underwaterAudioSource.loop = true;
+            underwaterAudioSource.spatialBlend = 0f;
+            underwaterAudioSource.clip = underwater;
+            underwaterAudioSource.Play();
+        }
+    }
+
+    private void PlayJumpFromWater()
+    {
+        var audioSource = AudioSourceVariate();
+        audioSource.spatialBlend = 0f;
+        audioSource.PlayOneShot(waterJump);
+    }
+
+    private void StopUnderWaterLoop()
+    {
+        if (underwaterAudioSource != null)
+        {
+            Debug.Log("Underwater sound stopped");
+            underwaterAudioSource.Stop();
+            underwaterAudioSource = null;
+        }
     }
 
     private void StartWaterSwimLoop()
@@ -91,6 +178,25 @@ public class AudioManager : MonoBehaviour
             swimStopRoutine = StartCoroutine(StopWaterSwimLoopGrace());
         }
     }
+
+    private void PlaySurfaceNew()
+    {
+        var audioSource = AudioSourceVariate();
+        audioSource.spatialBlend = 0f;
+        audioSource.PlayOneShot(surfaceNew);
+    }
+    
+    public void AudioPlayOneShotAt(AudioClip clip, Vector3 position)
+    {
+        AudioSource src = GetSource();
+        src.transform.position = position;
+        src.spatialBlend = 1f;
+        src.volume = GetVolume();
+        src.pitch = GetPitch();
+        src.loop = false;
+        src.PlayOneShot(clip);
+    }
+
     
     // todo: make stop and fade decoupled
     private IEnumerator StopWaterSwimLoopGrace()

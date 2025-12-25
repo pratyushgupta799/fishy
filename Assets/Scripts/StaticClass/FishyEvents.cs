@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class FishyEvents
 {
-    public static Action<FishyStates> OnFishyMoveStateChanged;
+    public static event Action<FishyStates> OnFishyMoveStateChanged;
   
     public static Action<int> OnDeathTimerChanged;
   
@@ -19,18 +19,42 @@ public static class FishyEvents
     
     public static Action OnMovingWaterStart;
     public static Action OnMovingWaterEnd;
-
-    public static Action<int> OnGlassFell;
     
     public static Action OnSurfaceReachedFromUnderWater;
 
     public static Action OnUnderwaterEnter;
     public static Action OnUnderwaterExit;
+
+    public static Action OnJumpFromWater;
+
+    public static Action OnWateringPlantStart;
+    public static Action OnWateringPlantEnd;
+
+    private static FishyStates lastState;
     
-    public static Action OnLandedOnGround;
+    public static void SetState(FishyStates newState)
+    {
+        if (newState == lastState) return;
+        
+        OnFishyMoveStateChanged?.Invoke(newState);
 
-    public static Action OnWaterSpilled;
+        if (newState == FishyStates.InWater)
+        {
+            OnUnderwaterEnter?.Invoke();
+        }
+        else
+        {
+            if (lastState == FishyStates.InWater)
+            {
+                OnUnderwaterExit?.Invoke();
+            }
+        }
 
-    public static Action OnWaterPlanStart;
-    public static Action OnWaterPlaneEnd;
+        if (newState == FishyStates.OnSurface && lastState == FishyStates.InWater)
+        {
+            OnSurfaceReachedFromUnderWater?.Invoke();
+        }
+        
+        lastState = newState;
+    }
 }
