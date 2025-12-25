@@ -243,7 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4813138}
   m_Layer: 8
-  m_Name: checkPoint2_6
+  m_Name: checkPoint15
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1877,7 +1877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 53340960}
   m_Layer: 8
-  m_Name: checkPoint2_5
+  m_Name: checkPoint14
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -6546,7 +6546,7 @@ MonoBehaviour:
   - {fileID: 289791868}
   - {fileID: 2045050313}
   - {fileID: 2103244727}
-  loadFromCheckpoint: 0
+  loadFromCheckpoint: 10
   changedPrefab: []
 --- !u!1001 &210826670
 PrefabInstance:
@@ -9082,7 +9082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 289791869}
   m_Layer: 8
-  m_Name: checkPoint2_7
+  m_Name: checkPoint16
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -13970,7 +13970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400314920}
   m_Layer: 8
-  m_Name: checkPoint2_4
+  m_Name: checkPoint13
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -27449,7 +27449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 525694009}
   m_Layer: 8
-  m_Name: checkPoint1_6
+  m_Name: checkPoint6
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -30806,7 +30806,7 @@ GameObject:
   m_Component:
   - component: {fileID: 625047085}
   m_Layer: 8
-  m_Name: checkPoint2_3
+  m_Name: checkPoint12
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -32803,7 +32803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 670711501}
   m_Layer: 8
-  m_Name: checkPoint1_8
+  m_Name: checkPoint8
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -34937,6 +34937,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
       insertIndex: -1
       addedObject: {fileID: 743475659}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 743475662}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 743475663}
   m_SourcePrefab: {fileID: 100100000, guid: ec6acc0d3c6d1ec4da618a61dad89923, type: 3}
 --- !u!1 &743475657 stripped
 GameObject:
@@ -34969,6 +34975,47 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0000002, y: 0.07366325, z: 1.2879443}
   m_Center: {x: -0.0018544495, y: -0.0018130802, z: 0.039737254}
+--- !u!114 &743475662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743475657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e661eeedfb8ae3144843a5c6b89b1236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenMeshRenderer: {fileID: 1659229480}
+  deadScreenMaterial: {fileID: 2100000, guid: d1f95010c370e134c8b653f3dcd5d0c2, type: 2}
+--- !u!54 &743475663
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743475657}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &747300210
 GameObject:
   m_ObjectHideFlags: 0
@@ -39766,7 +39813,7 @@ GameObject:
   m_Component:
   - component: {fileID: 883577719}
   m_Layer: 8
-  m_Name: checkPoint1_5
+  m_Name: checkPoint5
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -41736,7 +41783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 961691845}
   m_Layer: 8
-  m_Name: checkPoint1_9
+  m_Name: checkPoint9
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -45747,7 +45794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1079283297}
   m_Layer: 8
-  m_Name: checkPoint1_1
+  m_Name: checkPoint1
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -46315,7 +46362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1112541042}
   m_Layer: 8
-  m_Name: checkPoint1_4
+  m_Name: checkPoint4
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -60652,7 +60699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1274907520}
   m_Layer: 8
-  m_Name: checkPoint1_2
+  m_Name: checkPoint2
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -61676,7 +61723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1334365888}
   m_Layer: 8
-  m_Name: checkPoint2_1
+  m_Name: checkPoint10
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -63895,7 +63942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1418542005}
   m_Layer: 8
-  m_Name: checkPoint1_7
+  m_Name: checkPoint7
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -80907,9 +80954,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0136b9d14233af94a87e56dac4044d6d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1659229478}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0136b9d14233af94a87e56dac4044d6d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1659229479}
   m_SourcePrefab: {fileID: 100100000, guid: 0136b9d14233af94a87e56dac4044d6d, type: 3}
 --- !u!4 &1659229476 stripped
 Transform:
@@ -80942,33 +80986,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 0.102591634, z: 1.2850783}
   m_Center: {x: 0.000010753575, y: 0.03995726, z: 0.6323508}
---- !u!54 &1659229479
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!23 &1659229480 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 0136b9d14233af94a87e56dac4044d6d, type: 3}
+  m_PrefabInstance: {fileID: 1659229475}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659229477}
-  serializedVersion: 4
-  m_Mass: 10
-  m_Drag: 0
-  m_AngularDrag: 10
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 0
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 110
-  m_CollisionDetection: 0
 --- !u!1 &1661268915
 GameObject:
   m_ObjectHideFlags: 0
@@ -92907,7 +92929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2045050314}
   m_Layer: 8
-  m_Name: checkPoint2_8
+  m_Name: checkPoint17
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -93410,7 +93432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2063091909}
   m_Layer: 8
-  m_Name: checkPoint2_2
+  m_Name: checkPoint11
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -94317,7 +94339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2103244728}
   m_Layer: 8
-  m_Name: checkPoint2_9
+  m_Name: checkPoint18
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -95029,7 +95051,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2134758421}
   m_Layer: 8
-  m_Name: checkPoint1_3
+  m_Name: checkPoint3
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

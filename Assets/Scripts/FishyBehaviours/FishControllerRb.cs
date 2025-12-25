@@ -310,8 +310,7 @@ public class FishControllerRB : MonoBehaviour
                         rb.linearVelocity.z);
                 }
             }
-
-
+            
             if (Input.GetKeyUp(KeyCode.Space) || Input.GetButtonUp("Submit") || Input.GetButtonUp("Fire2"))
             {
                 jumpHoldTimer = 0f;
