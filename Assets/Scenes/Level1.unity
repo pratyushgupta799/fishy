@@ -6286,7 +6286,7 @@ MonoBehaviour:
   - {fileID: 289791868}
   - {fileID: 2045050313}
   - {fileID: 2103244727}
-  loadFromCheckpoint: 14
+  loadFromCheckpoint: 1
   changedPrefab: []
 --- !u!1 &211156552
 GameObject:
@@ -28364,7 +28364,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SFXSource: {fileID: 1236040263}
-  waterSplashSound: {fileID: 8300000, guid: 85ffd4790312d8441aa4833a43faf102, type: 3}
+  maxVolume: 1
+  minVolume: 0.75
+  maxPitch: 1.1
+  minPitch: 0.9
+  fishSwimLoop: {fileID: 8300000, guid: a6e02aefb156c1c4c808779f399f7035, type: 3}
+  glassFall: {fileID: 8300000, guid: 0d13298bad0ff734480c643f85f211db, type: 3}
+  glassFall2: {fileID: 8300000, guid: 49b9c66aaf25703419c6331af05ba09b, type: 3}
+  surfaceNew: {fileID: 8300000, guid: 0ee8805dfa87f60448eb8adece52c9f2, type: 3}
+  underwater: {fileID: 8300000, guid: b77a41fe5d3e3ad42853df93858b66b6, type: 3}
+  waterJump: {fileID: 8300000, guid: 3aba0ed0663a8f448ace1fbbc1a73cc7, type: 3}
+  waterLand: {fileID: 8300000, guid: c4614d4de7857084a9857217fd0fed18, type: 3}
+  waterSpill: {fileID: 8300000, guid: 588f7b53b7d8d2a47960fb9275488063, type: 3}
+  wateringPlant: {fileID: 8300000, guid: daaf856cc85681541bc775b20df76161, type: 3}
+  audioSourcePrefab: {fileID: 2297413984426810926, guid: 33e23b615619e014387d8a043fa7c5ca, type: 3}
+  initialPoolSize: 10
 --- !u!4 &568422332
 Transform:
   m_ObjectHideFlags: 0

@@ -86,6 +86,9 @@ public class FishControllerRB : MonoBehaviour
     private float jumpHoldTimer = 0f;
     private bool canCharge = false;
     
+    // movement
+    private bool wasMoving;
+    
     // properties
     private bool IsJumping
     {
@@ -154,13 +157,28 @@ public class FishControllerRB : MonoBehaviour
 
     private void MoveCharacter()
     {
-        if (isAtSurface)
+        if (inWater)
         {
-            SurfaceMovement();
-        }
-        else if (inWater)
-        {
-            if (!IsJumping)
+            bool isMoving = rb.linearVelocity.sqrMagnitude > 0.01f;
+            
+            if (isMoving && !wasMoving)
+            {
+                FishyEvents.OnMovingWaterStart?.Invoke();
+                Debug.Log("Movement start fired");
+            }
+            if (wasMoving && !isMoving)
+            {
+                FishyEvents.OnMovingWaterEnd?.Invoke();
+                Debug.Log("Movement end fired");
+            }
+            
+            wasMoving = isMoving;
+            
+            if (isAtSurface)
+            {
+                SurfaceMovement();
+            }
+            else if (!IsJumping)
             {
                 WaterMovement();
             }
@@ -400,7 +418,10 @@ public class FishControllerRB : MonoBehaviour
             RotateTo(swimVel.normalized);
             animator.SetBool("isSwiming", true);
         }
-        else animator.SetBool("isSwiming", false);
+        else
+        {
+            animator.SetBool("isSwiming", false);
+        }
     }
 
     private void GroundMovement()
