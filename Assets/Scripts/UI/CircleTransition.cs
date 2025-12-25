@@ -43,6 +43,7 @@ public class CircleTransition : MonoBehaviour
 
     public async Task CircleIn(Vector2 screenPos)
     {
+        image.enabled = true;
         mat.SetVector("_Center", ToUV(screenPos));
         mat.SetFloat("_Radius", 1.2f);
         await mat.DOFloat(0f, "_Radius", duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
@@ -53,5 +54,6 @@ public class CircleTransition : MonoBehaviour
         mat.SetVector("_Center", ToUV(screenPos));
         mat.SetFloat("_Radius", 0f);
         await mat.DOFloat(1.2f, "_Radius", duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
+        image.enabled = false;
     }
 }

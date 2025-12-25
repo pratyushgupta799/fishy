@@ -86,7 +86,10 @@ public class AudioManager : MonoBehaviour
     
     private void StopWaterSwimLoop()
     {
-        swimStopRoutine = StartCoroutine(StopWaterSwimLoopGrace());
+        if (swimStopRoutine == null)
+        {
+            swimStopRoutine = StartCoroutine(StopWaterSwimLoopGrace());
+        }
     }
     
     // todo: make stop and fade decoupled

@@ -164,12 +164,12 @@ public class FishControllerRB : MonoBehaviour
             if (isMoving && !wasMoving)
             {
                 FishyEvents.OnMovingWaterStart?.Invoke();
-                Debug.Log("Movement start fired");
+                // Debug.Log("Movement start fired");
             }
             if (wasMoving && !isMoving)
             {
                 FishyEvents.OnMovingWaterEnd?.Invoke();
-                Debug.Log("Movement end fired");
+                // Debug.Log("Movement end fired");
             }
             
             wasMoving = isMoving;
@@ -621,6 +621,7 @@ public class FishControllerRB : MonoBehaviour
         if (other.CompareTag("Water"))
         {
             Debug.Log("Water trigger exit");
+            FishyEvents.OnMovingWaterEnd?.Invoke();
             inWater = false;
             bubblesps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
@@ -640,6 +641,7 @@ public class FishControllerRB : MonoBehaviour
         if (!inWaterThisFrame && inWater)
         {
             inWater = false;
+            FishyEvents.OnMovingWaterEnd?.Invoke();
         }
         else
         {
