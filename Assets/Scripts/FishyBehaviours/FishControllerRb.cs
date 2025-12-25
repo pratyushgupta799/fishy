@@ -533,6 +533,10 @@ public class FishControllerRB : MonoBehaviour
     {
         if (other.CompareTag("Water"))
         {
+            if (!inWater)
+            {
+                FishyEvents.OnWaterEntered?.Invoke();
+            }
             inWater = true;
             Debug.Log("Water triggered");
             IsJumping = false;
