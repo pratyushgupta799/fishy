@@ -30,8 +30,8 @@ public class AudioManager : MonoBehaviour
 
     private readonly List<AudioSource> pool = new();
     
+    [Header("Attributes")]
     [SerializeField] private float stopWaterSwimDelay = 0.5f;
-    
     [SerializeField] private float waterFadeOutTime = 0.5f;
     
     private Coroutine fadeRoutine;
