@@ -12,6 +12,8 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField] private GameObject fishy;
     [SerializeField] private List<GameObject> checkPointTrigger;
     [SerializeField] private List<GameObject> checkPoint;
+
+    [SerializeField] private int loadFromCheckpoint = -1;
     
     private int currentCheckpoint = 0;
 
@@ -33,6 +35,14 @@ public class CheckPointManager : MonoBehaviour
         FishyEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
     }
 
+    private void Start()
+    {
+        if (loadFromCheckpoint > 0)
+        {
+            LoadFromCheckpoint(loadFromCheckpoint - 1);
+        }
+    }
+
     public void SetCheckPoint(GameObject checkpointTrigger)
     {
         for (int i = 0; i < checkPointTrigger.Count; i++)
@@ -47,11 +57,11 @@ public class CheckPointManager : MonoBehaviour
             }
         }
     }
-    
-    public void LoadLastCheckpoint()
+
+    private void LoadFromCheckpoint(int checkpoint)
     {
-        fishy.GetComponent<FishControllerRB>().SnapFishyTo(checkPoint[currentCheckpoint].transform.position,
-            checkPoint[currentCheckpoint].transform.rotation);
+        fishy.GetComponent<FishControllerRB>().SnapFishyTo(checkPoint[checkpoint].transform.position,
+            checkPoint[checkpoint].transform.rotation);
         FishyEvents.LastCheckpointLoaded?.Invoke();
         
         for (int i = 0; i < changedPrefab.Count; i++)
@@ -72,6 +82,11 @@ public class CheckPointManager : MonoBehaviour
                 Debug.Log(changedPrefab[i].name + " doesnt have a StateManager component");
             }
         }
+    }
+    
+    public void LoadLastCheckpoint()
+    {
+        LoadFromCheckpoint(currentCheckpoint);
     }
     
     public void AddChangedPrefab(GameObject prefab)
