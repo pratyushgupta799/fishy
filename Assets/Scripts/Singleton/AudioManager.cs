@@ -10,7 +10,8 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
     
     [SerializeField] private AudioSource SFXSource;
-    [SerializeField] private AudioSource MusicSource;
+    [SerializeField] private AudioSource MusicIntroSource;
+    [SerializeField] private AudioSource MusicLoopSource;
 
     [Header("Variations")] 
     [SerializeField] private float maxVolume;
@@ -94,23 +95,20 @@ public class AudioManager : MonoBehaviour
 
     private void StartMusic()
     {
-        StartCoroutine(PlayIntroThenLoop());
+        PlayIntroThenLoop();
     }
     
-    private IEnumerator PlayIntroThenLoop()
+    private void PlayIntroThenLoop()
     {
-        MusicSource.loop = false;
-        MusicSource.clip = musicIntro;
-        MusicSource.Play();
-
-        while (MusicSource.isPlaying)
-        {
-            yield return null;
-        }
+        double dspStart = AudioSettings.dspTime + 0.1f;
         
-        MusicSource.clip = musicLoop;
-        MusicSource.loop = true;
-        MusicSource.Play();
+        MusicIntroSource.clip = musicIntro;
+        MusicIntroSource.loop = false;
+        MusicIntroSource.PlayScheduled(dspStart);
+        
+        MusicLoopSource.clip = musicLoop;
+        MusicLoopSource.loop = true;
+        MusicLoopSource.PlayScheduled(dspStart + musicIntro.length);
     }
 
     private void PlayWaterSplashSound()
