@@ -19,13 +19,10 @@ public class LeafBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Debug.Log("Fishy leaf collision");
             foreach (var c in collision.contacts)
             {
-                Debug.Log("Normal of fishy on leaf" + c.normal);
                 if (Vector3.Dot(c.normal, Vector3.down) > 0.7f)
                 {
-                    Debug.Log("Fish on leaf");
                     fishOn = true;
                     return;
                 }

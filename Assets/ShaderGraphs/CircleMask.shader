@@ -3,8 +3,7 @@ Shader "UI/CircleMask"
     Properties
     {
         _Center ("Center", Vector) = (0.5, 0.5, 0, 0)
-        _Radius ("Radius", Range(0, 1.2)) = 0
-        _Soft ("Soft", Range(0, 0.2)) = 0.02
+        _Radius ("Radius", Range(0, 1)) = 0
         _Color ("Color", Color) = (0, 0, 0, 1)
     }
     
@@ -47,11 +46,24 @@ Shader "UI/CircleMask"
                 float2 uv = i.uv;
                 float2 center = _Center.xy;
                 
-                uv.x = (uv.x - 0.5) * (_ScreenParams.x / _ScreenParams.y) + 0.5;
+                uv.x = (uv.x - 0.5) * aspect + 0.5;
                 center.x = (center.x - 0.5) * aspect + 0.5;
+
+                float2 corners[4] = {
+                    float2((0 - 0.5) * aspect + 0.5, 0),
+                    float2((1 - 0.5) * aspect + 0.5, 0),
+                    float2((0 - 0.5) * aspect + 0.5, 1),
+                    float2((1 - 0.5) * aspect + 0.5, 1)
+                };
+
+                float maxD = 0;
+                for (int k = 0; k < 4; k++)
+                {
+                    maxD = max(maxD, distance(corners[k], center));
+                }
                 
                 float d = distance(uv, center);
-                float mask = smoothstep(_Radius, _Radius - _Soft, d);
+                float mask = step(d, _Radius * maxD);
                 
                 return fixed4(_Color.rgb, 1 - mask);
             }

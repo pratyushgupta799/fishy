@@ -25,10 +25,7 @@ public class CircleTransition : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-    }
-
-    void Start()
-    {
+        
         mat = Instantiate(image.material);
         image.material = mat;
     }
@@ -43,17 +40,17 @@ public class CircleTransition : MonoBehaviour
 
     public async Task CircleIn(Vector2 screenPos)
     {
-        image.enabled = true;
         mat.SetVector("_Center", ToUV(screenPos));
-        mat.SetFloat("_Radius", 1.2f);
-        await mat.DOFloat(0f, "_Radius", duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
+
+        mat.SetFloat("_Radius", 1f);
+        await Task.Yield();
+        await mat.DOFloat(0f, "_Radius", duration).SetEase(Ease.InOutSine).SetUpdate(true).AsyncWaitForCompletion();
     }
     
     public async Task CircleOut(Vector2 screenPos)
     {
         mat.SetVector("_Center", ToUV(screenPos));
         mat.SetFloat("_Radius", 0f);
-        await mat.DOFloat(1.2f, "_Radius", duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
-        image.enabled = false;
+        await mat.DOFloat(1f, "_Radius", duration).SetEase(Ease.InOutSine).SetUpdate(true).AsyncWaitForCompletion();
     }
 }
