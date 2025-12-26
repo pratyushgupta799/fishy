@@ -449,7 +449,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
-            Debug.Log("Something in the way");
+            // Debug.Log("Something in the way");
             rb.linearVelocity = Vector3.zero;
         }
         

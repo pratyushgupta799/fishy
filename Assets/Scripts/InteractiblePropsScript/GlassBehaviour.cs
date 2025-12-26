@@ -113,8 +113,8 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     {
         if (CheckPointManager.Instance.CurrentCheckpointIndex <= checkpointIndex)
         {
-            Debug.Log("Current checkpoint: " + CheckPointManager.Instance.CurrentCheckpointIndex +
-                      " <= Glass checkpoint: " + checkpointIndex);
+            // Debug.Log("Current checkpoint: " + CheckPointManager.Instance.CurrentCheckpointIndex +
+                      // " <= Glass checkpoint: " + checkpointIndex);
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             

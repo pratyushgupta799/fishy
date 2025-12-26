@@ -113,7 +113,7 @@ public class AudioManager : MonoBehaviour
 
     private void PlayWaterSplashSound()
     {
-        Debug.Log("Water splash sound played");
+        // Debug.Log("Water splash sound played");
         var audioSource = AudioSourceVariate();
         audioSource.spatialBlend = 0f;
         audioSource.PlayOneShot(waterLand);
@@ -123,7 +123,7 @@ public class AudioManager : MonoBehaviour
     {
         if (underwaterAudioSource == null)
         {
-            Debug.Log("Underwater sound played");
+            // Debug.Log("Underwater sound played");
             underwaterAudioSource = AudioSourceVariate();
             underwaterAudioSource.loop = true;
             underwaterAudioSource.spatialBlend = 0f;
