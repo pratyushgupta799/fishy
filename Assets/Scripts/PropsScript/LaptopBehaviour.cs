@@ -6,6 +6,8 @@ public class LaptopBehaviour : MonoBehaviour
     [SerializeField] private MeshRenderer screenMeshRenderer;
     [SerializeField] private Material deadScreenMaterial;
     [SerializeField] private Light laptopLight;
+
+    [SerializeField] private Color color;
     
     private bool isDamaged = false;
 
@@ -17,7 +19,7 @@ public class LaptopBehaviour : MonoBehaviour
             {
                 Debug.Log("collision striked water");
                 var mats = screenMeshRenderer.materials;
-                laptopLight.color = Color.blue;
+                laptopLight.color = color;
                 mats[1] = deadScreenMaterial;
                 screenMeshRenderer.materials = mats;
                 isDamaged = true;
