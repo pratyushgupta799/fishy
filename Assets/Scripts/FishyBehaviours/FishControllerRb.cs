@@ -522,9 +522,10 @@ public class FishControllerRB : MonoBehaviour
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
             // Debug.Log(swimDirection);
-            if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
+            if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f)
             {
-                RotateTo(rb.linearVelocity + CamForwardFlat());
+                RotateTo(rb.linearVelocity);
+                // Debug.Log("Rotating Velocity wise");
             }
             else
             {
@@ -539,6 +540,7 @@ public class FishControllerRB : MonoBehaviour
                 );
                 
                 RotateTo(target);
+                // Debug.Log("Rotating blocking yaw");
             }
         }
         else
@@ -555,6 +557,8 @@ public class FishControllerRB : MonoBehaviour
             );
                 
             RotateTo(target);
+            
+            // Debug.Log("Rotating blocking yaw");
         }
     }
 
