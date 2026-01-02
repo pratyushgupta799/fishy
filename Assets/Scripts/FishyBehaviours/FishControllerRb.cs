@@ -88,6 +88,9 @@ public class FishControllerRB : MonoBehaviour
     
     // movement
     private bool wasMoving;
+    private bool forwardLocked;
+    private bool rightLocked;
+    private bool upLocked;
     
     // properties
     private bool IsJumping
@@ -222,9 +225,9 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
-            vertical = Input.GetAxis("Vertical");
-            horizontal = Input.GetAxis("Horizontal");
-            up = Input.GetAxis("Up");
+            vertical = forwardLocked ? 0f : Input.GetAxis("Vertical");
+            horizontal = rightLocked ? 0f : Input.GetAxis("Horizontal");
+            up = upLocked ? 0f : Input.GetAxis("Up");
         }
 
         forward = CamForwardFlat() * vertical;
@@ -701,6 +704,20 @@ public class FishControllerRB : MonoBehaviour
         transform.rotation = rotation;
         
         Debug.Log("Fishy's position snapped to " + location);
+    }
+
+    public void LockMovement(bool forward, bool right, bool up)
+    {
+        forwardLocked = forward;
+        rightLocked = right;
+        upLocked = up;
+    }
+
+    public void UnlockMovement()
+    {
+        forwardLocked = false;
+        rightLocked = false;
+        upLocked = false;
     }
 
 #if UNITY_EDITOR
