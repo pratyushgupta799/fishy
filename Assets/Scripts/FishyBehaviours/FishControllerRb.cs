@@ -546,7 +546,7 @@ public class FishControllerRB : MonoBehaviour
         else
         {
             Debug.Log("Something in the way");
-            Vector3 vel = rb.linearVelocity.normalized;
+            Vector3 vel = rb.linearVelocity;
 
             float pitch = Mathf.Atan2(vel.y, new Vector2(vel.x, vel.z).magnitude) * Mathf.Rad2Deg;
 
