@@ -524,18 +524,18 @@ public class FishControllerRB : MonoBehaviour
             // Debug.Log(swimDirection);
             if (swimDirection.x > 0.1f || swimDirection.z > 0.1f)
             {
-                RotateTo(rb.linearVelocity.normalized);
+                RotateTo(rb.linearVelocity + CamForwardFlat());
             }
             else
             {
-                Vector3 vel = rb.linearVelocity;
+                Vector3 vel = rb.linearVelocity.normalized;
 
                 float pitch = Mathf.Atan2(vel.y, new Vector2(vel.x, vel.z).magnitude) * Mathf.Rad2Deg;
 
                 Quaternion target = Quaternion.Euler(
-                    -pitch,                         // dynamic up/down
-                    transform.eulerAngles.y,       // keep left/right
-                    transform.eulerAngles.z        // keep roll
+                    -pitch,
+                    transform.eulerAngles.y,
+                    transform.eulerAngles.z
                 );
                 
                 RotateTo(target);
@@ -544,7 +544,17 @@ public class FishControllerRB : MonoBehaviour
         else
         {
             Debug.Log("Something in the way");
-            RotateTo(swimDirection);
+            Vector3 vel = rb.linearVelocity.normalized;
+
+            float pitch = Mathf.Atan2(vel.y, new Vector2(vel.x, vel.z).magnitude) * Mathf.Rad2Deg;
+
+            Quaternion target = Quaternion.Euler(
+                -pitch,
+                transform.eulerAngles.y,
+                transform.eulerAngles.z
+            );
+                
+            RotateTo(target);
         }
     }
 
