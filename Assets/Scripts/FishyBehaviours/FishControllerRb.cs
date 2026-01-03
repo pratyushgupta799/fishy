@@ -525,7 +525,6 @@ public class FishControllerRB : MonoBehaviour
             if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f)
             {
                 RotateTo(rb.linearVelocity);
-                // Debug.Log("Rotating Velocity wise");
             }
             else
             {
@@ -540,11 +539,19 @@ public class FishControllerRB : MonoBehaviour
                 );
                 
                 RotateTo(target);
-                // Debug.Log("Rotating blocking yaw");
             }
         }
         else
         {
+            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
+                swimDirection.z * jumpMoveFactor);
+            
+            Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
+            localVel.z = 0f;
+            rb.linearVelocity = transform.TransformDirection(localVel);
+            
+            Debug.Log("Local Velocity: " + localVel);
+            
             Debug.Log("Something in the way");
             Vector3 vel = rb.linearVelocity;
 
@@ -557,8 +564,6 @@ public class FishControllerRB : MonoBehaviour
             );
                 
             RotateTo(target);
-            
-            // Debug.Log("Rotating blocking yaw");
         }
     }
 
