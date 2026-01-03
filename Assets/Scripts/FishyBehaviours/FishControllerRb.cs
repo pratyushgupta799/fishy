@@ -510,6 +510,9 @@ public class FishControllerRB : MonoBehaviour
         swimDirection = (forward + right).normalized;
         rb.useGravity = true;
         
+        rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
+            swimDirection.z * jumpMoveFactor);
+        
         bool canGo = !Physics.Raycast(
             wallCheck.position,
             transform.forward,
@@ -519,8 +522,6 @@ public class FishControllerRB : MonoBehaviour
         );
         if (canGo)
         {
-            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
-                swimDirection.z * jumpMoveFactor);
             // Debug.Log(swimDirection);
             if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f)
             {
@@ -543,9 +544,6 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
-            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
-                swimDirection.z * jumpMoveFactor);
-            
             Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
             localVel.z = 0f;
             rb.linearVelocity = transform.TransformDirection(localVel);
