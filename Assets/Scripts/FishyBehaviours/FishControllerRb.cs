@@ -510,18 +510,23 @@ public class FishControllerRB : MonoBehaviour
         swimDirection = (forward + right).normalized;
         rb.useGravity = true;
         
-        rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
-            swimDirection.z * jumpMoveFactor);
+        var canGoDir = transform.forward;
+        canGoDir.y = 0f;
         
         bool canGo = !Physics.Raycast(
             wallCheck.position,
-            transform.forward,
+            canGoDir,
+            out RaycastHit hit,
             wallDistance,
             ~interactibleLayer,
             QueryTriggerInteraction.Ignore
         );
         if (canGo)
         {
+            Debug.Log("Something not in way");
+            
+            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
+                swimDirection.z * jumpMoveFactor);
             // Debug.Log(swimDirection);
             if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f)
             {
@@ -544,14 +549,21 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
-            Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
-            localVel.z = 0f;
-            rb.linearVelocity = transform.TransformDirection(localVel);
+            // Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
+            // localVel.z = 0f;
+            // rb.linearVelocity = transform.TransformDirection(localVel);
             
-            Debug.Log("Local Velocity: " + localVel);
+            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
+                swimDirection.z * jumpMoveFactor);
+
+            Vector3 vel = rb.linearVelocity;
+            
+            Vector3 intoWall = Vector3.Project(vel, hit.normal);
+            rb.linearVelocity = vel - intoWall;
+            
+            // Debug.Log("Local Velocity: " + localVel);
             
             Debug.Log("Something in the way");
-            Vector3 vel = rb.linearVelocity;
 
             float pitch = Mathf.Atan2(vel.y, new Vector2(vel.x, vel.z).magnitude) * Mathf.Rad2Deg;
 
