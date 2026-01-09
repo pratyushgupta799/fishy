@@ -63507,7 +63507,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f88c984813c92f24bbc67ff43bbbf77f, type: 2}
+  - {fileID: 2100000, guid: b727087b5eebe614a8055030c50d779c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84782,7 +84782,7 @@ GameObject:
   - component: {fileID: 1654774283}
   - component: {fileID: 1654774282}
   - component: {fileID: 1654774281}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88223,6 +88223,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8777030140118008639, guid: 53ee5dc32d58e4e4a983c7e6542856a6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd6bedddd64281c4a91212152aa1b511, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1720286133375835392, guid: 53ee5dc32d58e4e4a983c7e6542856a6, type: 3}

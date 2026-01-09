@@ -195,6 +195,7 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 349039596479384985}
   - {fileID: 7833122117494664109}
+  - {fileID: 2751343534886074413}
   - {fileID: 6587350902497012528}
   - {fileID: -1472758406366434375}
   - {fileID: -3494599159906041991}
@@ -203,7 +204,7 @@ MonoBehaviour:
   - {fileID: -1990647256619622913}
   - {fileID: -4877172052789365079}
   - {fileID: 6667032281808333142}
-  m_RendererFeatureMap: 990db3e8a909d804ad6b866f10d7b46c30eb2e9abef86a5bb9eb8e4c08b68feb79ff6b4994b080cfa424f9d183ab6e414dc72cfa7521fc36ffdd14f4ddcc5fe4a9f606bddbcd50bc56693f6f890e865c
+  m_RendererFeatureMap: 990db3e8a909d804ad6b866f10d7b46c2db8f3235ebc2e2630eb2e9abef86a5bb9eb8e4c08b68feb79ff6b4994b080cfa424f9d183ab6e414dc72cfa7521fc36ffdd14f4ddcc5fe4a9f606bddbcd50bc56693f6f890e865c
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -241,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
   m_Name: Outlines
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   injectionPoint: 600
   fetchColorBuffer: 1
   requirements: 6
@@ -249,6 +250,38 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &2751343534886074413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5342360bfa9b7714c8751e2a76345561, type: 3}
+  m_Name: ScreenSpaceOutlines
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  renderPassEvent: 450
+  outlinesLayerMask:
+    serializedVersion: 2
+    m_Bits: 3575
+  outlineSettings:
+    outlineColor: {r: 0, g: 0, b: 0, a: 0.49411765}
+    outlineScale: 1
+    depthThreshold: 100
+    robertsCrossMultiplier: 500
+    normalThreshold: 0.686
+    steepAngleThreshold: 0.2
+    steepAngleMultiplier: 25
+    colorFormat: 0
+    depthBufferBits: 0
+    filterMode: 1
+    backgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    perObjectData: 0
+    enableDynamicBatching: 0
+    enableInstancing: 0
 --- !u!114 &3962078562771322701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
   m_Name: DecalRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   m_Settings:
     technique: 2
     maxDrawDistance: 1000
@@ -408,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
   m_Name: ScreenSpaceAmbientOcclusion
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   m_Settings:
     AOMethod: 1
     Downsample: 0
