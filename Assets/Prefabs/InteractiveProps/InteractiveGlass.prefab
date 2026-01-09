@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3101502812111875813}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.001, y: 0.956, z: 0.006}
+  m_LocalPosition: {x: -0.001, y: 0.456, z: 0.006}
   m_LocalScale: {x: 0.619665, y: 0.010300301, z: 0.62461996}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,8 +301,13 @@ MonoBehaviour:
   puddleMesh: {fileID: 2770107725114532397, guid: c364920c35eb905479e096cd00dec76c, type: 3}
   puddleCenter: {fileID: 3832719205245872733}
   surfaceMesh: {fileID: 0}
+  maxSlopeAngle: 10
+  puddleHeightOffset: 0.2
+  puddleRaiseDuration: 0.5
   minTiltToSpill: 70
   checkpointIndex: 1
+  glassFall: {fileID: 0}
+  waterSpillSFX: {fileID: 0}
 --- !u!4 &1779948393736582875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
@@ -334,7 +339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8db21bb599180040bec3e6aba51c959, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.014
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8db21bb599180040bec3e6aba51c959, type: 3}
       propertyPath: m_LocalPosition.z
