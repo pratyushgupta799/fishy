@@ -25,11 +25,12 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float dashDuration = 0.25f;
     [SerializeField] private float dashSpeed = 0.5f;
     
-    [Header("Roll")]
+    [Header("Roll and Flop")]
     [SerializeField] private float torqueForce = 5f;
     [SerializeField] private float maxRollVelocity = 2f;
     [SerializeField] private float flopTimer = 0.5f;
     [SerializeField] private float flopForce = 2f;
+    [SerializeField] private float flopCoyote = 0.5f;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -100,6 +101,7 @@ public class FishControllerRB : MonoBehaviour
     private bool rightLocked;
     private bool upLocked;
     private float flopTimerCurrent = 0f;
+    private float flopCoyoteTimer = 0f;
     
     // ground check
     private float groundCheckCollDist;
@@ -179,6 +181,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (inWater)
         {
+            flopCoyoteTimer = 0f;
             bool isMoving = rb.linearVelocity.sqrMagnitude > 0.01f;
             
             if (isMoving && !wasMoving)
@@ -211,9 +214,11 @@ public class FishControllerRB : MonoBehaviour
                 }
             }
             rb.freezeRotation = true;
+            // animator.enabled = true;
         }
         else
         {
+            // animator.enabled = false;
             rb.freezeRotation = false;
             if (bubblesps.isPlaying)
             {
@@ -221,10 +226,12 @@ public class FishControllerRB : MonoBehaviour
             }
             if (isGrounded)
             {
+                flopCoyoteTimer = 0f;
                 GroundMovement();
             }
             else
             {
+                flopCoyoteTimer += Time.deltaTime;
                 AirMovement();
             }
         }
@@ -325,7 +332,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void JumpInput()
     {
-        if (!IsJumping && isGrounded)
+        if ((!IsJumping && isGrounded) || (flopTimerCurrent < flopCoyote && (!inWater && !isGrounded)))
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
             {
@@ -489,7 +496,7 @@ public class FishControllerRB : MonoBehaviour
         flopTimerCurrent += Time.deltaTime;
         if (flopTimerCurrent > flopTimer)
         {
-            rb.AddForce(Vector3.up * flopForce, ForceMode.Impulse);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
             flopTimerCurrent = 0f;
         }
 
@@ -535,9 +542,16 @@ public class FishControllerRB : MonoBehaviour
             // Quaternion newRot =
             //     Quaternion.Euler(transform.rotation.eulerAngles.x, rotY, transform.rotation.eulerAngles.z);
             // Quaternion.Slerp(transform.rotation, newRot, 0.1f);
+            Quaternion baseYaw = Quaternion.LookRotation(swimDirection.normalized);
+
+            Quaternion plus90  = baseYaw * Quaternion.Euler(0f,  90f, transform.eulerAngles.z);
+            Quaternion minus90 = baseYaw * Quaternion.Euler(0f, -90f, transform.eulerAngles.z);
+
             Quaternion targetYaw =
-                Quaternion.LookRotation(swimDirection.normalized) *
-                Quaternion.Euler(0f, 90f, transform.rotation.eulerAngles.z);
+                Quaternion.Angle(transform.rotation, plus90) <
+                Quaternion.Angle(transform.rotation, minus90)
+                    ? plus90
+                    : minus90;
 
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
@@ -550,7 +564,8 @@ public class FishControllerRB : MonoBehaviour
             // RotateTo(slopeRot);
             rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
             rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
-            animator.SetBool("isSwiming", true);
+            
+            // rb.AddForce(Vector3.up * flopForce, ForceMode.Impulse);
         }
         else
         {
