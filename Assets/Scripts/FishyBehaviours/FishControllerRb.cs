@@ -165,7 +165,7 @@ public class FishControllerRB : MonoBehaviour
     private void Update()
     {
         // Debug.DrawRay(wallCheck.position, transform.forward * wallDistance, Color.red);
-        Debug.Log(colliderCenter.transform.position.y);
+        // Debug.Log(colliderCenter.transform.position.y);
         PositionGroundChecker();
         ReloadInput();
         MoveInput();
@@ -518,22 +518,38 @@ public class FishControllerRB : MonoBehaviour
         if (swimDirection.magnitude > 0.1f)
         {
             var rotAxis = Vector3.Cross(Vector3.down, swimDirection.normalized);
-            rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
-            rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
             // lookRot = Quaternion.LookRotation(swimDirection.normalized);
 
-            Quaternion slopeRot = lookRot;
-            if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
-                    groundDistance + 0.5f, ~0,
-                    QueryTriggerInteraction.Ignore))
-            {
-                Vector3 slopeDir = Vector3.ProjectOnPlane(swimDirection, hit.normal).normalized;
-                slopeRot = Quaternion.LookRotation(slopeDir, Vector3.up);
-            }
+            // Quaternion slopeRot = lookRot;
+            // if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
+            //         groundDistance + 0.5f, ~0,
+            //         QueryTriggerInteraction.Ignore))
+            // {
+            //     Vector3 swimDirectionRotated = Quaternion.AngleAxis(90f, Vector3.up) * swimDirection;
+            //     Vector3 slopeDir = Vector3.ProjectOnPlane(swimDirectionRotated, hit.normal).normalized;
+            //     slopeRot = Quaternion.LookRotation(slopeDir, Vector3.up);
+            // }
             
-            Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
+            // var rotY = transform.rotation.eulerAngles.y;
+            // rotY = 
+            // Quaternion newRot =
+            //     Quaternion.Euler(transform.rotation.eulerAngles.x, rotY, transform.rotation.eulerAngles.z);
+            // Quaternion.Slerp(transform.rotation, newRot, 0.1f);
+            Quaternion targetYaw =
+                Quaternion.LookRotation(swimDirection.normalized) *
+                Quaternion.Euler(0f, 90f, transform.rotation.eulerAngles.z);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetYaw,
+                0.1f
+            );
+            
+            // Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
             
             // RotateTo(slopeRot);
+            rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
+            rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
             animator.SetBool("isSwiming", true);
         }
         else
@@ -551,15 +567,17 @@ public class FishControllerRB : MonoBehaviour
             
             Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
             
+            Quaternion targetYaw =
+                Quaternion.Euler(0f, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetYaw,
+                0.1f
+            );
+            
             // RotateTo(slopeRot);
         }
-        
-        // if (!IsJumping && (dashTime <= 0f))
-        // {
-        //     Vector3 currentEuler = transform.rotation.eulerAngles;
-        //     currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
-        //     transform.rotation = Quaternion.Euler(currentEuler);
-        // }
     }
 
     private void AirMovement()
@@ -590,7 +608,11 @@ public class FishControllerRB : MonoBehaviour
             // Debug.Log(swimDirection);
             if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f && IsJumping)
             {
-                RotateTo(rb.linearVelocity);
+                if (IsJumpingFromSurface)
+                {
+                    Debug.Log("Jump from surface");
+                    RotateTo(rb.linearVelocity);
+                }
             }
             else
             {
@@ -604,8 +626,9 @@ public class FishControllerRB : MonoBehaviour
                     transform.eulerAngles.z
                 );
 
-                if (IsJumping)
+                if (IsJumpingFromSurface)
                 {
+                    Debug.Log("Jump from surface");
                     RotateTo(target);
                 }
             }
@@ -636,7 +659,11 @@ public class FishControllerRB : MonoBehaviour
                 transform.eulerAngles.z
             );
                 
-            RotateTo(target);
+            if (IsJumpingFromSurface)
+            {
+                Debug.Log("Jump from surface");
+                RotateTo(target);
+            }
         }
     }
 
