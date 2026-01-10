@@ -209,7 +209,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c3f1edfb9fa943c469950674dd18cec8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 489811791000328041}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c3f1edfb9fa943c469950674dd18cec8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3638444634922295758}
   m_SourcePrefab: {fileID: 100100000, guid: c3f1edfb9fa943c469950674dd18cec8, type: 3}
 --- !u!4 &2526110457111679404 stripped
 Transform:
@@ -221,6 +224,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c3f1edfb9fa943c469950674dd18cec8, type: 3}
   m_PrefabInstance: {fileID: 2631286832431101511}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3638444634922295758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2901827511144598294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd30f2704f4a6444b677a58ec868664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxWobble: 0.03
+  WobbleSpeed: 1
+  Recovery: 1
 --- !u!1001 &4926226445286471084
 PrefabInstance:
   m_ObjectHideFlags: 0
