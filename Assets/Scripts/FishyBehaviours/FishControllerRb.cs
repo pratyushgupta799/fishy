@@ -332,10 +332,11 @@ public class FishControllerRB : MonoBehaviour
 
     private void JumpInput()
     {
-        if ((!IsJumping && isGrounded) || (flopTimerCurrent < flopCoyote && (!inWater && !isGrounded)))
+        if ((!IsJumping && isGrounded) || (flopCoyoteTimer < flopCoyote && (!inWater && !isGrounded)))
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
             {
+                flopCoyoteTimer = flopCoyote;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
 
