@@ -13,6 +13,8 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private GameObject camera;
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem bubblesps;
+    [SerializeField] private SphereCollider sphereCollider;
+    [SerializeField] private GameObject colliderCenter;
     
     [Header("Movement Settings")]
     [SerializeField] private float maxSpeed = 5f;
@@ -22,6 +24,12 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float underWaterMass = 0.02f;
     [SerializeField] private float dashDuration = 0.25f;
     [SerializeField] private float dashSpeed = 0.5f;
+    
+    [Header("Roll")]
+    [SerializeField] private float torqueForce = 5f;
+    [SerializeField] private float maxRollVelocity = 2f;
+    [SerializeField] private float flopTimer = 0.5f;
+    [SerializeField] private float flopForce = 2f;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -91,6 +99,10 @@ public class FishControllerRB : MonoBehaviour
     private bool forwardLocked;
     private bool rightLocked;
     private bool upLocked;
+    private float flopTimerCurrent = 0f;
+    
+    // ground check
+    private float groundCheckCollDist;
     
     // properties
     private bool IsJumping
@@ -144,12 +156,17 @@ public class FishControllerRB : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        sphereCollider = GetComponent<SphereCollider>();
+        groundCheckCollDist = Vector3.Distance(groundCheck.position, sphereCollider.transform.position);
+        colliderCenter.transform.position = sphereCollider.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
         // Debug.DrawRay(wallCheck.position, transform.forward * wallDistance, Color.red);
+        Debug.Log(colliderCenter.transform.position.y);
+        PositionGroundChecker();
         ReloadInput();
         MoveInput();
         CheckGrounded();
@@ -193,9 +210,11 @@ public class FishControllerRB : MonoBehaviour
                     bubblesps.Play();
                 }
             }
+            rb.freezeRotation = true;
         }
         else
         {
+            rb.freezeRotation = false;
             if (bubblesps.isPlaying)
             {
                 bubblesps.Stop();
@@ -209,7 +228,11 @@ public class FishControllerRB : MonoBehaviour
                 AirMovement();
             }
         }
+    }
 
+    private void PositionGroundChecker()
+    {
+        groundCheck.position = sphereCollider.transform.position - Vector3.up * groundCheckCollDist;
     }
     
     private void ReloadInput()
@@ -288,6 +311,15 @@ public class FishControllerRB : MonoBehaviour
             {
                 isGrounded = false;
             }
+        }
+
+        if (isGrounded)
+        {
+            
+        }
+        else
+        {
+            flopTimerCurrent = 0f;
         }
     }
 
@@ -453,6 +485,13 @@ public class FishControllerRB : MonoBehaviour
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
+        
+        flopTimerCurrent += Time.deltaTime;
+        if (flopTimerCurrent > flopTimer)
+        {
+            rb.AddForce(Vector3.up * flopForce, ForceMode.Impulse);
+            flopTimerCurrent = 0f;
+        }
 
         isJumping = false;
         rb.useGravity = true;
@@ -478,7 +517,10 @@ public class FishControllerRB : MonoBehaviour
 
         if (swimDirection.magnitude > 0.1f)
         {
-            lookRot = Quaternion.LookRotation(swimDirection.normalized);
+            var rotAxis = Vector3.Cross(Vector3.down, swimDirection.normalized);
+            rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
+            rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
+            // lookRot = Quaternion.LookRotation(swimDirection.normalized);
 
             Quaternion slopeRot = lookRot;
             if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
@@ -491,7 +533,7 @@ public class FishControllerRB : MonoBehaviour
             
             Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
             
-            RotateTo(slopeRot);
+            // RotateTo(slopeRot);
             animator.SetBool("isSwiming", true);
         }
         else
@@ -509,7 +551,7 @@ public class FishControllerRB : MonoBehaviour
             
             Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
             
-            RotateTo(slopeRot);
+            // RotateTo(slopeRot);
         }
         
         // if (!IsJumping && (dashTime <= 0f))
@@ -541,12 +583,12 @@ public class FishControllerRB : MonoBehaviour
         );
         if (canGo)
         {
-            Debug.Log("Something not in way");
+            // Debug.Log("Something not in way");
             
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
             // Debug.Log(swimDirection);
-            if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f)
+            if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f && IsJumping)
             {
                 RotateTo(rb.linearVelocity);
             }
@@ -561,8 +603,11 @@ public class FishControllerRB : MonoBehaviour
                     transform.eulerAngles.y,
                     transform.eulerAngles.z
                 );
-                
-                RotateTo(target);
+
+                if (IsJumping)
+                {
+                    RotateTo(target);
+                }
             }
         }
         else
