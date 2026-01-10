@@ -5696,11 +5696,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2130750769 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9040792307911805073, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-  m_PrefabInstance: {fileID: 8994003274127268186}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2134743912
 GameObject:
   m_ObjectHideFlags: 0
@@ -5878,33 +5873,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1055521919700496586, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_RootBones.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1055521919700496586, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: 'm_RootBones.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2130750769}
-    - target: {fileID: 1917837120180580381, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_AngularDrag
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3286074260683381993, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_Name
       value: FishCharacterRb
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343932891879290742, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343932891879290742, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343932891879290742, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5950,14 +5921,6 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 330585543}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: flopForce
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: maxRollVelocity
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
