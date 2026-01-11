@@ -193,7 +193,6 @@ public class FishControllerRB : MonoBehaviour
     {
         if (inWater)
         {
-            flopCoyoteTimer = 0f;
             bool isMoving = rb.linearVelocity.sqrMagnitude > 0.01f;
             
             if (isMoving && !wasMoving)
@@ -226,12 +225,10 @@ public class FishControllerRB : MonoBehaviour
             rb.freezeRotation = false;
             if (isGrounded)
             {
-                flopCoyoteTimer = 0f;
                 GroundMovement();
             }
             else
             {
-                flopCoyoteTimer += Time.deltaTime;
                 AirMovement();
             }
         }
@@ -332,11 +329,11 @@ public class FishControllerRB : MonoBehaviour
 
     private void JumpInput()
     {
-        if ((!IsJumping && isGrounded) || (flopCoyoteTimer < flopCoyote && (!inWater && !isGrounded)))
+        if ((!IsJumping && isGrounded) || ((flopCoyoteTimer > 0) && flopCoyoteTimer < flopCoyote && (!inWater && !isGrounded)))
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
             {
-                flopCoyoteTimer = flopCoyote;
+                flopCoyoteTimer = 0f;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
 
@@ -592,6 +589,7 @@ public class FishControllerRB : MonoBehaviour
         Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
         rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
         rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
+        flopCoyoteTimer += Time.deltaTime;
     }
 
     private Vector3 GetFlopDirectionNoise(Vector3 direction)
@@ -616,6 +614,18 @@ public class FishControllerRB : MonoBehaviour
         if (state != FishyStates.InAir)
         {
             flopCoyoteTimer = 0f;
+        }
+        else
+        {
+            if(flopCoyoteTimer > 0f)
+            {
+                flopCoyoteTimer += Time.deltaTime;
+            }
+
+            if (flopCoyoteTimer > flopCoyote)
+            {
+                flopCoyoteTimer = 0f;
+            }
         }
     }
 
