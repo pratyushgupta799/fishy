@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 public class FishControllerRB : MonoBehaviour
@@ -31,6 +32,8 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float flopTimer = 0.5f;
     [SerializeField] private float flopForce = 2f;
     [SerializeField] private float flopCoyote = 0.5f;
+    [SerializeField] private Vector3 flopDirectionNoise;
+    [SerializeField] private Vector3 flopRotationNoise;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -497,7 +500,10 @@ public class FishControllerRB : MonoBehaviour
         flopTimerCurrent += Time.deltaTime;
         if (flopTimerCurrent > flopTimer)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
+            Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
+            Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
+            rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
+            rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
             flopTimerCurrent = 0f;
         }
 
@@ -520,29 +526,10 @@ public class FishControllerRB : MonoBehaviour
             // Debug.Log("Something in the way");
             rb.linearVelocity = Vector3.zero;
         }
-        
-        Quaternion lookRot = transform.rotation;
 
         if (swimDirection.magnitude > 0.1f)
         {
             var rotAxis = Vector3.Cross(Vector3.down, swimDirection.normalized);
-            // lookRot = Quaternion.LookRotation(swimDirection.normalized);
-
-            // Quaternion slopeRot = lookRot;
-            // if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
-            //         groundDistance + 0.5f, ~0,
-            //         QueryTriggerInteraction.Ignore))
-            // {
-            //     Vector3 swimDirectionRotated = Quaternion.AngleAxis(90f, Vector3.up) * swimDirection;
-            //     Vector3 slopeDir = Vector3.ProjectOnPlane(swimDirectionRotated, hit.normal).normalized;
-            //     slopeRot = Quaternion.LookRotation(slopeDir, Vector3.up);
-            // }
-            
-            // var rotY = transform.rotation.eulerAngles.y;
-            // rotY = 
-            // Quaternion newRot =
-            //     Quaternion.Euler(transform.rotation.eulerAngles.x, rotY, transform.rotation.eulerAngles.z);
-            // Quaternion.Slerp(transform.rotation, newRot, 0.1f);
             Quaternion baseYaw = Quaternion.LookRotation(swimDirection.normalized);
 
             Quaternion plus90  = baseYaw * Quaternion.Euler(0f,  90f, transform.eulerAngles.z);
@@ -560,29 +547,11 @@ public class FishControllerRB : MonoBehaviour
                 0.1f
             );
             
-            // Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
-            
-            // RotateTo(slopeRot);
             rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
             rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
-            
-            // rb.AddForce(Vector3.up * flopForce, ForceMode.Impulse);
         }
         else
         {
-            // lookRot.x = 0f;
-
-            Quaternion slopeRot = lookRot;
-            if (Physics.Raycast(groundCheck.transform.position, Vector3.down, out RaycastHit hit,
-                    groundDistance + 0.5f, ~0,
-                    QueryTriggerInteraction.Ignore))
-            {
-                Vector3 slopeDir = Vector3.ProjectOnPlane(transform.forward, hit.normal).normalized;
-                slopeRot = Quaternion.LookRotation(slopeDir, Vector3.up);
-            }
-            
-            Debug.DrawRay(hit.point, hit.normal * 20f, Color.red);
-            
             Quaternion targetYaw =
                 Quaternion.Euler(0f, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
 
@@ -695,6 +664,23 @@ public class FishControllerRB : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation,
             target,
             turnSmoothTime * Time.deltaTime);
+    }
+
+    private Vector3 GetFlopDirectionNoise(Vector3 direction)
+    {
+        direction.x += Random.Range(-flopDirectionNoise.x, flopDirectionNoise.x);
+        direction.y += Random.Range(-flopDirectionNoise.y, flopDirectionNoise.y);
+        direction.z += Random.Range(-flopDirectionNoise.z, flopDirectionNoise.z);
+        return direction;
+    }
+
+    private Vector3 GetFlopRotationNoise()
+    {
+        Vector3 direction = Vector3.zero;
+        direction.x += Random.Range(-flopRotationNoise.x, flopRotationNoise.x);
+        direction.y += Random.Range(-flopRotationNoise.y, flopRotationNoise.y);
+        direction.z += Random.Range(-flopRotationNoise.z, flopRotationNoise.z);
+        return direction;
     }
 
     private void OnTriggerEnter(Collider other)

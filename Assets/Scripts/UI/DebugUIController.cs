@@ -9,6 +9,9 @@ public class DebugUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stateText;
     [SerializeField] private TextMeshProUGUI deathTimerText;
     [SerializeField] private TextMeshProUGUI checkpointText;
+    [SerializeField] private TextMeshProUGUI playerSpeed;
+    
+    private Rigidbody fish;
 
     void OnEnable()
     {
@@ -22,6 +25,18 @@ public class DebugUIController : MonoBehaviour
         FishyEvents.OnFishyMoveStateChanged -= UpdateState;
         FishyEvents.OnDeathTimerChanged -= UpdateDeathTimer;
         FishyEvents.OnCheckpointChanged -= UpdateCheckpoint;
+    }
+
+    private void Update()
+    {
+        if (fish == null)
+        {
+            fish = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<Rigidbody>();
+        }
+        else
+        {
+            playerSpeed.text = fish.linearVelocity.ToString();
+        }
     }
     
     private void UpdateState(FishyStates state)
