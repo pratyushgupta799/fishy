@@ -2921,7 +2921,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3286074260683381993, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 75920566}
   m_SourcePrefab: {fileID: 100100000, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
 --- !u!4 &75920559 stripped
 Transform:
@@ -2933,6 +2936,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3286074260683381993, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
   m_PrefabInstance: {fileID: 75920558}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &75920566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75920560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f804c45ca1ba08d4b83842b70429a3dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bubblesUp: {fileID: 1995656669}
 --- !u!1 &80046151
 GameObject:
   m_ObjectHideFlags: 0
@@ -95199,6 +95215,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995188165}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!198 &1995656669 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+  m_PrefabInstance: {fileID: 75920558}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1996350317
 PrefabInstance:
   m_ObjectHideFlags: 0

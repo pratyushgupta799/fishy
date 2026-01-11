@@ -13,7 +13,6 @@ public class FishControllerRB : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject camera;
     [SerializeField] private Animator animator;
-    [SerializeField] private ParticleSystem bubblesps;
     [SerializeField] private SphereCollider sphereCollider;
     [SerializeField] private GameObject colliderCenter;
     
@@ -203,18 +202,10 @@ public class FishControllerRB : MonoBehaviour
             if (isAtSurface)
             {
                 SurfaceMovement();
-                if (bubblesps.isPlaying)
-                {
-                    bubblesps.Stop();
-                }
             }
             else if (!IsJumping)
             {
                 WaterMovement();
-                if (!bubblesps.isPlaying)
-                {
-                    bubblesps.Play();
-                }
             }
             rb.freezeRotation = true;
             // animator.enabled = true;
@@ -223,10 +214,6 @@ public class FishControllerRB : MonoBehaviour
         {
             // animator.enabled = false;
             rb.freezeRotation = false;
-            if (bubblesps.isPlaying)
-            {
-                bubblesps.Stop();
-            }
             if (isGrounded)
             {
                 flopCoyoteTimer = 0f;
@@ -595,7 +582,7 @@ public class FishControllerRB : MonoBehaviour
             {
                 if (IsJumpingFromSurface)
                 {
-                    Debug.Log("Jump from surface");
+                    // Debug.Log("Jump from surface");
                     RotateTo(rb.linearVelocity);
                 }
             }
@@ -613,17 +600,13 @@ public class FishControllerRB : MonoBehaviour
 
                 if (IsJumpingFromSurface)
                 {
-                    Debug.Log("Jump from surface");
+                    // Debug.Log("Jump from surface");
                     RotateTo(target);
                 }
             }
         }
         else
         {
-            // Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
-            // localVel.z = 0f;
-            // rb.linearVelocity = transform.TransformDirection(localVel);
-            
             rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
                 swimDirection.z * jumpMoveFactor);
 
@@ -646,7 +629,7 @@ public class FishControllerRB : MonoBehaviour
                 
             if (IsJumpingFromSurface)
             {
-                Debug.Log("Jump from surface");
+                // Debug.Log("Jump from surface");
                 RotateTo(target);
             }
         }
