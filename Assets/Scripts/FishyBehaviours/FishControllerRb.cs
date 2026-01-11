@@ -157,6 +157,16 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        FishyEvents.OnFishyMoveStateChanged += TimerManagement;
+    }
+    
+    private void OnDisable()
+    {
+        FishyEvents.OnFishyMoveStateChanged -= TimerManagement;
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -487,32 +497,14 @@ public class FishControllerRB : MonoBehaviour
         flopTimerCurrent += Time.deltaTime;
         if (flopTimerCurrent > flopTimer)
         {
-            Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
-            Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
-            rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
-            rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
+            Flop();
             flopTimerCurrent = 0f;
         }
 
-        isJumping = false;
+        IsJumping = false;
         rb.useGravity = true;
-        bool canGo = !Physics.Raycast(
-            wallCheck.position,
-            transform.forward,
-            wallDistance,
-            ~interactibleLayer,
-            QueryTriggerInteraction.Ignore
-        );
-        if (canGo)
-        {
-            rb.linearVelocity = new Vector3(swimDirection.x * groundSpeedScale, rb.linearVelocity.y,
+        rb.linearVelocity = new Vector3(swimDirection.x * groundSpeedScale, rb.linearVelocity.y,
                 swimDirection.z * groundSpeedScale);
-        }
-        else
-        {
-            // Debug.Log("Something in the way");
-            rb.linearVelocity = Vector3.zero;
-        }
 
         if (swimDirection.magnitude > 0.1f)
         {
@@ -527,12 +519,8 @@ public class FishControllerRB : MonoBehaviour
                 Quaternion.Angle(transform.rotation, minus90)
                     ? plus90
                     : minus90;
-
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetYaw,
-                0.1f
-            );
+            
+            RotateTo(targetYaw);
             
             rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
             rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
@@ -541,14 +529,8 @@ public class FishControllerRB : MonoBehaviour
         {
             Quaternion targetYaw =
                 Quaternion.Euler(0f, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetYaw,
-                0.1f
-            );
             
-            // RotateTo(slopeRot);
+            RotateTo(targetYaw);
         }
     }
 
@@ -556,37 +538,24 @@ public class FishControllerRB : MonoBehaviour
     {
         rb.mass = 1f;
         FishyEvents.SetState(FishyStates.InAir);
-            
+
         swimDirection = (forward + right).normalized;
         rb.useGravity = true;
-        
-        var canGoDir = transform.forward;
-        canGoDir.y = 0f;
-        
-        bool canGo = !Physics.Raycast(
-            wallCheck.position,
-            canGoDir,
-            out RaycastHit hit,
-            wallDistance,
-            ~interactibleLayer,
-            QueryTriggerInteraction.Ignore
-        );
-        if (canGo)
+
+        rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
+            swimDirection.z * jumpMoveFactor);
+        // Debug.Log(swimDirection);
+        if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f && IsJumping)
         {
-            // Debug.Log("Something not in way");
-            
-            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
-                swimDirection.z * jumpMoveFactor);
-            // Debug.Log(swimDirection);
-            if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f && IsJumping)
+            if (IsJumpingFromSurface)
             {
-                if (IsJumpingFromSurface)
-                {
-                    // Debug.Log("Jump from surface");
-                    RotateTo(rb.linearVelocity);
-                }
+                // Debug.Log("Jump from surface");
+                RotateTo(rb.linearVelocity);
             }
-            else
+        }
+        else
+        {
+            if (IsJumpingFromSurface)
             {
                 Vector3 vel = rb.linearVelocity.normalized;
 
@@ -597,41 +566,9 @@ public class FishControllerRB : MonoBehaviour
                     transform.eulerAngles.y,
                     transform.eulerAngles.z
                 );
-
-                if (IsJumpingFromSurface)
-                {
-                    // Debug.Log("Jump from surface");
-                    RotateTo(target);
-                }
-            }
-        }
-        else
-        {
-            rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
-                swimDirection.z * jumpMoveFactor);
-
-            Vector3 vel = rb.linearVelocity;
-            
-            Vector3 intoWall = Vector3.Project(vel, hit.normal);
-            rb.linearVelocity = vel - intoWall;
-            
-            // Debug.Log("Local Velocity: " + localVel);
-            
-            Debug.Log("Something in the way");
-
-            float pitch = Mathf.Atan2(vel.y, new Vector2(vel.x, vel.z).magnitude) * Mathf.Rad2Deg;
-
-            Quaternion target = Quaternion.Euler(
-                -pitch,
-                transform.eulerAngles.y,
-                transform.eulerAngles.z
-            );
-                
-            if (IsJumpingFromSurface)
-            {
-                // Debug.Log("Jump from surface");
                 RotateTo(target);
             }
+
         }
     }
 
@@ -649,6 +586,14 @@ public class FishControllerRB : MonoBehaviour
             turnSmoothTime * Time.deltaTime);
     }
 
+    private void Flop()
+    {
+        Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
+        Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
+        rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
+        rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
+    }
+
     private Vector3 GetFlopDirectionNoise(Vector3 direction)
     {
         direction.x += Random.Range(-flopDirectionNoise.x, flopDirectionNoise.x);
@@ -664,6 +609,14 @@ public class FishControllerRB : MonoBehaviour
         direction.y += Random.Range(-flopRotationNoise.y, flopRotationNoise.y);
         direction.z += Random.Range(-flopRotationNoise.z, flopRotationNoise.z);
         return direction;
+    }
+
+    private void TimerManagement(FishyStates state)
+    {
+        if (state != FishyStates.InAir)
+        {
+            flopCoyoteTimer = 0f;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
