@@ -217,11 +217,9 @@ public class FishControllerRB : MonoBehaviour
                 WaterMovement();
             }
             rb.freezeRotation = true;
-            // animator.enabled = true;
         }
         else
         {
-            // animator.enabled = false;
             rb.freezeRotation = false;
             if (isGrounded)
             {

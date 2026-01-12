@@ -46,7 +46,7 @@ public class DebugUIController : MonoBehaviour
     
     private void UpdateDeathTimer(int time)
     {
-        deathTimerText.text = time.ToString() + "s";
+        deathTimerText.SetText("{0}s", time);
     }
     
     private void UpdateCheckpoint(int index)
