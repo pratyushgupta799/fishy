@@ -528,6 +528,20 @@ public class FishControllerRB : MonoBehaviour
                 Quaternion.Euler(0f, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
             
             RotateTo(targetYaw);
+            
+            Quaternion targetYaw2_1 =
+                Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 90f);
+            
+            Quaternion targetYaw2_2 =
+                Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -90f);
+            
+            Quaternion targetYaw2 =
+                Quaternion.Angle(transform.rotation, targetYaw2_1) <
+                Quaternion.Angle(transform.rotation, targetYaw2_2)
+                    ? targetYaw2_1
+                    : targetYaw2_2;
+            
+            RotateToSlow(targetYaw2);
         }
     }
 
@@ -580,6 +594,13 @@ public class FishControllerRB : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation,
             target,
             turnSmoothTime * Time.deltaTime);
+    }
+    
+    private void RotateToSlow(Quaternion target)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            target,
+            turnSmoothTime * 0.1f * Time.deltaTime);
     }
 
     private void Flop()
