@@ -174,6 +174,7 @@ public class FishControllerRB : MonoBehaviour
         groundCheckCollDist = Vector3.Distance(groundCheck.position, sphereCollider.transform.position);
         colliderCenter.transform.position = sphereCollider.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
+        animator.enabled = true;
     }
 
     private void Update()

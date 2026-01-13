@@ -5420,7 +5420,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
   animator: {fileID: 2554984417118059043}
-  bubblesps: {fileID: 1973924276923997323}
   sphereCollider: {fileID: 4923730549538644310}
   colliderCenter: {fileID: 1929711403926958449}
   maxSpeed: 1.5
@@ -5435,6 +5434,8 @@ MonoBehaviour:
   flopTimer: 0.5
   flopForce: 2
   flopCoyote: 0.5
+  flopDirectionNoise: {x: 0, y: 0, z: 0}
+  flopRotationNoise: {x: 0, y: 0, z: 0}
   jumpMoveFactorFromWater: 1.75
   jumpMoveFactorFromGround: 1.25
   jumpForceWater: 7
