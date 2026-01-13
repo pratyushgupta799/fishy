@@ -159,12 +159,12 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnEnable()
     {
-        FishyEvents.OnFishyMoveStateChanged += TimerManagement;
+        FishyEvents.OnFishyMoveStateChanged += StateManagement;
     }
     
     private void OnDisable()
     {
-        FishyEvents.OnFishyMoveStateChanged -= TimerManagement;
+        FishyEvents.OnFishyMoveStateChanged -= StateManagement;
     }
 
     private void Awake()
@@ -436,7 +436,10 @@ public class FishControllerRB : MonoBehaviour
             RotateTo(swimDirection.normalized);
             animator.SetBool("isSwiming", true);
         }
-        else animator.SetBool("isSwiming", false);
+        else
+        {
+            animator.SetBool("isSwiming", false);
+        }
 
         // Keep near surface
         if (up >= 0 && !IsJumping && (dashTime <= 0f))
@@ -455,8 +458,6 @@ public class FishControllerRB : MonoBehaviour
         FishyEvents.SetState(FishyStates.InWater);
         rb.useGravity = false;
         rb.mass = underWaterMass;
-
-        
         
         if (dashTime > 0)
         {
@@ -563,7 +564,6 @@ public class FishControllerRB : MonoBehaviour
                 );
                 RotateTo(target);
             }
-
         }
     }
 
@@ -607,7 +607,7 @@ public class FishControllerRB : MonoBehaviour
         return direction;
     }
 
-    private void TimerManagement(FishyStates state)
+    private void StateManagement(FishyStates state)
     {
         if (state != FishyStates.InAir)
         {
@@ -624,6 +624,16 @@ public class FishControllerRB : MonoBehaviour
             {
                 flopCoyoteTimer = 0f;
             }
+        }
+
+        if (state == FishyStates.InWater || state == FishyStates.OnSurface)
+        {
+            animator.SetBool("inWater", true);
+        }
+        else
+        {
+            animator.SetBool("inWater", false);
+            animator.SetBool("isSwiming", false);
         }
     }
 
