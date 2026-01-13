@@ -600,7 +600,7 @@ public class FishControllerRB : MonoBehaviour
     {
         transform.rotation = Quaternion.Slerp(transform.rotation,
             target,
-            turnSmoothTime * 0.1f * Time.deltaTime);
+            turnSmoothTime * 2f * Time.deltaTime);
     }
 
     private void Flop()
