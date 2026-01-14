@@ -376,6 +376,11 @@ public class FishControllerRB : MonoBehaviour
             {
                 if ((jumpHoldTimer < maxAirCharge) && canCharge)
                 {
+                    // if (rb.angularVelocity.magnitude <= 0.1f)
+                    // {
+                    //     rb.AddTorque(torqueForce * 0.2f * (-transform.right + (GetFlopRotationNoise() * 10f)),
+                    //         ForceMode.Impulse);
+                    // }
                     jumpHoldTimer += Time.deltaTime;
                     float t = jumpHoldTimer / maxAirCharge;
                     float falloff = 1f - t;
@@ -556,6 +561,7 @@ public class FishControllerRB : MonoBehaviour
         rb.linearVelocity = new Vector3(swimDirection.x * jumpMoveFactor, rb.linearVelocity.y,
             swimDirection.z * jumpMoveFactor);
         // Debug.Log(swimDirection);
+        
         if (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z) > 0.1f && IsJumping)
         {
             if (IsJumpingFromSurface)
