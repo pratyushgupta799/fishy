@@ -276,6 +276,7 @@ public class FishControllerRB : MonoBehaviour
         right = CamRightFlat() * horizontal;
         forward.y = 0;
         right.y = 0;
+        // upward = up * Vector3.up;
         upward = up * Vector3.up;
     }
 
@@ -436,6 +437,13 @@ public class FishControllerRB : MonoBehaviour
         {
             rb.linearVelocity = swimMovement * maxSpeed;
         }
+        
+        if (Mathf.Abs(Vector3.Dot(swimDirection.normalized, Vector3.up)) > 0.99f)
+        {
+            // keep vertical direction, but set XZ from camera
+            Vector3 horizontalDir = new Vector3(camera.transform.forward.x, 0f,camera.transform.forward.z).normalized;
+            swimDirection = new Vector3(horizontalDir.x * 0.0001f, swimDirection.y, horizontalDir.z * 0.0001f).normalized;
+        }
             
         if (swimDirection.magnitude > 0.1f)
         {
@@ -475,6 +483,13 @@ public class FishControllerRB : MonoBehaviour
         if (dashTime <= 0f)
         {
             rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
+        }
+        
+        if (Mathf.Abs(Vector3.Dot(swimVel.normalized, Vector3.up)) > 0.99f)
+        {
+            // keep vertical direction, but set XZ from camera
+            Vector3 horizontalDir = new Vector3(camera.transform.forward.x, 0f, camera.transform.forward.z).normalized;
+            swimVel = new Vector3(horizontalDir.x * 0.0001f, swimVel.y, horizontalDir.z * 0.0001f).normalized;
         }
         
         if (swimVel.magnitude > 0.01f)
@@ -795,6 +810,15 @@ public class FishControllerRB : MonoBehaviour
     {
         return (dashTime > 0 && dashTime <= dashDuration);
     }
+
+    // Vector3 CamUpFlat()
+    // {
+    //     Vector3 camUp = Vector3.up;
+    //
+    //     camUp.x = CamRightFlat().x;
+    //     camUp.z = CamForwardFlat().z;
+    //     return camUp;
+    // }
 
     Vector3 CamForwardFlat()
     {
