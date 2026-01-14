@@ -522,7 +522,7 @@ public class FishControllerRB : MonoBehaviour
                     ? plus90
                     : minus90;
             
-            RotateTo(targetYaw);
+            RotateToSlow(targetYaw);
             
             rb.AddTorque(-rotAxis * torqueForce, ForceMode.Force);
             rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, maxRollVelocity);
@@ -546,7 +546,7 @@ public class FishControllerRB : MonoBehaviour
                     ? targetYaw2_1
                     : targetYaw2_2;
             
-            RotateToSlow(targetYaw2);
+            RotateToFast(targetYaw2);
         }
     }
 
@@ -602,11 +602,18 @@ public class FishControllerRB : MonoBehaviour
             turnSmoothTime * Time.deltaTime);
     }
     
-    private void RotateToSlow(Quaternion target)
+    private void RotateToFast(Quaternion target)
     {
         transform.rotation = Quaternion.Slerp(transform.rotation,
             target,
             turnSmoothTime * 2f * Time.deltaTime);
+    }
+    
+    private void RotateToSlow(Quaternion target)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            target,
+            turnSmoothTime * 0.1f * Time.deltaTime);
     }
 
     private void Flop()

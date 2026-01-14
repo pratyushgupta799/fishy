@@ -2830,6 +2830,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 319395383346225975, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1055521919700496586, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2893,6 +2897,10 @@ PrefabInstance:
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923730549538644310, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: camera
@@ -7222,7 +7230,7 @@ MonoBehaviour:
   - {fileID: 2045050313}
   - {fileID: 2103244727}
   - {fileID: 1951878456}
-  loadFromCheckpoint: 15
+  loadFromCheckpoint: 1
   changedPrefab: []
 --- !u!1 &211156552
 GameObject:
