@@ -2811,6 +2811,10 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: twirlJumpForce
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: flopRotationNoise.w
       value: 0.9998864
       objectReference: {fileID: 0}
@@ -7071,7 +7075,7 @@ MonoBehaviour:
   - {fileID: 2045050313}
   - {fileID: 2103244727}
   - {fileID: 1951878456}
-  loadFromCheckpoint: 15
+  loadFromCheckpoint: 1
   changedPrefab: []
 --- !u!1 &211156552
 GameObject:

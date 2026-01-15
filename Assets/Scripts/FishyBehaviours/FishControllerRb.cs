@@ -25,14 +25,20 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float dashDuration = 0.25f;
     [SerializeField] private float dashSpeed = 0.5f;
     
-    [Header("Roll and Flop")]
+    [Header("Roll")]
     [SerializeField] private float torqueForce = 5f;
     [SerializeField] private float maxRollVelocity = 2f;
+    
+    [Header("Flop")]
     [SerializeField] private float flopTimer = 0.5f;
     [SerializeField] private float flopForce = 2f;
     [SerializeField] private float flopCoyote = 0.5f;
     [SerializeField] private Vector3 flopDirectionNoise;
     [SerializeField] private Vector3 flopRotationNoise;
+
+    [Header("Twirl")] 
+    [SerializeField] private float twirlTorqueForce = 0.3f;
+    [SerializeField] private float twirlJumpForce = 2f;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -107,6 +113,9 @@ public class FishControllerRB : MonoBehaviour
     
     // ground check
     private float groundCheckCollDist;
+    
+    // shake
+    private bool canTwirl;
     
     // properties
     private bool IsJumping
@@ -186,7 +195,7 @@ public class FishControllerRB : MonoBehaviour
         MoveInput();
         CheckGrounded();
         JumpInput();
-        DashInput();
+        ShakeInput();
         MoveCharacter();
     }
 
@@ -399,12 +408,24 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    private void DashInput()
+    private void ShakeInput()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && inWater && dashTime <= 0f)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            rb.AddForce(transform.forward * dashSpeed, ForceMode.VelocityChange);
-            dashTime = dashDuration;
+            // dash
+            if (inWater && dashTime <= 0f)
+            {
+                rb.AddForce(transform.forward * dashSpeed, ForceMode.VelocityChange);
+                dashTime = dashDuration;
+            }
+            // twirl
+            if (!inWater && !isGrounded && canTwirl)
+            {
+                rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
+                rb.AddForce(Vector3.up * twirlJumpForce, ForceMode.Impulse);
+                canTwirl = false;
+                IsJumping = false;
+            }
         }
     }
 
@@ -665,6 +686,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
+            canTwirl = true;
             if(flopCoyoteTimer > 0f)
             {
                 flopCoyoteTimer += Time.deltaTime;
