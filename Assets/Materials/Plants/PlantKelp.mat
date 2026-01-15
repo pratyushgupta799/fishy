@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Kelp
+  m_Name: PlantKelp
   m_Shader: {fileID: -6465566751694194690, guid: 8b0bbe5786af83b4dbd6da2e31b85576, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -73,7 +73,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 2800000, guid: 43912324f2274904cae79844296f0e4a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6d668ca62a6218647b3d1efca2a6d373, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -109,12 +109,13 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HueVariation: 0.1
+    - _HueVariation: 0.05
     - _Metallic: 0
-    - _Noise_Scale: 1
-    - _Noise_Speed: 0.5
+    - _Noise_Scale: 0.8
+    - _Noise_Speed: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PlayerPosRadius: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -125,19 +126,20 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _ValueVariation: 0.54
+    - _ValueVariation: 0.28
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorTint: {r: 1, g: 1, b: 1, a: 0}
-    - _Direction: {r: 1.55, g: 3, b: 0, a: 0}
-    - _Direction_1: {r: 1.5, g: 0, b: 3, a: 0}
+    - _ColorTint: {r: 1, g: 0.97693086, b: 0.9009434, a: 0}
+    - _Direction: {r: 1.5, g: 3, b: 0, a: 0}
+    - _Direction_1: {r: 5, g: 10, b: 15, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
-    - _ShadowColor: {r: 0.503916, g: 0.7169812, b: 0.663823, a: 0}
+    - _ShadowColor: {r: 0.7343451, g: 1, b: 0.6839622, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _x: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4139960756809972885

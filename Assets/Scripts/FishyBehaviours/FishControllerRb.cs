@@ -16,7 +16,7 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SphereCollider sphereCollider;
     [SerializeField] private GameObject colliderCenter;
-    
+     
     [Header("Movement Settings")]
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float moveForce = 2f;
@@ -198,6 +198,7 @@ public class FishControllerRB : MonoBehaviour
         JumpInput();
         ShakeInput();
         MoveCharacter();
+        
     }
 
     private void MoveCharacter()
