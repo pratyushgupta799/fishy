@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FishyUtilities;
 using TMPro;
 using UnityEngine;
@@ -435,7 +436,11 @@ public class FishControllerRB : MonoBehaviour
                 }
 
                 canTwirl = false;
-                IsJumping = false;
+                if (IsJumpingFromSurface)
+                {
+                    IsJumping = false;
+                    StartCoroutine(Delay(0.5f, () => { IsJumpingFromSurface = true; }));
+                }
             }
         }
     }
@@ -892,6 +897,12 @@ public class FishControllerRB : MonoBehaviour
         forwardLocked = false;
         rightLocked = false;
         upLocked = false;
+    }
+    
+    IEnumerator Delay(float t, System.Action a)
+    {
+        yield return new WaitForSeconds(t);
+        a();
     }
 
 #if UNITY_EDITOR
