@@ -423,9 +423,17 @@ public class FishControllerRB : MonoBehaviour
             {
                 rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
                 float yVel = rb.linearVelocity.y;
-                float factor = Mathf.Clamp01(1f - (yVel / jumpForceWater));
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, yVel + twirlJumpForce * factor,
-                    rb.linearVelocity.z);
+                if (yVel >= 0)
+                {
+                    float factor = Mathf.Clamp01(1f - (yVel / jumpForceWater));
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, yVel + twirlJumpForce * factor,
+                        rb.linearVelocity.z);
+                }
+                else
+                {
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, twirlJumpForce, rb.linearVelocity.z);
+                }
+
                 canTwirl = false;
                 IsJumping = false;
             }
