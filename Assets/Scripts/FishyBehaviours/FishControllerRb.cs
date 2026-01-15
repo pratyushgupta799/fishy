@@ -619,7 +619,7 @@ public class FishControllerRB : MonoBehaviour
             if (IsJumpingFromSurface)
             {
                 // Debug.Log("Jump from surface");
-                // RotateTo(rb.linearVelocity);
+                RotateTo(rb.linearVelocity);
             }
         }
         else
@@ -635,7 +635,7 @@ public class FishControllerRB : MonoBehaviour
                     transform.eulerAngles.y,
                     transform.eulerAngles.z
                 );
-                // RotateTo(target);
+                RotateTo(target);
             }
         }
     }
