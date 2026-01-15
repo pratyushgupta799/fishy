@@ -422,7 +422,7 @@ public class FishControllerRB : MonoBehaviour
             if (!inWater && !isGrounded && canTwirl)
             {
                 rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, twirlJumpForce, rb.linearVelocity.z);
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y + twirlJumpForce, rb.linearVelocity.z);
                 canTwirl = false;
                 IsJumping = false;
             }
