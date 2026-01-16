@@ -5069,7 +5069,7 @@ MonoBehaviour:
   - {fileID: 9040792307911805073}
   m_EndBones: []
   m_Material: {fileID: 0}
-  m_StartDepth: 1
+  m_StartDepth: 0
   m_SiblingConstraints: 0
   m_ClosedSiblings: 0
   m_SiblingRotationConstraints: 1
@@ -5352,6 +5352,7 @@ GameObject:
   - component: {fileID: 4923730549538644310}
   - component: {fileID: 2639505124982433242}
   - component: {fileID: 319395383346225975}
+  - component: {fileID: 5538896141553407244}
   m_Layer: 8
   m_Name: FishCharacterRb
   m_TagString: Player
@@ -5429,16 +5430,17 @@ MonoBehaviour:
   underWaterMass: 0.2
   dashDuration: 0.2
   dashSpeed: 3.5
-  torqueForce: 0.5
+  torqueForce: 0.2
   maxRollVelocity: 10
-  flopTimer: 0.5
+  flopTimer: 0.2
   flopForce: 2
   flopCoyote: 0.5
-  flopDirectionNoise: {x: 0, y: 0, z: 0}
-  flopRotationNoise: {x: 0, y: 0, z: 0}
+  flopDirectionNoise: {x: 1, y: 1, z: 1}
+  flopRotationNoise: {x: 0.03, y: 0.1, z: 0.03}
+  twirlTorqueForce: 0.3
+  twirlJumpForce: 3
   jumpMoveFactorFromWater: 1.75
   jumpMoveFactorFromGround: 1.25
-  jumpForceWater: 7
   jumpForceGround: 4
   minJumpForceWater: 3.5
   maxAirCharge: 0.35
@@ -5472,7 +5474,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.14
   m_Center: {x: 0, y: -0.04, z: 0.06}
@@ -5507,12 +5509,25 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.14
   m_Height: 0.45
   m_Direction: 2
   m_Center: {x: 0.00000047629078, y: -0.05, z: 0.01}
+--- !u!114 &5538896141553407244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3286074260683381993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f804c45ca1ba08d4b83842b70429a3dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bubblesUp: {fileID: 1973924276923997323}
 --- !u!1 &3414850073216419029
 GameObject:
   m_ObjectHideFlags: 0

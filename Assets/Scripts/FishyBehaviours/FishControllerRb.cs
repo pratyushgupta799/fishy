@@ -674,6 +674,7 @@ public class FishControllerRB : MonoBehaviour
         Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
         rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
         rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
+        jumpMoveFactor = jumpMoveFactorFromGround;
         flopCoyoteTimer += Time.deltaTime;
     }
 
