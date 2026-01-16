@@ -29,7 +29,7 @@ public class DeathTimer : MonoBehaviour
         }
         else if(curFishyState == FishyStates.InAir)
         {
-            currentDeathTimer -= Time.deltaTime * 2;
+            currentDeathTimer -= Time.deltaTime;
         }
 
         if (currentDeathTimer <= 0)
