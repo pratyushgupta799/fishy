@@ -41,6 +41,9 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float twirlTorqueForce = 0.3f;
     [SerializeField] private float twirlJumpForce = 2f;
 
+    [Header("Splash")] 
+    [SerializeField] private float splashCooldown = 1f;
+
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
     [SerializeField] private float jumpMoveFactorFromGround = 0.5f;
@@ -116,6 +119,7 @@ public class FishControllerRB : MonoBehaviour
     
     // shake
     private bool canTwirl;
+    private bool canSplash = true;
     
     // properties
     private bool IsJumping
@@ -387,11 +391,6 @@ public class FishControllerRB : MonoBehaviour
             {
                 if ((jumpHoldTimer < maxAirCharge) && canCharge)
                 {
-                    // if (rb.angularVelocity.magnitude <= 0.1f)
-                    // {
-                    //     rb.AddTorque(torqueForce * 0.2f * (-transform.right + (GetFlopRotationNoise() * 10f)),
-                    //         ForceMode.Impulse);
-                    // }
                     jumpHoldTimer += Time.deltaTime;
                     float t = jumpHoldTimer / maxAirCharge;
                     float falloff = 1f - t;
@@ -414,7 +413,7 @@ public class FishControllerRB : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             // dash
-            if (inWater && dashTime <= 0f)
+            if (inWater && !isAtSurface && dashTime <= 0f)
             {
                 rb.AddForce(transform.forward * dashSpeed, ForceMode.VelocityChange);
                 dashTime = dashDuration;
@@ -441,6 +440,13 @@ public class FishControllerRB : MonoBehaviour
                     IsJumping = false;
                     StartCoroutine(Delay(0.5f, () => { IsJumpingFromSurface = true; }));
                 }
+            }
+            // splash
+            if (isAtSurface && canSplash)
+            {
+                rb.AddForce(Vector3.up * 1.2f, ForceMode.Impulse);
+                canSplash = false;
+                StartCoroutine(Delay(splashCooldown, () => { canSplash = true; }));
             }
         }
     }
@@ -891,7 +897,7 @@ public class FishControllerRB : MonoBehaviour
         upLocked = false;
     }
     
-    IEnumerator Delay(float t, System.Action a)
+    IEnumerator Delay(float t, Action a)
     {
         yield return new WaitForSeconds(t);
         a();
