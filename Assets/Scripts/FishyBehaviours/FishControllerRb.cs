@@ -44,7 +44,6 @@ public class FishControllerRB : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
     [SerializeField] private float jumpMoveFactorFromGround = 0.5f;
-    [SerializeField] private float jumpForceWater = 5f;
     [SerializeField] private float jumpForceGround = 2f;
     [SerializeField] private float minJumpForceWater = 2f;
     [SerializeField] private float maxAirCharge = 1f;
@@ -427,7 +426,7 @@ public class FishControllerRB : MonoBehaviour
                 float yVel = rb.linearVelocity.y;
                 if (yVel >= 0)
                 {
-                    float factor = Mathf.Clamp01(1f - (yVel / jumpForceWater));
+                    float factor = Mathf.Clamp01(1f - (yVel / minJumpForceWater));
                     rb.linearVelocity = new Vector3(rb.linearVelocity.x, yVel + twirlJumpForce * factor,
                         rb.linearVelocity.z);
                 }
@@ -849,15 +848,6 @@ public class FishControllerRB : MonoBehaviour
     {
         return (dashTime > 0 && dashTime <= dashDuration);
     }
-
-    // Vector3 CamUpFlat()
-    // {
-    //     Vector3 camUp = Vector3.up;
-    //
-    //     camUp.x = CamRightFlat().x;
-    //     camUp.z = CamForwardFlat().z;
-    //     return camUp;
-    // }
 
     Vector3 CamForwardFlat()
     {
