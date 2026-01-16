@@ -25,7 +25,7 @@ public static class FishyEvents
     public static Action OnUnderwaterEnter;
     public static Action OnUnderwaterExit;
 
-    public static Action OnJumpFromWater;
+    public static Action<Vector3> OnJumpFromWater;
 
     public static Action OnWateringPlantStart;
     public static Action OnWateringPlantEnd;

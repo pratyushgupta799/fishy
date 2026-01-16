@@ -1,24 +1,29 @@
 using FishyUtilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FishyParticlesEffect : MonoBehaviour
 {
     [SerializeField] private ParticleSystem bubblesUp;
-    [SerializeField] private ParticleSystem waterSplash;
+    [SerializeField] private ParticleSystem waterSplashLand;
+    [SerializeField] private ParticleSystem waterSplashJump;
 
-    private ParticleSystem sceneWaterSplash;
+    private ParticleSystem sceneWaterSplashLand;
+    private ParticleSystem sceneWaterSplashJump;
     
     private void OnEnable()
     {
-        sceneWaterSplash = Instantiate(waterSplash, transform.position, Quaternion.LookRotation(Vector3.up));
+        sceneWaterSplashJump = Instantiate(waterSplashJump, transform.position, Quaternion.LookRotation(Vector3.up));
+        sceneWaterSplashLand = Instantiate(waterSplashLand, transform.position, Quaternion.LookRotation(Vector3.up));
         FishyEvents.OnFishyMoveStateChanged += HandleStateChanged;
-        FishyEvents.OnWaterEntered += PlayWaterSplash;
+        FishyEvents.OnWaterEntered += PlayWaterSplashLand;
+        FishyEvents.OnJumpFromWater += PlayWaterSplashJump;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= HandleStateChanged;
-        FishyEvents.OnWaterEntered -= PlayWaterSplash;
+        FishyEvents.OnWaterEntered -= PlayWaterSplashLand;
     }
     
     private void HandleStateChanged(FishyStates newState)
@@ -33,9 +38,15 @@ public class FishyParticlesEffect : MonoBehaviour
         }
     }
 
-    private void PlayWaterSplash(Vector3 position)
+    private void PlayWaterSplashLand(Vector3 position)
     {
-        sceneWaterSplash.transform.position = position;
-        sceneWaterSplash.Play();
+        sceneWaterSplashLand.transform.position = position;
+        sceneWaterSplashLand.Play();
+    }
+
+    private void PlayWaterSplashJump(Vector3 position)
+    {
+        sceneWaterSplashJump.transform.position = position;
+        sceneWaterSplashJump.Play();
     }
 }

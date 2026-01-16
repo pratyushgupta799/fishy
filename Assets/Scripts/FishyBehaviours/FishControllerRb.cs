@@ -371,7 +371,7 @@ public class FishControllerRB : MonoBehaviour
                 jumpMoveFactor = jumpMoveFactorFromWater;
 
                 IsJumpingFromSurface = true;
-                FishyEvents.OnJumpFromWater?.Invoke();
+                FishyEvents.OnJumpFromWater?.Invoke(groundCheck.position);
                 isGrounded = false;
                 isAtSurface = false;
                 

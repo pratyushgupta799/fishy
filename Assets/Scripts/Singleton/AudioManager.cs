@@ -132,7 +132,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void PlayJumpFromWater()
+    private void PlayJumpFromWater(Vector3 position)
     {
         var audioSource = AudioSourceVariate();
         audioSource.spatialBlend = 0f;
