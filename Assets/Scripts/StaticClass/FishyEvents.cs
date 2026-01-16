@@ -15,7 +15,7 @@ public static class FishyEvents
     public static Action<Vector3> OnCamSnapZoneEntered;
     public static Action OnCamSnapZoneExit;
 
-    public static Action OnWaterEntered;
+    public static Action<Vector3> OnWaterEntered;
     
     public static Action OnMovingWaterStart;
     public static Action OnMovingWaterEnd;

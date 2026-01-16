@@ -111,7 +111,7 @@ public class AudioManager : MonoBehaviour
         MusicLoopSource.PlayScheduled(dspStart + musicIntro.length);
     }
 
-    private void PlayWaterSplashSound()
+    private void PlayWaterSplashSound(Vector3 position)
     {
         // Debug.Log("Water splash sound played");
         var audioSource = AudioSourceVariate();

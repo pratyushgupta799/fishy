@@ -732,7 +732,7 @@ public class FishControllerRB : MonoBehaviour
         {
             if (!inWater && !isAtSurface)
             {
-                FishyEvents.OnWaterEntered?.Invoke();
+                FishyEvents.OnWaterEntered?.Invoke(other.ClosestPoint(transform.position));
             }
         }
         if (other.CompareTag("Water"))
