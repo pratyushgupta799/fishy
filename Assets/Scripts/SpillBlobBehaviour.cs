@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpillBehaviour : MonoBehaviour
+public class SpillBlobBehaviour : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float gravity;
@@ -12,15 +12,19 @@ public class SpillBehaviour : MonoBehaviour
     private bool active;
     private Transform lookTarget;
     private float curGravity;
+
+    private float spillEvaporateTime;
     
     void SetLookTarget()
     {
         lookTarget = Camera.main.transform;
     }
 
-    public void Init(Vector3 startPos, Vector3 dir)
+    public void Init(Vector3 startPos, Vector3 dir, float time)
     {
         curGravity = gravity;
+        
+        spillEvaporateTime = time;
         
         SetLookTarget();
         transform.position = startPos;
@@ -58,10 +62,18 @@ public class SpillBehaviour : MonoBehaviour
 
     void CheckBounce(RaycastHit hit)
     {
-        if (bounceCount >= maxBounces)
+        if (Vector3.Dot(hit.normal, Vector3.up) >= 0.8f)
         {
             // form puddle;
+            PuddleManager.Instance.RaiseEvapouratablePuddle(transform.position, 1f, 0.3f, spillEvaporateTime);
+            
             active = false;
+            gameObject.SetActive(false);
+            return;
+        }
+        if (bounceCount >= maxBounces)
+        {
+            gameObject.SetActive(false);
             return;
         }
         velocity = Vector3.Reflect(velocity, hit.normal);

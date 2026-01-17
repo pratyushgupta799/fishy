@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using FishyUtilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Cursor = UnityEngine.Cursor;
 using Random = UnityEngine.Random;
 
@@ -41,8 +42,11 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float twirlTorqueForce = 0.3f;
     [SerializeField] private float twirlJumpForce = 2f;
 
-    [Header("Splash")] 
-    [SerializeField] private float splashCooldown = 1f;
+    [Header("Spill")] 
+    [SerializeField] private float spillCooldown = 1f;
+    [SerializeField] private float spillDirectionalForce = 5f;
+    [SerializeField] private float spillUpForce = 2f;
+    [SerializeField] private float spillPuddleLifetime = 3f;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -120,10 +124,10 @@ public class FishControllerRB : MonoBehaviour
     // shake
     private bool canTwirl;
     private bool canSplash = true;
-    private SpillBehaviour frontSpill;
-    private SpillBehaviour backSpill;
-    private SpillBehaviour leftSpill;
-    private SpillBehaviour rightSpill;
+    private SpillBlobBehaviour _frontSpillBlob;
+    private SpillBlobBehaviour _backSpillBlob;
+    private SpillBlobBehaviour _leftSpillBlob;
+    private SpillBlobBehaviour _rightSpillBlob;
     
     // properties
     private bool IsJumping
@@ -186,10 +190,10 @@ public class FishControllerRB : MonoBehaviour
 
     private void Awake()
     {
-        frontSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
-        backSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
-        leftSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
-        rightSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
+        _frontSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
+        _backSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
+        _leftSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
+        _rightSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
         
         rb = GetComponent<Rigidbody>();
         sphereCollider = GetComponent<SphereCollider>();
@@ -450,17 +454,25 @@ public class FishControllerRB : MonoBehaviour
                     StartCoroutine(Delay(0.5f, () => { IsJumpingFromSurface = true; }));
                 }
             }
-            // splash
+            // spill
             if (isAtSurface && canSplash)
             {
-                frontSpill.Init(groundCheck.position, (transform.forward + Vector3.up * 5f).normalized);
-                backSpill.Init(groundCheck.position, (-transform.forward + Vector3.up * 5f).normalized);
-                leftSpill.Init(groundCheck.position, (-transform.right + Vector3.up * 5f).normalized);
-                rightSpill.Init(groundCheck.position, (transform.right + Vector3.up * 5f).normalized);
+                _frontSpillBlob.Init(groundCheck.position,
+                    (transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                    spillPuddleLifetime);
+                _backSpillBlob.Init(groundCheck.position,
+                    (-transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                    spillPuddleLifetime);
+                _leftSpillBlob.Init(groundCheck.position,
+                    (-transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                    spillPuddleLifetime);
+                _rightSpillBlob.Init(groundCheck.position,
+                    (transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                    spillPuddleLifetime);
                 
                 rb.AddForce(Vector3.up * 1.2f, ForceMode.Impulse);
                 canSplash = false;
-                StartCoroutine(Delay(splashCooldown, () => { canSplash = true; }));
+                StartCoroutine(Delay(spillCooldown, () => { canSplash = true; }));
             }
         }
     }

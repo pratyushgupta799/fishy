@@ -2817,6 +2817,22 @@ PrefabInstance:
       propertyPath: waterSpill
       value: 
       objectReference: {fileID: 5594685370712094809, guid: 0a0a4b97dc2020b4096a7bd27aff8d35, type: 3}
+    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: spillUpForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: spillCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: splashCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: spillDirectionalForce
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -65377,6 +65393,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259466206}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1260141971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1260141973}
+  - component: {fileID: 1260141972}
+  m_Layer: 0
+  m_Name: PuddleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1260141972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260141971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d232bf4105544b5478eb9b735964b4c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puddleWater: {fileID: -7943608341053422256, guid: f9f7422c0a1b7e442a167142d2c0702f, type: 3}
+--- !u!4 &1260141973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260141971}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.307566, y: 4.029444, z: -41.83231}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1260402383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100920,3 +100981,4 @@ SceneRoots:
   - {fileID: 759765306}
   - {fileID: 3420946893301328603}
   - {fileID: 826069223}
+  - {fileID: 1260141973}
