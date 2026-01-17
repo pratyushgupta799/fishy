@@ -81,6 +81,8 @@ public class FishControllerRB : MonoBehaviour
     // input vectors
     private Vector3 forward;
     private Vector3 right;
+    private Vector3 forwardDirectional;
+    private Vector3 rightDirectional;
     private Vector3 upward;
     
     // states
@@ -307,9 +309,9 @@ public class FishControllerRB : MonoBehaviour
         right = CamRightFlat() * horizontal;
         forward.y = 0;
         right.y = 0;
-        // forward = Vector3.ProjectOnPlane(forward, transform.up);
-        // right = Vector3.ProjectOnPlane(right, transform.up);
-        // upward = up * Vector3.up;
+        forwardDirectional = Vector3.ProjectOnPlane(forward, transform.up);
+        rightDirectional = Vector3.ProjectOnPlane(right, transform.up);
+        // upwardDirectional = up * Vector3.up;
         upward = up * Vector3.up;
     }
 
@@ -498,8 +500,8 @@ public class FishControllerRB : MonoBehaviour
         forward.y = 0f;
         right.y = 0f;
 
-        Vector3 swimMovement = forward + right;
-        swimDirection = (forward + right).normalized;
+        Vector3 swimMovement = forwardDirectional + rightDirectional;
+        swimDirection = (forwardDirectional + rightDirectional).normalized;
             
         if(upward.y > 0)
         {
@@ -524,7 +526,9 @@ public class FishControllerRB : MonoBehaviour
             
         if (swimDirection.magnitude > 0.1f)
         {
-            RotateTo(swimDirection.normalized);
+            // RotateTo(swimDirection.normalized);
+            Vector3 direction = Vector3.ProjectOnPlane(swimDirection.normalized, surfaceNormal);
+            RotateTo(direction.normalized);
             animator.SetBool("isSwiming", true);
         }
         else
@@ -536,14 +540,7 @@ public class FishControllerRB : MonoBehaviour
         if (up >= 0 && !IsJumping && (dashTime <= 0f))
         {
             rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
-                100f * Time.deltaTime);
-            // currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
-            // currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
-            
-            Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
-            
-            // transform.rotation = Quaternion.Euler(currentEuler);
-            RotateTo(direction.normalized);
+                10f * Time.deltaTime);
         }
     }
 
