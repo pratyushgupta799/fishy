@@ -527,8 +527,8 @@ public class FishControllerRB : MonoBehaviour
         if (swimDirection.magnitude > 0.1f)
         {
             // RotateTo(swimDirection.normalized);
-            Vector3 direction = Vector3.ProjectOnPlane(swimDirection.normalized, surfaceNormal);
-            RotateTo(direction.normalized);
+            
+            RotateTo(swimDirection.normalized);
             animator.SetBool("isSwiming", true);
         }
         else
@@ -541,6 +541,8 @@ public class FishControllerRB : MonoBehaviour
         {
             rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
                 10f * Time.deltaTime);
+            Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
+            RotateTo(direction);
         }
     }
 
