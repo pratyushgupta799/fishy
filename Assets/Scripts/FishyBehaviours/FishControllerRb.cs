@@ -457,6 +457,8 @@ public class FishControllerRB : MonoBehaviour
             // spill
             if (isAtSurface && canSplash)
             {
+                StartCoroutine(TransformSpinOnce());
+                
                 _frontSpillBlob.Init(groundCheck.position,
                     (transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
                     spillPuddleLifetime);
@@ -470,7 +472,6 @@ public class FishControllerRB : MonoBehaviour
                     (transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
                     spillPuddleLifetime);
                 
-                rb.AddForce(Vector3.up * 1.2f, ForceMode.Impulse);
                 canSplash = false;
                 StartCoroutine(Delay(spillCooldown, () => { canSplash = true; }));
             }
@@ -927,6 +928,22 @@ public class FishControllerRB : MonoBehaviour
     {
         yield return new WaitForSeconds(t);
         a();
+    }
+    
+    IEnumerator TransformSpinOnce()
+    {
+        LockMovement(true, true, true);
+        float rotated = 0f;
+
+        while (rotated < 360f)
+        {
+            float step = 360f * Time.deltaTime * 2f;
+            transform.Rotate(0f, step, 0f);
+            rotated += step;
+            yield return null;
+        }
+        
+        UnlockMovement();
     }
 
 #if UNITY_EDITOR
