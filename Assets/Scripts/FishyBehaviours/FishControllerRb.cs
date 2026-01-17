@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using FishyUtilities;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 using Random = UnityEngine.Random;
 
@@ -16,6 +13,9 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SphereCollider sphereCollider;
     [SerializeField] private GameObject colliderCenter;
+
+    [Header("Projectiles")] 
+    [SerializeField] private GameObject waterSpill;
      
     [Header("Movement Settings")]
     [SerializeField] private float maxSpeed = 5f;
@@ -120,6 +120,10 @@ public class FishControllerRB : MonoBehaviour
     // shake
     private bool canTwirl;
     private bool canSplash = true;
+    private SpillBehaviour frontSpill;
+    private SpillBehaviour backSpill;
+    private SpillBehaviour leftSpill;
+    private SpillBehaviour rightSpill;
     
     // properties
     private bool IsJumping
@@ -182,6 +186,11 @@ public class FishControllerRB : MonoBehaviour
 
     private void Awake()
     {
+        frontSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
+        backSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
+        leftSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
+        rightSpill = Instantiate(waterSpill).GetComponent<SpillBehaviour>();
+        
         rb = GetComponent<Rigidbody>();
         sphereCollider = GetComponent<SphereCollider>();
         groundCheckCollDist = Vector3.Distance(groundCheck.position, sphereCollider.transform.position);
@@ -444,6 +453,11 @@ public class FishControllerRB : MonoBehaviour
             // splash
             if (isAtSurface && canSplash)
             {
+                frontSpill.Init(groundCheck.position, (transform.forward + Vector3.up * 5f).normalized);
+                backSpill.Init(groundCheck.position, (-transform.forward + Vector3.up * 5f).normalized);
+                leftSpill.Init(groundCheck.position, (-transform.right + Vector3.up * 5f).normalized);
+                rightSpill.Init(groundCheck.position, (transform.right + Vector3.up * 5f).normalized);
+                
                 rb.AddForce(Vector3.up * 1.2f, ForceMode.Impulse);
                 canSplash = false;
                 StartCoroutine(Delay(splashCooldown, () => { canSplash = true; }));
