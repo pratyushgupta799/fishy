@@ -307,8 +307,8 @@ public class FishControllerRB : MonoBehaviour
         right = CamRightFlat() * horizontal;
         forward.y = 0;
         right.y = 0;
-        forward = Vector3.ProjectOnPlane(forward, transform.up);
-        right = Vector3.ProjectOnPlane(right, transform.up);
+        // forward = Vector3.ProjectOnPlane(forward, transform.up);
+        // right = Vector3.ProjectOnPlane(right, transform.up);
         // upward = up * Vector3.up;
         upward = up * Vector3.up;
     }
