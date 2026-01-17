@@ -118,6 +118,10 @@ public class FishControllerRB : MonoBehaviour
     private float flopTimerCurrent = 0f;
     private float flopCoyoteTimer = 0f;
     
+    // surface
+    private Vector3 surfaceNormal;
+    private Vector3 curSurfacePos;
+    
     // ground check
     private float groundCheckCollDist;
     
@@ -303,6 +307,8 @@ public class FishControllerRB : MonoBehaviour
         right = CamRightFlat() * horizontal;
         forward.y = 0;
         right.y = 0;
+        forward = Vector3.ProjectOnPlane(forward, transform.up);
+        right = Vector3.ProjectOnPlane(right, transform.up);
         // upward = up * Vector3.up;
         upward = up * Vector3.up;
     }
@@ -512,7 +518,8 @@ public class FishControllerRB : MonoBehaviour
         {
             // keep vertical direction, but set XZ from camera
             Vector3 horizontalDir = new Vector3(camera.transform.forward.x, 0f,camera.transform.forward.z).normalized;
-            swimDirection = new Vector3(horizontalDir.x * 0.0001f, swimDirection.y, horizontalDir.z * 0.0001f).normalized;
+            swimDirection = new Vector3(horizontalDir.x * 0.0001f, swimDirection.y, horizontalDir.z * 0.0001f)
+                .normalized;
         }
             
         if (swimDirection.magnitude > 0.1f)
@@ -528,12 +535,15 @@ public class FishControllerRB : MonoBehaviour
         // Keep near surface
         if (up >= 0 && !IsJumping && (dashTime <= 0f))
         {
-            rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, surfaceHeight + 0.07f, rb.position.z),
-                5f * Time.deltaTime);
-            Vector3 currentEuler = transform.rotation.eulerAngles;
-            currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
-            currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(currentEuler);
+            rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
+                100f * Time.deltaTime);
+            // currentEuler.x = Mathf.LerpAngle(currentEuler.x, 0f, 10f * Time.deltaTime);
+            // currentEuler.z = Mathf.LerpAngle(currentEuler.z, 0f, 10f * Time.deltaTime);
+            
+            Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
+            
+            // transform.rotation = Quaternion.Euler(currentEuler);
+            RotateTo(direction.normalized);
         }
     }
 
@@ -781,6 +791,8 @@ public class FishControllerRB : MonoBehaviour
             {
                 if (IsJumping) IsJumping = false;
                 isAtSurface = true;
+                surfaceNormal = other.transform.up;
+                curSurfacePos = other.ClosestPoint(transform.position);
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
             }
@@ -805,6 +817,8 @@ public class FishControllerRB : MonoBehaviour
             if (inWater && !isJumping)
             {
                 isAtSurface = true;
+                surfaceNormal = other.transform.up;
+                curSurfacePos = other.ClosestPoint(transform.position);
                 onSurfaceThisFrame = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
                 surfaceHeight = other.transform.position.y;

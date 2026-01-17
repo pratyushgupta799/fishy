@@ -5423,6 +5423,7 @@ MonoBehaviour:
   animator: {fileID: 2554984417118059043}
   sphereCollider: {fileID: 4923730549538644310}
   colliderCenter: {fileID: 1929711403926958449}
+  waterSpill: {fileID: 5594685370712094809, guid: 0a0a4b97dc2020b4096a7bd27aff8d35, type: 3}
   maxSpeed: 1.5
   moveForce: 2
   groundSpeedScale: 1
@@ -5439,6 +5440,10 @@ MonoBehaviour:
   flopRotationNoise: {x: 0.03, y: 0.1, z: 0.03}
   twirlTorqueForce: 0.3
   twirlJumpForce: 3
+  spillCooldown: 2
+  spillDirectionalForce: 1.5
+  spillUpForce: 5
+  spillPuddleLifetime: 3
   jumpMoveFactorFromWater: 1.75
   jumpMoveFactorFromGround: 1.25
   jumpForceGround: 4
@@ -5485,7 +5490,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3286074260683381993}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8f9a2cc84a57c64091403063d42c4d8, type: 3}
   m_Name: 
@@ -5528,6 +5533,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bubblesUp: {fileID: 1973924276923997323}
+  waterSplashLand: {fileID: 8134553444546329930, guid: a99931cb806a131499b56094691f61fb, type: 3}
+  waterSplashJump: {fileID: 8134553444546329930, guid: a99931cb806a131499b56094691f61fb, type: 3}
 --- !u!1 &3414850073216419029
 GameObject:
   m_ObjectHideFlags: 0
