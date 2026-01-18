@@ -348,6 +348,7 @@ public class FishControllerRB : MonoBehaviour
 
             if ((!IsJumping && isGrounded) || (canFlopJump && (!inWater && !isGrounded)))
             {
+                canFlopJump = false;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
 
