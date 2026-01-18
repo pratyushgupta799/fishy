@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using FishyUtilities;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using Cursor = UnityEngine.Cursor;
 using Random = UnityEngine.Random;
@@ -106,19 +107,21 @@ public class FishControllerRB : MonoBehaviour
     private float surfaceExitGrace = 0.05f;
     private float waterExitTime;
     private float waterExitGrace = 0.05f;
-    private float dashTime;
     
     // jump
     private float jumpHoldTimer = 0f;
     private bool canCharge = false;
+    private bool jumpHeld = false;
     
     // movement
     private bool wasMoving;
     private bool forwardLocked;
     private bool rightLocked;
     private bool upLocked;
-    private float flopTimerCurrent = 0f;
-    private float flopCoyoteTimer = 0f;
+    
+    // flop
+    private bool canFlopJump;
+    private bool canFlop = true;
     
     // surface
     private Vector3 surfaceNormal;
@@ -134,6 +137,12 @@ public class FishControllerRB : MonoBehaviour
     private SpillBlobBehaviour _backSpillBlob;
     private SpillBlobBehaviour _leftSpillBlob;
     private SpillBlobBehaviour _rightSpillBlob;
+    
+    // dash
+    private bool isDashing;
+    
+    // reset
+    private bool resetHeld;
     
     // properties
     private bool IsJumping
@@ -211,16 +220,249 @@ public class FishControllerRB : MonoBehaviour
 
     private void Update()
     {
-        // Debug.DrawRay(wallCheck.position, transform.forward * wallDistance, Color.red);
-        // Debug.Log(colliderCenter.transform.position.y);
         PositionGroundChecker();
         ReloadInput();
-        MoveInput();
+        MoveInputProcess();
         CheckGrounded();
-        JumpInput();
-        ShakeInput();
+        JumpCharge();
         MoveCharacter();
-        
+    }
+
+    private void PositionGroundChecker()
+    {
+        groundCheck.position = sphereCollider.transform.position - Vector3.up * groundCheckCollDist;
+    }
+    
+    public void OnReload(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            resetHeld = true;
+        }
+
+        if (ctx.canceled)
+        {
+            resetHeld = false;
+        }
+    } 
+    
+    private void ReloadInput()
+    {
+        if (resetHeld)
+        {
+            rholdTimer += Time.deltaTime;
+
+            if (rholdTimer >= rHoldTime)
+            {
+                CheckPointManager.Instance.LoadLastCheckpoint();
+                rholdTimer = 0;
+            }
+        }
+        else
+        {
+            rholdTimer = 0f;
+        }
+    }
+    
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        if (isDashing)
+        {
+            vertical = 0f;
+            horizontal = 0f;
+        }
+        else
+        {
+            vertical = forwardLocked? 0f : ctx.ReadValue<Vector2>().y;
+            horizontal = rightLocked ? 0f : ctx.ReadValue<Vector2>().x;
+        }
+    }
+
+    public void OnMoveVertical(InputAction.CallbackContext ctx)
+    {
+        if (isDashing)
+        {
+            up = 0f;
+        }
+        else
+        {
+            up = upLocked? 0f : ctx.ReadValue<float>();
+        }
+    }
+
+    private void MoveInputProcess()
+    {
+        forward = CamForwardFlat() * vertical;
+        right = CamRightFlat() * horizontal;
+        forward.y = 0;
+        right.y = 0;
+        forwardDirectional = Vector3.ProjectOnPlane(forward, transform.up);
+        rightDirectional = Vector3.ProjectOnPlane(right, transform.up);
+        upward = up * Vector3.up;
+    }
+
+    private void CheckGrounded()
+    {
+        if (isJumping)
+        {
+            if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
+            {
+                isGrounded = Physics.CheckSphere(
+                    groundCheck.position,
+                    groundDistance,
+                    ~fishyLayer,
+                    QueryTriggerInteraction.Ignore
+                );
+
+                IsJumping = !isGrounded;
+            }
+            else
+            {
+                isGrounded = false;
+            }
+        }
+        else
+        {
+            if (!inWater)
+            {
+                isGrounded = Physics.CheckSphere(
+                    groundCheck.position,
+                    groundDistance,
+                    ~fishyLayer,
+                    QueryTriggerInteraction.Ignore
+                );
+            }
+            else
+            {
+                isGrounded = false;
+            }
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            Debug.Log("jump pressed");
+            jumpHeld = true;
+
+            if ((!IsJumping && isGrounded) || (canFlopJump && (!inWater && !isGrounded)))
+            {
+                rb.useGravity = true;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
+
+                IsJumpingFromGround = true;
+                isAtSurface = false;
+                isGrounded = false;
+
+                jumpMoveFactor = jumpMoveFactorFromGround;
+
+                jumpHoldTimer = 0f;
+                return;
+            }
+
+            if (!IsJumping && isAtSurface)
+            {
+                rb.useGravity = true;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, minJumpForceWater, rb.linearVelocity.z);
+
+                jumpMoveFactor = jumpMoveFactorFromWater;
+                IsJumpingFromSurface = true;
+
+                FishyEvents.OnJumpFromWater?.Invoke(groundCheck.position);
+
+                isGrounded = false;
+                isAtSurface = false;
+
+                jumpHoldTimer = 0f;
+                canCharge = true;
+            }
+        }
+
+        if (ctx.canceled)
+        {
+            jumpHeld = false;
+            canCharge = false;
+            jumpHoldTimer = 0f;
+        }
+    }
+
+    private void JumpCharge()
+    {
+        if (IsJumpingFromSurface && jumpHeld && canCharge)
+        {
+            if (jumpHoldTimer < maxAirCharge)
+            {
+                jumpHoldTimer += Time.deltaTime;
+
+                float t = jumpHoldTimer / maxAirCharge;
+                float falloff = 1f - t;
+                float addedForce = airChargeForce * falloff * Time.deltaTime;
+
+                rb.linearVelocity = new Vector3(
+                    rb.linearVelocity.x,
+                    rb.linearVelocity.y + addedForce,
+                    rb.linearVelocity.z
+                );
+            }
+        }
+    }
+
+    public void OnShake(InputAction.CallbackContext ctx)
+    {
+        // dash
+        if (inWater && !isAtSurface && !isDashing)
+        {
+            rb.AddForce(transform.forward * dashSpeed, ForceMode.VelocityChange);
+            isDashing = true;
+            StartCoroutine(Delay(dashDuration, () => isDashing = false));
+        }
+
+        // twirl
+        if (!inWater && !isGrounded && canTwirl)
+        {
+            rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
+            float yVel = rb.linearVelocity.y;
+            if (yVel >= 0)
+            {
+                float factor = Mathf.Clamp01(1f - (yVel / minJumpForceWater));
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, yVel + twirlJumpForce * factor,
+                    rb.linearVelocity.z);
+            }
+            else
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, twirlJumpForce, rb.linearVelocity.z);
+            }
+
+            canTwirl = false;
+            if (IsJumpingFromSurface)
+            {
+                IsJumping = false;
+                StartCoroutine(Delay(0.5f, () => { IsJumpingFromSurface = true; }));
+            }
+        }
+
+        // spill
+        if (isAtSurface && canSplash)
+        {
+            StartCoroutine(TransformSpinOnce());
+
+            _frontSpillBlob.Init(groundCheck.position,
+                (transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                spillPuddleLifetime);
+            _backSpillBlob.Init(groundCheck.position,
+                (-transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                spillPuddleLifetime);
+            _leftSpillBlob.Init(groundCheck.position,
+                (-transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                spillPuddleLifetime);
+            _rightSpillBlob.Init(groundCheck.position,
+                (transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
+                spillPuddleLifetime);
+
+            canSplash = false;
+            StartCoroutine(Delay(spillCooldown, () => { canSplash = true; }));
+        }
     }
 
     private void MoveCharacter()
@@ -266,236 +508,11 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    private void PositionGroundChecker()
-    {
-        groundCheck.position = sphereCollider.transform.position - Vector3.up * groundCheckCollDist;
-    }
-    
-    private void ReloadInput()
-    {
-        if (Input.GetKey(KeyCode.R))
-        {
-            rholdTimer += Time.deltaTime;
-
-            if (rholdTimer >= rHoldTime)
-            {
-                CheckPointManager.Instance.LoadLastCheckpoint();
-                rholdTimer = 0;
-            }
-        }
-        else
-        {
-            rholdTimer = 0f;
-        }
-    }
-
-    private void MoveInput()
-    {
-        if (dashTime > 0)
-        {
-            dashTime -= Time.deltaTime;
-            vertical = 0f;
-            horizontal = 0f;
-            up = 0f;
-        }
-        else
-        {
-            vertical = forwardLocked ? 0f : Input.GetAxis("Vertical");
-            horizontal = rightLocked ? 0f : Input.GetAxis("Horizontal");
-            up = upLocked ? 0f : Input.GetAxis("Up");
-        }
-
-        forward = CamForwardFlat() * vertical;
-        right = CamRightFlat() * horizontal;
-        forward.y = 0;
-        right.y = 0;
-        forwardDirectional = Vector3.ProjectOnPlane(forward, transform.up);
-        rightDirectional = Vector3.ProjectOnPlane(right, transform.up);
-        // upwardDirectional = up * Vector3.up;
-        upward = up * Vector3.up;
-    }
-
-    private void CheckGrounded()
-    {
-        if (isJumping)
-        {
-            if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
-            {
-                isGrounded = Physics.CheckSphere(
-                    groundCheck.position,
-                    groundDistance,
-                    ~fishyLayer,
-                    QueryTriggerInteraction.Ignore
-                );
-
-                IsJumping = !isGrounded;
-            }
-            else
-            {
-                isGrounded = false;
-            }
-        }
-        else
-        {
-            if (!inWater)
-            {
-                isGrounded = Physics.CheckSphere(
-                    groundCheck.position,
-                    groundDistance,
-                    ~fishyLayer,
-                    QueryTriggerInteraction.Ignore
-                );
-            }
-            else
-            {
-                isGrounded = false;
-            }
-        }
-
-        if (isGrounded)
-        {
-            
-        }
-        else
-        {
-            flopTimerCurrent = 0f;
-        }
-    }
-
-    private void JumpInput()
-    {
-        if ((!IsJumping && isGrounded) || ((flopCoyoteTimer > 0) && flopCoyoteTimer < flopCoyote && (!inWater && !isGrounded)))
-        {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
-            {
-                flopCoyoteTimer = 0f;
-                rb.useGravity = true;
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
-
-                IsJumpingFromGround = true;
-                isAtSurface = false;
-                isGrounded = false;
-                
-                jumpMoveFactor = jumpMoveFactorFromGround;
-
-                jumpHoldTimer = 0f;
-                return;
-            }
-        }
-
-        if (!IsJumping && isAtSurface)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire2"))
-            {
-                rb.useGravity = true;
-                
-                float startForce = minJumpForceWater;
-
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, startForce, rb.linearVelocity.z);
-                
-                jumpMoveFactor = jumpMoveFactorFromWater;
-
-                IsJumpingFromSurface = true;
-                FishyEvents.OnJumpFromWater?.Invoke(groundCheck.position);
-                isGrounded = false;
-                isAtSurface = false;
-                
-                jumpHoldTimer = 0f;
-
-                canCharge = true;
-            }
-        }
-
-        if (IsJumpingFromSurface)
-        {
-            if (Input.GetKey(KeyCode.Space) || Input.GetButton("Submit") || Input.GetButton("Fire2"))
-            {
-                if ((jumpHoldTimer < maxAirCharge) && canCharge)
-                {
-                    jumpHoldTimer += Time.deltaTime;
-                    float t = jumpHoldTimer / maxAirCharge;
-                    float falloff = 1f - t;
-                    float addedForce = airChargeForce * falloff * Time.deltaTime;
-                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y + addedForce,
-                        rb.linearVelocity.z);
-                }
-            }
-            
-            if (Input.GetKeyUp(KeyCode.Space) || Input.GetButtonUp("Submit") || Input.GetButtonUp("Fire2"))
-            {
-                jumpHoldTimer = 0f;
-                canCharge = false;
-            }
-        }
-    }
-
-    private void ShakeInput()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            // dash
-            if (inWater && !isAtSurface && dashTime <= 0f)
-            {
-                rb.AddForce(transform.forward * dashSpeed, ForceMode.VelocityChange);
-                dashTime = dashDuration;
-            }
-            // twirl
-            if (!inWater && !isGrounded && canTwirl)
-            {
-                rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
-                float yVel = rb.linearVelocity.y;
-                if (yVel >= 0)
-                {
-                    float factor = Mathf.Clamp01(1f - (yVel / minJumpForceWater));
-                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, yVel + twirlJumpForce * factor,
-                        rb.linearVelocity.z);
-                }
-                else
-                {
-                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, twirlJumpForce, rb.linearVelocity.z);
-                }
-
-                canTwirl = false;
-                if (IsJumpingFromSurface)
-                {
-                    IsJumping = false;
-                    StartCoroutine(Delay(0.5f, () => { IsJumpingFromSurface = true; }));
-                }
-            }
-            // spill
-            if (isAtSurface && canSplash)
-            {
-                StartCoroutine(TransformSpinOnce());
-                
-                _frontSpillBlob.Init(groundCheck.position,
-                    (transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
-                    spillPuddleLifetime);
-                _backSpillBlob.Init(groundCheck.position,
-                    (-transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
-                    spillPuddleLifetime);
-                _leftSpillBlob.Init(groundCheck.position,
-                    (-transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
-                    spillPuddleLifetime);
-                _rightSpillBlob.Init(groundCheck.position,
-                    (transform.right * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
-                    spillPuddleLifetime);
-                
-                canSplash = false;
-                StartCoroutine(Delay(spillCooldown, () => { canSplash = true; }));
-            }
-        }
-    }
-
     private void SurfaceMovement()
     {
         FishyEvents.SetState(FishyStates.OnSurface);
         rb.useGravity = false;
         rb.mass = underWaterMass;
-        
-        if (dashTime > 0)
-        {
-            return;
-        }
             
         forward.y = 0f;
         right.y = 0f;
@@ -511,10 +528,7 @@ public class FishControllerRB : MonoBehaviour
         swimDirection += upward;
         swimMovement += upward;
 
-        if (dashTime <= 0f)
-        {
-            rb.linearVelocity = swimMovement * maxSpeed;
-        }
+        rb.linearVelocity = swimMovement * maxSpeed;
         
         if (Mathf.Abs(Vector3.Dot(swimDirection.normalized, Vector3.up)) > 0.99f)
         {
@@ -537,7 +551,7 @@ public class FishControllerRB : MonoBehaviour
         }
 
         // Keep near surface
-        if (up >= 0 && !IsJumping && (dashTime <= 0f))
+        if (up >= 0 && !IsJumping)
         {
             rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
                 10f * Time.deltaTime);
@@ -552,14 +566,14 @@ public class FishControllerRB : MonoBehaviour
         rb.useGravity = false;
         rb.mass = underWaterMass;
         
-        if (dashTime > 0)
+        if (isDashing)
         {
             return;
         }
 
         Vector3 swimVel = (forward + right + upward) * maxSpeed;
 
-        if (dashTime <= 0f)
+        if (!isDashing)
         {
             rb.linearVelocity = new Vector3(swimVel.x, swimVel.y, swimVel.z);
         }
@@ -590,11 +604,13 @@ public class FishControllerRB : MonoBehaviour
         right.y = 0f;
         swimDirection = (forward + right).normalized;
         
-        flopTimerCurrent += Time.deltaTime;
-        if (flopTimerCurrent > flopTimer)
+        if (canFlop)
         {
             Flop();
-            flopTimerCurrent = 0f;
+            canFlop = false;
+            StartCoroutine(Delay(flopTimer, () => { canFlop = true; }));
+            canFlopJump = true;
+            StartCoroutine(Delay(flopCoyote, () => { canFlopJump = false; }));
         }
 
         IsJumping = false;
@@ -717,7 +733,6 @@ public class FishControllerRB : MonoBehaviour
         rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
         rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
         jumpMoveFactor = jumpMoveFactorFromGround;
-        flopCoyoteTimer += Time.deltaTime;
     }
 
     private Vector3 GetFlopDirectionNoise(Vector3 direction)
@@ -739,22 +754,9 @@ public class FishControllerRB : MonoBehaviour
 
     private void StateManagement(FishyStates state)
     {
-        if (state != FishyStates.InAir)
-        {
-            flopCoyoteTimer = 0f;
-        }
-        else
+        if (state == FishyStates.InAir)
         {
             canTwirl = true;
-            if(flopCoyoteTimer > 0f)
-            {
-                flopCoyoteTimer += Time.deltaTime;
-            }
-
-            if (flopCoyoteTimer > flopCoyote)
-            {
-                flopCoyoteTimer = 0f;
-            }
         }
 
         if (state == FishyStates.InWater || state == FishyStates.OnSurface)
@@ -891,11 +893,6 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    public bool IsDashing()
-    {
-        return (dashTime > 0 && dashTime <= dashDuration);
-    }
-
     Vector3 CamForwardFlat()
     {
         Vector3 camForward = camera.transform.forward;
@@ -957,6 +954,11 @@ public class FishControllerRB : MonoBehaviour
         }
         
         UnlockMovement();
+    }
+
+    public bool IsDashing()
+    {
+        return isDashing;
     }
 
 #if UNITY_EDITOR
