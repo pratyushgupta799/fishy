@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using FishyUtilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -144,6 +145,9 @@ public class FishControllerRB : MonoBehaviour
     // reset
     private bool resetHeld;
     
+    // surface transition
+    private bool inSurfaceTransition;
+    
     // properties
     private bool IsJumping
     {
@@ -196,11 +200,13 @@ public class FishControllerRB : MonoBehaviour
     private void OnEnable()
     {
         FishyEvents.OnFishyMoveStateChanged += StateManagement;
+        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= StateManagement;
+        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
     }
 
     private void Awake()
@@ -303,16 +309,29 @@ public class FishControllerRB : MonoBehaviour
 
     private void CheckGrounded()
     {
-        if (isJumping)
+        if (IsJumping)
         {
             if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
             {
-                isGrounded = Physics.CheckSphere(
-                    groundCheck.position,
-                    groundDistance,
-                    ~fishyLayer,
-                    QueryTriggerInteraction.Ignore
-                );
+                if (Physics.CheckSphere(
+                        groundCheck.position,
+                        groundDistance,
+                        ~fishyLayer,
+                        QueryTriggerInteraction.Ignore))
+                {
+                    if (Physics.Raycast(
+                            groundCheck.position,
+                            Vector3.down,
+                            out RaycastHit hit,
+                            groundDistance + 0.1f))
+                    {
+                        isGrounded = Vector3.Dot(hit.normal, Vector3.up) >= 0.7f;
+                    }
+                }
+                else
+                {
+                    isGrounded = false;
+                }
 
                 IsJumping = !isGrounded;
             }
@@ -325,12 +344,25 @@ public class FishControllerRB : MonoBehaviour
         {
             if (!inWater)
             {
-                isGrounded = Physics.CheckSphere(
-                    groundCheck.position,
-                    groundDistance,
-                    ~fishyLayer,
-                    QueryTriggerInteraction.Ignore
-                );
+                if (Physics.CheckSphere(
+                        groundCheck.position,
+                        groundDistance,
+                        ~fishyLayer,
+                        QueryTriggerInteraction.Ignore))
+                {
+                    if (Physics.Raycast(
+                            groundCheck.position,
+                            Vector3.down,
+                            out RaycastHit hit,
+                            groundDistance + 0.1f))
+                    {
+                        isGrounded = Vector3.Dot(hit.normal, Vector3.up) >= 0.7f;
+                    }
+                }
+                else
+                {
+                    isGrounded = false;
+                }
             }
             else
             {
@@ -554,11 +586,24 @@ public class FishControllerRB : MonoBehaviour
         // Keep near surface
         if (up >= 0 && !IsJumping)
         {
-            rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
-                10f * Time.deltaTime);
+            if (!inSurfaceTransition)
+            {
+                rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
+                                10f * Time.deltaTime);
+            }
             Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
             RotateTo(direction);
         }
+    }
+
+    private void SurfaceTransition()
+    {
+        inSurfaceTransition = true;
+        transform
+            .DOMoveY(transform.position.y - 0.15f, 0.25f)
+            .SetLoops(2, LoopType.Yoyo)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() => inSurfaceTransition = false);
     }
 
     private void WaterMovement()
@@ -768,6 +813,17 @@ public class FishControllerRB : MonoBehaviour
         {
             animator.SetBool("inWater", false);
             animator.SetBool("isSwiming", false);
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (CollisionUtils.HitByWithVelocity(other, 0.5f))
+        {
+            if (IsJumpingFromSurface)
+            {
+                IsJumpingFromSurface = false;
+            }
         }
     }
 

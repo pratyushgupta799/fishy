@@ -21,6 +21,7 @@ public static class FishyEvents
     public static Action OnMovingWaterEnd;
     
     public static Action OnSurfaceReachedFromUnderWater;
+    public static Action OnSurfaceReachedFromAir;
 
     public static Action OnUnderwaterEnter;
     public static Action OnUnderwaterExit;
@@ -53,6 +54,11 @@ public static class FishyEvents
         if (newState == FishyStates.OnSurface && lastState == FishyStates.InWater)
         {
             OnSurfaceReachedFromUnderWater?.Invoke();
+        }
+
+        if (newState == FishyStates.OnSurface && lastState == FishyStates.InAir)
+        {
+            OnSurfaceReachedFromAir?.Invoke();
         }
         
         lastState = newState;

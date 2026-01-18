@@ -11,4 +11,12 @@ public static class CollisionUtils
         return collision.gameObject.CompareTag(tag) && 
                collision.relativeVelocity.magnitude >= minVelocity;
     }
+    
+    public static bool HitByWithVelocity(
+        Collision collision,
+        float minVelocity
+    )
+    {
+        return collision.relativeVelocity.magnitude >= minVelocity;
+    }
 }
