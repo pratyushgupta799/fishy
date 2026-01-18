@@ -30,11 +30,11 @@ public class FishyParticlesEffect : MonoBehaviour
     {
         if (newState == FishyStates.InWater)
         {
-            bubblesUp.Play();
+            // bubblesUp.Play();
         }
         else
         {
-            bubblesUp.Stop();
+            // bubblesUp.Stop();
         }
     }
 
