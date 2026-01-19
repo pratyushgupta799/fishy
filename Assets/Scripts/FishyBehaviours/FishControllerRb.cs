@@ -445,6 +445,7 @@ public class FishControllerRB : MonoBehaviour
 
     public void OnShake(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Shake pressed");
         // dash
         if (inWater && !isAtSurface && !isDashing)
         {
@@ -456,6 +457,7 @@ public class FishControllerRB : MonoBehaviour
         // twirl
         if (!inWater && !isGrounded && canTwirl)
         {
+            Debug.Log("Twirl");
             rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
             float yVel = rb.linearVelocity.y;
             if (yVel >= 0)
@@ -787,6 +789,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void Flop()
     {
+        Debug.Log("Flop");
         Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
         Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
         rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;

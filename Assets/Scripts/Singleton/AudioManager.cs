@@ -143,7 +143,7 @@ public class AudioManager : MonoBehaviour
     {
         if (underwaterAudioSource != null)
         {
-            Debug.Log("Underwater sound stopped");
+            // Debug.Log("Underwater sound stopped");
             underwaterAudioSource.Stop();
             underwaterAudioSource = null;
         }
