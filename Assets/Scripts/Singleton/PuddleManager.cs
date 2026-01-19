@@ -26,7 +26,7 @@ public class PuddleManager : MonoBehaviour
     
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 12; i++)
         {
             puddleWaters[i] = Instantiate(puddleWater);
             puddleWaters[i].gameObject.SetActive(false);

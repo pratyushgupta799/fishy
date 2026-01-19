@@ -8,14 +8,21 @@ public class SpillBlobBehaviour : MonoBehaviour
     [SerializeField] private float heightOffset = 0.25f;
     [SerializeField] private float raiseTime = 0.5f;
     [SerializeField] private LayerMask Player;
+    [SerializeField] private ParticleSystem blobSplash;
     
     private Vector3 velocity;
     private int bounceCount;
     private bool active;
     private Transform lookTarget;
     private float curGravity;
+    private ParticleSystem blobSplashInstance;
 
     private float spillEvaporateTime;
+
+    private void Awake()
+    {
+        blobSplashInstance = Instantiate(blobSplash);
+    }
     
     void SetLookTarget()
     {
@@ -67,8 +74,10 @@ public class SpillBlobBehaviour : MonoBehaviour
         if (Vector3.Dot(hit.normal, Vector3.up) >= 0.8f)
         {
             // form puddle;
-            PuddleManager.Instance.RaiseEvapouratablePuddle(transform.position, raiseTime, heightOffset, spillEvaporateTime);
-            
+            PuddleManager.Instance.RaiseEvapouratablePuddle(transform.position, raiseTime, heightOffset,
+                spillEvaporateTime);
+            blobSplashInstance.transform.position = hit.point;
+            blobSplashInstance.Play();
             active = false;
             gameObject.SetActive(false);
             return;
