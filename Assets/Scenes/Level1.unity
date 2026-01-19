@@ -2745,10 +2745,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 377945949391763869, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1016314127544646209, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1016314127544646209, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: TriggerModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: TriggerModule.colliderQueryMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: 'TriggerModule.primitives.Array.data[0]'
       value: 
-      objectReference: {fileID: 1633155503}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973924276923997323, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: 'TriggerModule.primitives.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3286074260683381993, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_Name
       value: FishCharacterRb
@@ -2793,11 +2825,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5562422676351914499, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: camera
       value: 
       objectReference: {fileID: 330585543}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4106397431156072226, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+    - {fileID: 8190321413815418912, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+    - {fileID: 7178718199374268750, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
+    - {fileID: 1667496503010546379, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -83050,11 +83090,6 @@ MeshFilter:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0e533493690432744a406150d6b6caa1, type: 3}
   m_PrefabInstance: {fileID: 1567662834}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1633155503 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5260189121025528786, guid: 295f4ab18037ae3419f2143254cc7728, type: 3}
-  m_PrefabInstance: {fileID: 759000731}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1636043025 stripped
 GameObject:
