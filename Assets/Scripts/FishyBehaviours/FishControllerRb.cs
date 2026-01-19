@@ -124,6 +124,7 @@ public class FishControllerRB : MonoBehaviour
     private bool canFlopJump;
     private bool canFlop = true;
     private bool flopStarted;
+    private float flopTimerCurrent = 0;
     
     // surface
     private Vector3 surfaceNormal;
@@ -376,13 +377,12 @@ public class FishControllerRB : MonoBehaviour
     {
         if (ctx.started)
         {
-            Debug.Log("jump pressed");
-            jumpHeld = true;
-
             if ((!IsJumping && isGrounded) || (canFlopJump && (!inWater && !isGrounded)))
             {
+                Debug.Log("jump from ground");
                 flopStarted = false;
                 canFlopJump = false;
+                // canFlop = false;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
 
@@ -398,6 +398,7 @@ public class FishControllerRB : MonoBehaviour
 
             if (!IsJumping && isAtSurface)
             {
+                jumpHeld = true;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, minJumpForceWater, rb.linearVelocity.z);
 
@@ -653,23 +654,13 @@ public class FishControllerRB : MonoBehaviour
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
-
-        if (!flopStarted)
+        
+        flopTimerCurrent += Time.deltaTime;
+        if (flopTimerCurrent >= flopTimer)
         {
-            StartCoroutine(Delay(flopTimer, () =>
-            {
-                if (canFlop)
-                {
-                    Flop();
-                    flopStarted = true;
-                }
-            }));
-        }
-        else if (canFlop)
-        {
+            flopTimerCurrent = 0f;
+            flopStarted = false;
             Flop();
-            canFlop = false;
-            StartCoroutine(Delay(flopTimer, () => { canFlop = true; }));
             canFlopJump = true;
             StartCoroutine(Delay(flopCoyote, () => { canFlopJump = false; }));
         }
