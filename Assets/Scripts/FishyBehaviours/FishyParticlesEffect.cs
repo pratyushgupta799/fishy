@@ -34,7 +34,7 @@ public class FishyParticlesEffect : MonoBehaviour
         }
         else
         {
-            // bubblesUp.Stop();
+            bubblesUp.Stop();
         }
     }
 
