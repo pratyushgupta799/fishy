@@ -123,6 +123,7 @@ public class FishControllerRB : MonoBehaviour
     // flop
     private bool canFlopJump;
     private bool canFlop = true;
+    private bool flopStarted;
     
     // surface
     private Vector3 surfaceNormal;
@@ -380,6 +381,7 @@ public class FishControllerRB : MonoBehaviour
 
             if ((!IsJumping && isGrounded) || (canFlopJump && (!inWater && !isGrounded)))
             {
+                flopStarted = false;
                 canFlopJump = false;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForceGround, rb.linearVelocity.z);
@@ -649,8 +651,19 @@ public class FishControllerRB : MonoBehaviour
         forward.y = 0f;
         right.y = 0f;
         swimDirection = (forward + right).normalized;
-        
-        if (canFlop)
+
+        if (!flopStarted)
+        {
+            StartCoroutine(Delay(flopTimer, () =>
+            {
+                if (canFlop)
+                {
+                    Flop();
+                    flopStarted = true;
+                }
+            }));
+        }
+        else if (canFlop)
         {
             Flop();
             canFlop = false;
@@ -808,6 +821,7 @@ public class FishControllerRB : MonoBehaviour
         if (state == FishyStates.InWater || state == FishyStates.OnSurface)
         {
             animator.SetBool("inWater", true);
+            flopStarted = false;
         }
         else
         {
