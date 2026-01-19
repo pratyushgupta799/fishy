@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WoodBrown
+  m_Name: _ToonShader
   m_Shader: {fileID: -6465566751694194690, guid: 65336977064c269479f3ddebf1d7cc4c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -95,6 +95,7 @@ Material:
     - _ADDITIONAL_LIGHT_SHADOWS: 1
     - _AlphaClip: 0
     - _AmbientEnvironmentMultiplier: 1
+    - _Base_Map_Scale: 1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -137,9 +138,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Albedo: {r: 0, g: 0, b: 0, a: 0}
-    - _AmbientColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
-    - _BaseColor: {r: 0.3490566, g: 0.23534344, b: 0.18605375, a: 1}
+    - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Base_Map_Scale: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorTint: {r: 0.8679245, g: 0.749199, b: 0.7672337, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
