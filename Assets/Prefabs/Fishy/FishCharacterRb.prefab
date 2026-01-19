@@ -1489,9 +1489,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4738349270000777829}
     m_Modifications:
+    - target: {fileID: 7864493977591297974, guid: f669c0abf62eead4c8850b039053c966, type: 3}
+      propertyPath: TriggerModule.colliderQueryMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7864493977591297974, guid: f669c0abf62eead4c8850b039053c966, type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8322152828191576736, guid: f669c0abf62eead4c8850b039053c966, type: 3}
       propertyPath: m_Name
       value: BubblesParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322152828191576736, guid: f669c0abf62eead4c8850b039053c966, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 9093885085683291173, guid: f669c0abf62eead4c8850b039053c966, type: 3}
       propertyPath: m_LocalPosition.x
