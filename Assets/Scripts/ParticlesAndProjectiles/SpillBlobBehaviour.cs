@@ -9,6 +9,9 @@ public class SpillBlobBehaviour : MonoBehaviour
     [SerializeField] private float raiseTime = 0.5f;
     [SerializeField] private LayerMask Player;
     [SerializeField] private ParticleSystem blobSplash;
+
+    [SerializeField] private string[] bounceTags;
+    [SerializeField] private string[] ignoreTags;
     
     private Vector3 velocity;
     private int bounceCount;
@@ -58,8 +61,7 @@ public class SpillBlobBehaviour : MonoBehaviour
         
         Vector3 move = velocity * Time.deltaTime;
 
-        if (Physics.Raycast(transform.position, move.normalized, out RaycastHit hit, move.magnitude, ~Player,
-                QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(transform.position, move.normalized, out RaycastHit hit, move.magnitude, ~Player))
         {
             transform.position = hit.point;
             CheckBounce(hit);
@@ -71,10 +73,38 @@ public class SpillBlobBehaviour : MonoBehaviour
 
     void CheckBounce(RaycastHit hit)
     {
-        if (Vector3.Dot(hit.normal, Vector3.up) >= 0.8f)
+        foreach (string tag in ignoreTags)
+        {
+            if (hit.transform.CompareTag(tag))
+            {
+                return;
+            }
+        }
+        bool wrongTag = false;
+        if ((hit.transform.tag == "Water" || hit.transform.tag == "WaterSurface") && velocity.y < 0)
+        {
+            Debug.Log("Spill destroyed in water");
+            blobSplashInstance.transform.position = hit.point;
+            blobSplashInstance.Play();
+            active = false;
+            gameObject.SetActive(false);
+            return;
+        }
+        if ((hit.transform.tag == "Water" || hit.transform.tag == "WaterSurface") && velocity.y >= 0)
+        {
+            return;
+        }
+        foreach (string tag in bounceTags)
+        {
+            if (hit.transform.CompareTag(tag))
+            {
+                wrongTag = true;
+            }
+        }
+        if (Vector3.Dot(hit.normal, Vector3.up) >= 0.8f && !wrongTag)
         {
             // form puddle;
-            PuddleManager.Instance.RaiseEvapouratablePuddle(transform.position, raiseTime, heightOffset,
+            PuddleManager.Instance.RaiseEvapouratableSpillPuddle(transform.position, raiseTime, heightOffset,
                 spillEvaporateTime);
             blobSplashInstance.transform.position = hit.point;
             blobSplashInstance.Play();
@@ -84,9 +114,13 @@ public class SpillBlobBehaviour : MonoBehaviour
         }
         if (bounceCount >= maxBounces)
         {
+            Debug.Log("Spill blob destroyed because of max bounces");
+            active = false;
             gameObject.SetActive(false);
             return;
         }
+        
+        Debug.Log("Spill bounced with " + hit.transform.tag);
         velocity = Vector3.Reflect(velocity, hit.normal);
         curGravity += 4f;
         bounceCount++;

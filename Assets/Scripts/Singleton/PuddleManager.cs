@@ -5,6 +5,9 @@ public class PuddleManager : MonoBehaviour
 {
     [SerializeField] private PuddleBehaviour puddleWater;
     private PuddleBehaviour[] puddleWaters;
+    private PuddleBehaviour[] spillPuddles;
+
+    private int activeSpillPuddles = 0;
     
     public static PuddleManager Instance;
     
@@ -21,15 +24,21 @@ public class PuddleManager : MonoBehaviour
         }
         
         puddleWaters = new PuddleBehaviour[8];
+        spillPuddles = new PuddleBehaviour[4];
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < puddleWaters.Length; i++)
         {
             puddleWaters[i] = Instantiate(puddleWater);
             puddleWaters[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < spillPuddles.Length; i++)
+        {
+            spillPuddles[i] = Instantiate(puddleWater);
+            spillPuddles[i].gameObject.SetActive(false);
         }
     }
 
@@ -42,6 +51,29 @@ public class PuddleManager : MonoBehaviour
                 puddleWaters[i].transform.position = pos;
                 puddleWaters[i].Raise(raiseTime, raiseHeight);
                 puddleWaters[i].SetEvaporate(evaporateTime);
+                break;
+            }
+        }
+    }
+    
+    public void RaiseEvapouratableSpillPuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime)
+    {
+        if (activeSpillPuddles == 4)
+        {
+            for (int i = 0; i < spillPuddles.Length; i++)
+            {
+                spillPuddles[i].gameObject.SetActive(false);
+                activeSpillPuddles--;
+            }
+        }
+        for (int i = 0; i < spillPuddles.Length; i++)
+        {
+            if (spillPuddles[i].gameObject.activeSelf == false)
+            {
+                spillPuddles[i].transform.position = pos;
+                spillPuddles[i].Raise(raiseTime, raiseHeight);
+                spillPuddles[i].SetEvaporate(evaporateTime);
+                activeSpillPuddles += 1;
                 break;
             }
         }

@@ -18,7 +18,7 @@ public class PuddleBehaviour : MonoBehaviour
 
     public void Raise(float time, float height)
     {
-        Debug.Log("Raising puddle");
+        // Debug.Log("Raising puddle");
         raised = false;
         raiseTime = time;
         evaporatedHeight = transform.position.y - height;

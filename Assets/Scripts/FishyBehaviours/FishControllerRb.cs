@@ -26,6 +26,8 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float groundSpeedScale = 0.4f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     [SerializeField] private float underWaterMass = 0.02f;
+    
+    [Header("Dash")]
     [SerializeField] private float dashDuration = 0.25f;
     [SerializeField] private float dashSpeed = 0.5f;
 
@@ -102,7 +104,6 @@ public class FishControllerRB : MonoBehaviour
     private float rholdTimer = 0f;
     
     // others
-    private float jumpMoveFactor;
     private Vector3 swimDirection;
     private float surfaceHeight;
     private bool onSurfaceThisFrame;
@@ -116,6 +117,7 @@ public class FishControllerRB : MonoBehaviour
     private float jumpHoldTimer = 0f;
     private bool canCharge = false;
     private bool jumpHeld = false;
+    private float jumpMoveFactor;
     
     // movement
     private bool wasMoving;
