@@ -489,6 +489,7 @@ public class FishControllerRB : MonoBehaviour
         if (isAtSurface && canSplash)
         {
             LockMovement(true, true, true);
+            PuddleManager.Instance.GetSpillPuddle();
             transform.DORotate(new Vector3(0,360,0), 1f, RotateMode.LocalAxisAdd)
              .SetEase(Ease.OutBack)
              .OnComplete(() => UnlockMovement());

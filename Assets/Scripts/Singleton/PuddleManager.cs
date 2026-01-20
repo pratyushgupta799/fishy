@@ -55,17 +55,18 @@ public class PuddleManager : MonoBehaviour
             }
         }
     }
+
+    public void GetSpillPuddle()
+    {
+        for (int i = 0; i < spillPuddles.Length; i++)
+        {
+            spillPuddles[i].gameObject.SetActive(false);
+            activeSpillPuddles--;
+        }
+    }
     
     public void RaiseEvapouratableSpillPuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime)
     {
-        if (activeSpillPuddles == 4)
-        {
-            for (int i = 0; i < spillPuddles.Length; i++)
-            {
-                spillPuddles[i].gameObject.SetActive(false);
-                activeSpillPuddles--;
-            }
-        }
         for (int i = 0; i < spillPuddles.Length; i++)
         {
             if (spillPuddles[i].gameObject.activeSelf == false)
