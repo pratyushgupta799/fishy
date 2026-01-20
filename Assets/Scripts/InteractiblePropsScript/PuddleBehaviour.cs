@@ -5,15 +5,24 @@ public class PuddleBehaviour : MonoBehaviour
     private bool canEvaporate;
     private float timeToEvaporate;
     private float evaporatedHeight;
+    private float evaporatedScale;
+
+    private Vector3 originalScale;
 
     private float raiseTime;
     private bool raised = true;
     private float raiseHeight;
     
-    public void SetEvaporate(float time)
+    private void Awake()
+    {
+        originalScale = transform.localScale;
+    }
+    
+    public void SetEvaporate(float time, float minScale)
     {
         canEvaporate = true;
         timeToEvaporate = time;
+        evaporatedScale = minScale * transform.localScale.x;
     }
 
     public void Raise(float time, float height)
@@ -24,6 +33,7 @@ public class PuddleBehaviour : MonoBehaviour
         evaporatedHeight = transform.position.y - height;
         transform.position = new Vector3(transform.position.x, transform.position.y - height, transform.position.z);
         raiseHeight = transform.position.y + height;
+        transform.localScale = originalScale;
         gameObject.SetActive(true);
     }
     
@@ -47,9 +57,15 @@ public class PuddleBehaviour : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position,
                     new Vector3(transform.position.x, evaporatedHeight, transform.position.z),
                     Time.deltaTime / timeToEvaporate);
+
+                transform.localScale = Vector3.Lerp(transform.localScale,
+                    new Vector3(evaporatedScale, transform.localScale.y, evaporatedScale),
+                    Time.deltaTime / timeToEvaporate
+                );
                 
                 if (Mathf.Abs(transform.position.y - evaporatedHeight) < 0.01f)
                 {
+                    transform.localScale = originalScale;
                     gameObject.SetActive(false);
                 }
             }

@@ -56,7 +56,7 @@ public static class FishyEvents
             OnSurfaceReachedFromUnderWater?.Invoke();
         }
 
-        if (newState == FishyStates.OnSurface && lastState == FishyStates.InAir)
+        if (newState == FishyStates.OnSurface && lastState != FishyStates.InWater)
         {
             OnSurfaceReachedFromAir?.Invoke();
         }

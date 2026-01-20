@@ -21,7 +21,7 @@ public class CamSnapper : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Cam snapper zone entered");
+            // Debug.Log("Cam snapper zone entered");
             SnapCam.Priority = 1;
             fishy.LockMovement(lockForward, lockSideway, lockUpward);
         }
@@ -31,7 +31,7 @@ public class CamSnapper : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Cam snapper zone exited");
+            // Debug.Log("Cam snapper zone exited");
             FishyEvents.OnCamSnapZoneExit?.Invoke();
             SnapCam.Priority = -1;
             fishy.UnlockMovement();

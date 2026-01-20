@@ -9,6 +9,7 @@ public class SpillBlobBehaviour : MonoBehaviour
     [SerializeField] private float raiseTime = 0.5f;
     [SerializeField] private LayerMask Player;
     [SerializeField] private ParticleSystem blobSplash;
+    [SerializeField] private float evaporatedScale = 0.5f;
 
     [SerializeField] private string[] bounceTags;
     [SerializeField] private string[] ignoreTags;
@@ -106,7 +107,7 @@ public class SpillBlobBehaviour : MonoBehaviour
             // form puddle;
             Debug.Log("Spill puddle spawned on " + hit.transform.tag);
             PuddleManager.Instance.RaiseEvapouratableSpillPuddle(transform.position, raiseTime, heightOffset,
-                spillEvaporateTime);
+                spillEvaporateTime, evaporatedScale);
             blobSplashInstance.transform.position = hit.point;
             blobSplashInstance.Play();
             active = false;

@@ -33,6 +33,10 @@ public class FishControllerRB : MonoBehaviour
 
     [Header("Surface movement")] 
     [SerializeField] private float surfaceHeightOffset = 0.1f;
+
+    [Header("Surface Dip")] 
+    [SerializeField] private float maxSurfaceDip = 0.15f;
+    [SerializeField] private float minSurfaceDip = 0.05f;
     
     [Header("Roll")]
     [SerializeField] private float torqueForce = 5f;
@@ -143,6 +147,7 @@ public class FishControllerRB : MonoBehaviour
     // shake
     private bool canTwirl;
     private bool canSplash = true;
+    private bool splashSpinning = false;
     private SpillBlobBehaviour _frontSpillBlob;
     private SpillBlobBehaviour _backSpillBlob;
     private SpillBlobBehaviour _leftSpillBlob;
@@ -156,6 +161,7 @@ public class FishControllerRB : MonoBehaviour
     
     // surface transition
     private bool inSurfaceTransition;
+    private Tween surfaceTween;
     
     // properties
     private bool IsJumping
@@ -202,6 +208,22 @@ public class FishControllerRB : MonoBehaviour
             {
                 isJumping = true;
                 isJumpingFromGround = true;
+            }
+        }
+    }
+    
+    private bool InSurfaceTransition
+    {
+        get
+        {
+            return inSurfaceTransition;
+        }
+        set
+        {
+            if (value == false)
+            {
+                inSurfaceTransition = false;
+                surfaceTween?.Kill();
             }
         }
     }
@@ -302,6 +324,11 @@ public class FishControllerRB : MonoBehaviour
         else
         {
             up = upLocked? 0f : ctx.ReadValue<float>();
+        }
+
+        if (up < 0f)
+        {
+            InSurfaceTransition = false;
         }
     }
 
@@ -405,6 +432,7 @@ public class FishControllerRB : MonoBehaviour
 
             if (!IsJumping && isAtSurface)
             {
+                InSurfaceTransition = false;
                 jumpHeld = true;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, minJumpForceWater, rb.linearVelocity.z);
@@ -453,7 +481,7 @@ public class FishControllerRB : MonoBehaviour
 
     public void OnShake(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Shake pressed");
+        // Debug.Log("Shake pressed");
         // dash
         if (inWater && !isAtSurface && !isDashing)
         {
@@ -465,7 +493,7 @@ public class FishControllerRB : MonoBehaviour
         // twirl
         if (!inWater && !isGrounded && canTwirl)
         {
-            Debug.Log("Twirl");
+            // Debug.Log("Twirl");
             rb.AddTorque(Vector3.up * twirlTorqueForce, ForceMode.Impulse);
             float yVel = rb.linearVelocity.y;
             if (yVel >= 0)
@@ -490,11 +518,11 @@ public class FishControllerRB : MonoBehaviour
         // spill
         if (isAtSurface && canSplash)
         {
-            LockMovement(true, true, true);
+            splashSpinning = true;
             PuddleManager.Instance.GetSpillPuddle();
             transform.DORotate(new Vector3(0,360,0), spillRotationDuration, RotateMode.LocalAxisAdd)
              .SetEase(spillRotationEase)
-             .OnComplete(() => UnlockMovement());
+             .OnComplete(() => splashSpinning = false);
 
             _frontSpillBlob.Init(groundCheck.position,
                 (transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
@@ -613,12 +641,31 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceTransition()
     {
-        inSurfaceTransition = true;
-        transform
-            .DOMoveY(transform.position.y - 0.15f, 0.25f)
+        var freeSpaceBelow = GetFreeSpaceBelow(maxSurfaceDip);
+        
+        Debug.Log("Surface Transition space below: " + freeSpaceBelow);
+        InSurfaceTransition = true;
+        surfaceTween = transform
+            .DOMoveY(transform.position.y - freeSpaceBelow, 0.25f)
             .SetLoops(2, LoopType.Yoyo)
             .SetEase(Ease.OutQuad)
             .OnComplete(() => inSurfaceTransition = false);
+    }
+    
+    float GetFreeSpaceBelow(float maxDistance)
+    {
+        if (Physics.Raycast(
+                groundCheck.position,
+                Vector3.down,
+                out RaycastHit hit,
+                maxDistance,
+                ~fishyLayer,
+                QueryTriggerInteraction.Ignore))
+        {
+            return hit.distance;
+        }
+
+        return maxDistance;
     }
 
     private void WaterMovement()
@@ -790,7 +837,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void Flop()
     {
-        Debug.Log("Flop");
+        // Debug.Log("Flop");
         Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
         Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
         rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;

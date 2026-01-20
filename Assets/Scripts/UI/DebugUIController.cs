@@ -1,14 +1,17 @@
+using System;
 using System.Data;
 using FishyUtilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 
 public class DebugUIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI stateText;
     [SerializeField] private TextMeshProUGUI deathTimerText;
     [SerializeField] private TextMeshProUGUI checkpointText;
+    [SerializeField] private TextMeshProUGUI playerSpeedVector;
     [SerializeField] private TextMeshProUGUI playerSpeed;
     
     private Rigidbody fish;
@@ -35,7 +38,8 @@ public class DebugUIController : MonoBehaviour
         }
         else
         {
-            playerSpeed.text = fish.linearVelocity.ToString();
+            playerSpeedVector.text = fish.linearVelocity.ToString();
+            playerSpeed.text = fish.linearVelocity.magnitude.ToString();
         }
     }
     

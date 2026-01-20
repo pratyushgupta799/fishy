@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,7 +43,7 @@ public class PuddleManager : MonoBehaviour
         }
     }
 
-    public void RaiseEvapouratablePuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime)
+    public void RaiseEvapouratablePuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime, float evaporateScale)
     {
         for (int i = 0; i < puddleWaters.Length; i++)
         {
@@ -50,7 +51,7 @@ public class PuddleManager : MonoBehaviour
             {
                 puddleWaters[i].transform.position = pos;
                 puddleWaters[i].Raise(raiseTime, raiseHeight);
-                puddleWaters[i].SetEvaporate(evaporateTime);
+                puddleWaters[i].SetEvaporate(evaporateTime, evaporateScale);
                 break;
             }
         }
@@ -65,7 +66,7 @@ public class PuddleManager : MonoBehaviour
         }
     }
     
-    public void RaiseEvapouratableSpillPuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime)
+    public void RaiseEvapouratableSpillPuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime, float evaporatedScale)
     {
         for (int i = 0; i < spillPuddles.Length; i++)
         {
@@ -73,7 +74,7 @@ public class PuddleManager : MonoBehaviour
             {
                 spillPuddles[i].transform.position = pos;
                 spillPuddles[i].Raise(raiseTime, raiseHeight);
-                spillPuddles[i].SetEvaporate(evaporateTime);
+                spillPuddles[i].SetEvaporate(evaporateTime, evaporatedScale);
                 activeSpillPuddles += 1;
                 break;
             }
