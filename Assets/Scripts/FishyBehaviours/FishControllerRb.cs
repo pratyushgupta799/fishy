@@ -54,6 +54,7 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float spillDirectionalForce = 5f;
     [SerializeField] private float spillUpForce = 2f;
     [SerializeField] private float spillPuddleLifetime = 3f;
+    [SerializeField] private Ease spillRotationEase;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -491,7 +492,7 @@ public class FishControllerRB : MonoBehaviour
             LockMovement(true, true, true);
             PuddleManager.Instance.GetSpillPuddle();
             transform.DORotate(new Vector3(0,360,0), 1f, RotateMode.LocalAxisAdd)
-             .SetEase(Ease.OutBack)
+             .SetEase(spillRotationEase)
              .OnComplete(() => UnlockMovement());
 
             _frontSpillBlob.Init(groundCheck.position,
