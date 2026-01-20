@@ -55,6 +55,7 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float spillUpForce = 2f;
     [SerializeField] private float spillPuddleLifetime = 3f;
     [SerializeField] private Ease spillRotationEase;
+    [SerializeField] private float spillRotationDuration = 0.5f;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpMoveFactorFromWater = 1.5f;
@@ -491,7 +492,7 @@ public class FishControllerRB : MonoBehaviour
         {
             LockMovement(true, true, true);
             PuddleManager.Instance.GetSpillPuddle();
-            transform.DORotate(new Vector3(0,360,0), 1f, RotateMode.LocalAxisAdd)
+            transform.DORotate(new Vector3(0,360,0), spillRotationDuration, RotateMode.LocalAxisAdd)
              .SetEase(spillRotationEase)
              .OnComplete(() => UnlockMovement());
 
@@ -1013,22 +1014,6 @@ public class FishControllerRB : MonoBehaviour
         yield return new WaitForSeconds(t);
         a();
     }
-    
-    // IEnumerator TransformSpinOnce()
-    // {
-    //     LockMovement(true, true, true);
-    //     float rotated = 0f;
-    //
-    //     while (rotated < 360f)
-    //     {
-    //         float step = 360f * Time.deltaTime * 2f;
-    //         transform.Rotate(0f, step, 0f);
-    //         rotated += step;
-    //         yield return null;
-    //     }
-    //     
-    //     UnlockMovement();
-    // }
 
     public bool IsDashing()
     {
