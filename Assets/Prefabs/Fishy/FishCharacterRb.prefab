@@ -598,13 +598,14 @@ MonoBehaviour:
   underWaterMass: 0.2
   dashDuration: 0.2
   dashSpeed: 3.5
-  torqueForce: 0.2
+  surfaceHeightOffset: 0.1
+  torqueForce: 0.3
   maxRollVelocity: 10
-  flopTimer: 0.7
+  flopTimer: 0.5
   flopForce: 2
   flopCoyote: 0.5
   flopDirectionNoise: {x: 1, y: 1, z: 1}
-  flopRotationNoise: {x: 0.03, y: 0.1, z: 0.03}
+  flopRotationNoise: {x: 0.1, y: 0.1, z: 0.1}
   twirlTorqueForce: 0.3
   twirlJumpForce: 3
   spillCooldown: 1
@@ -701,7 +702,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblesUp: {fileID: 1973924276923997323}
   waterSplashLand: {fileID: 5054613367793835197, guid: b392eecc9c441474db166d63ac107576, type: 3}
-  waterSplashJump: {fileID: 5054613367793835197, guid: b392eecc9c441474db166d63ac107576, type: 3}
+  waterSplashJump: {fileID: 899467064068121507, guid: 3827087bb94aaa1429c90fb828eb9a8e, type: 3}
 --- !u!114 &6446396791807413812
 MonoBehaviour:
   m_ObjectHideFlags: 0
