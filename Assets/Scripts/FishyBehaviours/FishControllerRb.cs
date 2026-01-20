@@ -28,6 +28,9 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float underWaterMass = 0.02f;
     [SerializeField] private float dashDuration = 0.25f;
     [SerializeField] private float dashSpeed = 0.5f;
+
+    [Header("Surface movement")] 
+    [SerializeField] private float surfaceHeightOffset = 0.1f;
     
     [Header("Roll")]
     [SerializeField] private float torqueForce = 5f;
@@ -588,13 +591,14 @@ public class FishControllerRB : MonoBehaviour
             animator.SetBool("isSwiming", false);
         }
 
-        // Keep near surface
+        // snap to surface
         if (up >= 0 && !IsJumping)
         {
             if (!inSurfaceTransition)
             {
-                rb.position = Vector3.Lerp(rb.position, new Vector3(rb.position.x, curSurfacePos.y, rb.position.z),
-                                10f * Time.deltaTime);
+                rb.position = Vector3.Lerp(rb.position,
+                    new Vector3(rb.position.x, curSurfacePos.y + surfaceHeightOffset, rb.position.z),
+                    10f * Time.deltaTime);
             }
             Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
             RotateTo(direction);
