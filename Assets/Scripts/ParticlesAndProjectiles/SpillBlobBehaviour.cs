@@ -104,6 +104,7 @@ public class SpillBlobBehaviour : MonoBehaviour
         if (Vector3.Dot(hit.normal, Vector3.up) >= 0.8f && !wrongTag)
         {
             // form puddle;
+            Debug.Log("Spill puddle spawned on " + hit.transform.tag);
             PuddleManager.Instance.RaiseEvapouratableSpillPuddle(transform.position, raiseTime, heightOffset,
                 spillEvaporateTime);
             blobSplashInstance.transform.position = hit.point;

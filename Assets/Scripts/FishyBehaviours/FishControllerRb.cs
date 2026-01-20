@@ -488,7 +488,10 @@ public class FishControllerRB : MonoBehaviour
         // spill
         if (isAtSurface && canSplash)
         {
-            StartCoroutine(TransformSpinOnce());
+            LockMovement(true, true, true);
+            transform.DORotate(new Vector3(0,360,0), 1f, RotateMode.LocalAxisAdd)
+             .SetEase(Ease.OutBack)
+             .OnComplete(() => UnlockMovement());
 
             _frontSpillBlob.Init(groundCheck.position,
                 (transform.forward * spillDirectionalForce + Vector3.up * spillUpForce).normalized,
@@ -583,8 +586,6 @@ public class FishControllerRB : MonoBehaviour
             
         if (swimDirection.magnitude > 0.1f)
         {
-            // RotateTo(swimDirection.normalized);
-            
             RotateTo(swimDirection.normalized);
             animator.SetBool("isSwiming", true);
         }
@@ -1011,21 +1012,21 @@ public class FishControllerRB : MonoBehaviour
         a();
     }
     
-    IEnumerator TransformSpinOnce()
-    {
-        LockMovement(true, true, true);
-        float rotated = 0f;
-
-        while (rotated < 360f)
-        {
-            float step = 360f * Time.deltaTime * 2f;
-            transform.Rotate(0f, step, 0f);
-            rotated += step;
-            yield return null;
-        }
-        
-        UnlockMovement();
-    }
+    // IEnumerator TransformSpinOnce()
+    // {
+    //     LockMovement(true, true, true);
+    //     float rotated = 0f;
+    //
+    //     while (rotated < 360f)
+    //     {
+    //         float step = 360f * Time.deltaTime * 2f;
+    //         transform.Rotate(0f, step, 0f);
+    //         rotated += step;
+    //         yield return null;
+    //     }
+    //     
+    //     UnlockMovement();
+    // }
 
     public bool IsDashing()
     {
