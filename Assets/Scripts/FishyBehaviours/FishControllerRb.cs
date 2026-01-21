@@ -148,6 +148,9 @@ public class FishControllerRB : MonoBehaviour
     private bool canTwirl;
     private bool canSplash = true;
     private bool splashSpinning = false;
+    private bool onSpillSurface = false;
+    
+    // spill blob refs
     private SpillBlobBehaviour _frontSpillBlob;
     private SpillBlobBehaviour _backSpillBlob;
     private SpillBlobBehaviour _leftSpillBlob;
@@ -516,7 +519,7 @@ public class FishControllerRB : MonoBehaviour
         }
 
         // spill
-        if (isAtSurface && canSplash)
+        if (isAtSurface && canSplash && !onSpillSurface)
         {
             splashSpinning = true;
             PuddleManager.Instance.GetSpillPuddle();
@@ -615,7 +618,7 @@ public class FishControllerRB : MonoBehaviour
                 .normalized;
         }
             
-        if (swimDirection.magnitude > 0.1f)
+        if (swimDirection.magnitude > 0.1f && !splashSpinning)
         {
             RotateTo(swimDirection.normalized);
             animator.SetBool("isSwiming", true);
@@ -894,7 +897,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Water") || other.CompareTag("WaterSurface"))
+        if (other.CompareTag("Water") || other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
         {
             if (!inWater && !isAtSurface)
             {
@@ -907,13 +910,17 @@ public class FishControllerRB : MonoBehaviour
             // Debug.Log("Water triggered");
             IsJumping = false;
         }
-        if (other.CompareTag("WaterSurface"))
+        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
         {
             // Debug.Log("Surface trigger");
             if (inWater)
             {
                 if (IsJumping) IsJumping = false;
                 isAtSurface = true;
+                if (other.CompareTag("PuddleSurface"))
+                {
+                    onSpillSurface = true;
+                }
                 surfaceNormal = other.transform.up;
                 curSurfacePos = other.ClosestPoint(transform.position);
                 rb.linearVelocity = Vector3.zero;
@@ -934,12 +941,16 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("WaterSurface"))
+        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
         {
             // Debug.Log("Water surface trigger stay");
             if (inWater && !isJumping)
             {
                 isAtSurface = true;
+                if (other.CompareTag("PuddleSurface"))
+                {
+                    onSpillSurface = true;
+                }
                 surfaceNormal = other.transform.up;
                 curSurfacePos = other.ClosestPoint(transform.position);
                 onSurfaceThisFrame = true;
@@ -961,10 +972,11 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("WaterSurface"))
+        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
         {
             // Debug.Log("Surface trigger exit");
             isAtSurface = false;
+            onSpillSurface = false;
         }
 
         if (other.CompareTag("Water"))
@@ -980,6 +992,7 @@ public class FishControllerRB : MonoBehaviour
         if (!onSurfaceThisFrame && isAtSurface)
         {
             isAtSurface = false;
+            onSpillSurface = false;
         }
         else
         {
@@ -989,6 +1002,8 @@ public class FishControllerRB : MonoBehaviour
         if (!inWaterThisFrame && inWater)
         {
             inWater = false;
+            isAtSurface = false;
+            onSpillSurface = false;
             FishyEvents.OnMovingWaterEnd?.Invoke();
         }
         else
