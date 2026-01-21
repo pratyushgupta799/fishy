@@ -2550,26 +2550,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 175363268081319974, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 018547467f33eb342be968226c11840e, type: 2}
-    - target: {fileID: 687151274389306883, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 018547467f33eb342be968226c11840e, type: 2}
-    - target: {fileID: 1565198378888704793, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 018547467f33eb342be968226c11840e, type: 2}
-    - target: {fileID: 1691591981945419321, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639505124982433242, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3286074260683381993, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_Name
       value: FishCharacterRb
@@ -2580,7 +2560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.1351686
+      value: 3.11
       objectReference: {fileID: 0}
     - target: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2618,40 +2598,9 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 330585543}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: waterCheck
-      value: 
-      objectReference: {fileID: 225945369}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: waterDistance
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: spillRotationEase
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: waterLayer.m_Bits
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: spillPuddleLifetime
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5987607933902006821, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: colliderBorderOffset
-      value: 0.005
-      objectReference: {fileID: 0}
-    - target: {fileID: 8335179064403096338, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.14
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4738349270000777829, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 225945369}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0becd1892821e3f4ca26e0bcc4b38f94, type: 3}
 --- !u!4 &75920559 stripped
@@ -7151,37 +7100,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2243b36ed9aba6f48946149d9d4390da, type: 3}
---- !u!1 &225945368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 225945369}
-  m_Layer: 8
-  m_Name: WaterCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &225945369
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225945368}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.009, y: -0.091, z: 0.047}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 75920559}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &226465517
 GameObject:
   m_ObjectHideFlags: 0
@@ -10689,7 +10607,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0026102974, y: 0.9767752, z: -0.21391909, w: 0.011918872}
-  m_LocalPosition: {x: 12.103972, y: 4.761969, z: -39.655884}
+  m_LocalPosition: {x: 12.103972, y: 3.7368007, z: -39.655884}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -95921,7 +95839,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4140186936609818965, guid: 8700ab5daa6d1ff42831b99ddaab71ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.761969
+      value: 3.7368007
       objectReference: {fileID: 0}
     - target: {fileID: 4140186936609818965, guid: 8700ab5daa6d1ff42831b99ddaab71ea, type: 3}
       propertyPath: m_LocalPosition.z

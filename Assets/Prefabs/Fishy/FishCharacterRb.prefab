@@ -458,7 +458,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3b1eb7fec067251498a6124e4aca781f, type: 2}
+  - {fileID: 2100000, guid: 018547467f33eb342be968226c11840e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -543,6 +543,7 @@ Transform:
   - {fileID: 1487234796680223801}
   - {fileID: 5879929320518313707}
   - {fileID: 8335179064403096338}
+  - {fileID: 8388148329832223000}
   - {fileID: 608965051569946392}
   - {fileID: 4343932891879290742}
   m_Father: {fileID: 0}
@@ -599,6 +600,8 @@ MonoBehaviour:
   dashDuration: 0.2
   dashSpeed: 3.5
   surfaceHeightOffset: 0.1
+  maxSurfaceDip: 0.15
+  minSurfaceDip: 0.05
   torqueForce: 0.3
   maxRollVelocity: 10
   flopTimer: 0.5
@@ -611,7 +614,9 @@ MonoBehaviour:
   spillCooldown: 1
   spillDirectionalForce: 1.5
   spillUpForce: 5
-  spillPuddleLifetime: 3
+  spillPuddleLifetime: 6
+  spillRotationEase: 9
+  spillRotationDuration: 0.5
   jumpMoveFactorFromWater: 1.75
   jumpMoveFactorFromGround: 1.25
   jumpForceGround: 4
@@ -629,6 +634,12 @@ MonoBehaviour:
   interactibleLayer:
     serializedVersion: 2
     m_Bits: 512
+  waterCheck: {fileID: 8388148329832223000}
+  waterDistance: 0.04
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
+  colliderBorderOffset: 0.005
   rHoldTime: 1
 --- !u!135 &4923730549538644310
 SphereCollider:
@@ -658,7 +669,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3286074260683381993}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8f9a2cc84a57c64091403063d42c4d8, type: 3}
   m_Name: 
@@ -929,6 +940,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8316984507474744958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3835840238707702697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8388148329832223000}
+  m_Layer: 8
+  m_Name: WaterCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8388148329832223000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3835840238707702697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.009, y: -0.091, z: 0.047}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4738349270000777829}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3950463678172547443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,7 +1058,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3b1eb7fec067251498a6124e4aca781f, type: 2}
+  - {fileID: 2100000, guid: 018547467f33eb342be968226c11840e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1279,7 +1321,7 @@ Transform:
   m_GameObject: {fileID: 7893252750552434039}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.143, z: 0.051}
+  m_LocalPosition: {x: 0, y: -0.14, z: 0.051}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1404,7 +1446,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3b1eb7fec067251498a6124e4aca781f, type: 2}
+  - {fileID: 2100000, guid: 018547467f33eb342be968226c11840e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
