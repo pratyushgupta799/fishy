@@ -127,6 +127,9 @@ public class FishControllerRB : MonoBehaviour
     
     // movement
     private bool wasMoving;
+    
+    // movement locks
+    private bool snapRotationSideways;
     private bool forwardLocked;
     private bool rightLocked;
     private bool upLocked;
@@ -234,13 +237,13 @@ public class FishControllerRB : MonoBehaviour
     private void OnEnable()
     {
         FishyEvents.OnFishyMoveStateChanged += StateManagement;
-        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
+        FishyEvents.OnWaterEntered += SurfaceTransition;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= StateManagement;
-        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
+        FishyEvents.OnWaterEntered += SurfaceTransition;
     }
 
     private void Awake()
@@ -625,6 +628,10 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
+            if (snapRotationSideways)
+            {
+                RotateToSideway();
+            }
             animator.SetBool("isSwiming", false);
         }
 
@@ -642,7 +649,7 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    private void SurfaceTransition()
+    private void SurfaceTransition(Vector3 pos)
     {
         var freeSpaceBelow = GetFreeSpaceBelow(maxSurfaceDip);
         
@@ -703,6 +710,10 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
+            if (snapRotationSideways)
+            {
+                RotateToSideway();
+            }
             animator.SetBool("isSwiming", false);
         }
     }
@@ -814,6 +825,25 @@ public class FishControllerRB : MonoBehaviour
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, 
             Quaternion.LookRotation(target),
+            turnSmoothTime * Time.deltaTime);
+    }
+
+    private void RotateToSideway()
+    {
+        Vector3 camRight = CamRightFlat();
+        
+        Vector3 camLeft  = -camRight;
+
+        Vector3 current = transform.forward;
+
+        Vector3 targetDir =
+            Vector3.Dot(current, camRight) > Vector3.Dot(current, camLeft)
+                ? camRight
+                : camLeft;
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(targetDir),
             turnSmoothTime * Time.deltaTime);
     }
 
@@ -1060,12 +1090,17 @@ public class FishControllerRB : MonoBehaviour
     public void LockMovement(bool forward, bool right, bool up)
     {
         forwardLocked = forward;
+        if (forward)
+        {
+            snapRotationSideways = true;
+        }
         rightLocked = right;
         upLocked = up;
     }
 
     public void UnlockMovement()
     {
+        snapRotationSideways = false;
         forwardLocked = false;
         rightLocked = false;
         upLocked = false;

@@ -61,7 +61,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     {
         if (hasSpilled) return;
         hasSpilled = true;
-        
+        waterMesh.SetActive(false);
         AudioManager.Instance.AudioPlayOneShotAt(glassFall, transform.position);
         
         Ray ray = new Ray(puddleCenter.transform.position, Vector3.down);
@@ -81,7 +81,6 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
                 Debug.Log("water spilled on " + hit.transform.name);
                 droppedPuddle = Instantiate(puddleMesh, hit.point + Vector3.down * puddleHeightOffset, Quaternion.identity);
                 StartCoroutine(PuddleRaise());
-                waterMesh.SetActive(false);
                 return;
             }
         }
