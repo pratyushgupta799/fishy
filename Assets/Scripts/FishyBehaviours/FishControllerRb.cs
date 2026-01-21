@@ -79,6 +79,9 @@ public class FishControllerRB : MonoBehaviour
     [SerializeField] private float wallDistance = 0.2f;
     [SerializeField] private LayerMask fishyLayer;
     [SerializeField] private LayerMask interactibleLayer;
+    
+    [Header("Water check parameters")]
+    [SerializeField] private Transform waterCheck;
 
     [Header("Checkpoint")] 
     [SerializeField] private float rHoldTime = 1f;
@@ -355,25 +358,7 @@ public class FishControllerRB : MonoBehaviour
         {
             if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
             {
-                if (Physics.CheckSphere(
-                        groundCheck.position,
-                        groundDistance,
-                        ~fishyLayer,
-                        QueryTriggerInteraction.Ignore))
-                {
-                    if (Physics.Raycast(
-                            groundCheck.position,
-                            Vector3.down,
-                            out RaycastHit hit,
-                            groundDistance + 0.1f))
-                    {
-                        isGrounded = Vector3.Dot(hit.normal, Vector3.up) >= 0.7f;
-                    }
-                }
-                else
-                {
-                    isGrounded = false;
-                }
+                isGrounded = GroundCheckRaycast();
 
                 IsJumping = !isGrounded;
             }
@@ -386,31 +371,33 @@ public class FishControllerRB : MonoBehaviour
         {
             if (!inWater)
             {
-                if (Physics.CheckSphere(
-                        groundCheck.position,
-                        groundDistance,
-                        ~fishyLayer,
-                        QueryTriggerInteraction.Ignore))
-                {
-                    if (Physics.Raycast(
-                            groundCheck.position,
-                            Vector3.down,
-                            out RaycastHit hit,
-                            groundDistance + 0.1f))
-                    {
-                        isGrounded = Vector3.Dot(hit.normal, Vector3.up) >= 0.7f;
-                    }
-                }
-                else
-                {
-                    isGrounded = false;
-                }
+                isGrounded = GroundCheckRaycast();
             }
             else
             {
                 isGrounded = false;
             }
         }
+    }
+
+    private bool GroundCheckRaycast()
+    {
+        if (Physics.CheckSphere(
+                groundCheck.position,
+                groundDistance,
+                ~fishyLayer,
+                QueryTriggerInteraction.Ignore))
+        {
+            if (Physics.Raycast(
+                    groundCheck.position,
+                    Vector3.down,
+                    out RaycastHit hit,
+                    groundDistance + 0.1f))
+            {
+                return Vector3.Dot(hit.normal, Vector3.up) >= 0.7f;
+            }
+        }
+        return false;
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
