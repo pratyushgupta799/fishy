@@ -12,6 +12,10 @@ public class PuddleBehaviour : MonoBehaviour
     private float raiseTime;
     private bool raised = true;
     private float raiseHeight;
+
+    private float evaporate_t;
+    private float raise_t;
+    private Vector3 startPos;
     
     private void Awake()
     {
@@ -28,9 +32,12 @@ public class PuddleBehaviour : MonoBehaviour
     public void Raise(float time, float height)
     {
         // Debug.Log("Raising puddle");
+        evaporate_t = 0;
+        raise_t = 0;
         raised = false;
         raiseTime = time;
         evaporatedHeight = transform.position.y - height;
+        startPos = transform.position;
         transform.position = new Vector3(transform.position.x, transform.position.y - height, transform.position.z);
         raiseHeight = transform.position.y + height;
         transform.localScale = originalScale;
@@ -41,11 +48,14 @@ public class PuddleBehaviour : MonoBehaviour
     {
         if (!raised)
         {
-            transform.position = Vector3.Lerp(transform.position,
-                new Vector3(transform.position.x, raiseHeight, transform.position.z),
-                Time.deltaTime / raiseTime);
+            raise_t += Time.deltaTime/raiseTime;
+            Mathf.Clamp01(raise_t);
             
-            if (Mathf.Abs(transform.position.y - raiseHeight) < 0.01f)
+            transform.position = Vector3.Lerp(startPos,
+                new Vector3(startPos.x, raiseHeight, startPos.z),
+                raise_t);
+            
+            if (raise_t >= 1)
             {
                 raised = true;
             }
@@ -54,17 +64,22 @@ public class PuddleBehaviour : MonoBehaviour
         {
             if (canEvaporate)
             {
-                transform.position = Vector3.Lerp(transform.position,
-                    new Vector3(transform.position.x, evaporatedHeight, transform.position.z),
-                    Time.deltaTime / timeToEvaporate);
+                evaporate_t += Time.deltaTime / timeToEvaporate;
+                evaporate_t = Mathf.Clamp01(evaporate_t);
 
-                transform.localScale = Vector3.Lerp(transform.localScale,
-                    new Vector3(evaporatedScale, transform.localScale.y, evaporatedScale),
-                    Time.deltaTime / timeToEvaporate
-                );
-                
-                if (Mathf.Abs(transform.position.y - evaporatedHeight) < 0.01f)
+                transform.position = Vector3.Lerp(
+                    startPos,
+                    new Vector3(startPos.x, evaporatedHeight, startPos.z),
+                    evaporate_t);
+
+                transform.localScale = Vector3.Lerp(
+                    originalScale,
+                    new Vector3(evaporatedScale, originalScale.y, evaporatedScale),
+                    evaporate_t);
+
+                if (evaporate_t >= 1f)
                 {
+                    Debug.Log("Puddle Evaporated");
                     transform.localScale = originalScale;
                     gameObject.SetActive(false);
                 }
