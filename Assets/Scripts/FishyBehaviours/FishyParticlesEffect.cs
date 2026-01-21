@@ -16,14 +16,14 @@ public class FishyParticlesEffect : MonoBehaviour
         sceneWaterSplashJump = Instantiate(waterSplashJump, transform.position, Quaternion.LookRotation(Vector3.up));
         sceneWaterSplashLand = Instantiate(waterSplashLand, transform.position, Quaternion.LookRotation(Vector3.up));
         FishyEvents.OnFishyMoveStateChanged += HandleStateChanged;
-        FishyEvents.OnWaterEntered += PlayWaterSplashLand;
+        FishyEvents.OnSurfaceReachedFromAir += PlayWaterSplashLand;
         FishyEvents.OnJumpFromWater += PlayWaterSplashJump;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= HandleStateChanged;
-        FishyEvents.OnWaterEntered -= PlayWaterSplashLand;
+        FishyEvents.OnSurfaceReachedFromAir -= PlayWaterSplashLand;
     }
     
     private void HandleStateChanged(FishyStates newState)

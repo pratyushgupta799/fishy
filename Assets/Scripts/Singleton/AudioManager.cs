@@ -68,7 +68,7 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        FishyEvents.OnWaterEntered += PlayWaterSplashSound;
+        FishyEvents.OnSurfaceReachedFromAir += PlayWaterSplashSound;
         FishyEvents.OnMovingWaterStart += StartWaterSwimLoop;
         FishyEvents.OnMovingWaterEnd += StopWaterSwimLoop;
         FishyEvents.OnUnderwaterEnter += PlayUnderWaterLoop;
@@ -79,7 +79,7 @@ public class AudioManager : MonoBehaviour
 
     private void OnDisable()
     {
-        FishyEvents.OnWaterEntered -= PlayWaterSplashSound;
+        FishyEvents.OnSurfaceReachedFromAir -= PlayWaterSplashSound;
         FishyEvents.OnMovingWaterStart -= StartWaterSwimLoop;
         FishyEvents.OnMovingWaterEnd -= StopWaterSwimLoop;
         FishyEvents.OnUnderwaterEnter -= PlayUnderWaterLoop;

@@ -82,6 +82,9 @@ public class FishControllerRB : MonoBehaviour
     
     [Header("Water check parameters")]
     [SerializeField] private Transform waterCheck;
+    [SerializeField] private float waterDistance = 0.3f;
+    [SerializeField] private LayerMask waterLayer;
+    [SerializeField] private float colliderBorderOffset = 0.02f;
 
     [Header("Checkpoint")] 
     [SerializeField] private float rHoldTime = 1f;
@@ -149,6 +152,7 @@ public class FishControllerRB : MonoBehaviour
     
     // ground check
     private float groundCheckCollDist;
+    private float waterCheckCollDist;
     
     // shake
     private bool canTwirl;
@@ -240,13 +244,13 @@ public class FishControllerRB : MonoBehaviour
     private void OnEnable()
     {
         FishyEvents.OnFishyMoveStateChanged += StateManagement;
-        FishyEvents.OnWaterEntered += SurfaceTransition;
+        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= StateManagement;
-        FishyEvents.OnWaterEntered += SurfaceTransition;
+        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
     }
 
     private void Awake()
@@ -258,7 +262,8 @@ public class FishControllerRB : MonoBehaviour
         
         rb = GetComponent<Rigidbody>();
         sphereCollider = GetComponent<SphereCollider>();
-        groundCheckCollDist = Vector3.Distance(groundCheck.position, sphereCollider.transform.position);
+        groundCheckCollDist = Vector3.Distance(groundCheck.position, sphereCollider.bounds.center);
+        waterCheckCollDist = Vector3.Distance(waterCheck.position, sphereCollider.transform.position);
         colliderCenter.transform.position = sphereCollider.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
         animator.enabled = true;
@@ -267,16 +272,25 @@ public class FishControllerRB : MonoBehaviour
     private void Update()
     {
         PositionGroundChecker();
+        PositionWaterChecker();
         ReloadInput();
         MoveInputProcess();
         CheckGrounded();
         JumpCharge();
+        WaterCheck();
         MoveCharacter();
     }
 
     private void PositionGroundChecker()
     {
-        groundCheck.position = sphereCollider.transform.position - Vector3.up * groundCheckCollDist;
+        groundCheck.position = sphereCollider.bounds.center - Vector3.up * groundCheckCollDist;
+    }
+    
+    private void PositionWaterChecker()
+    {
+        waterCheck.position =
+            sphereCollider.bounds.center +
+            Vector3.down * (sphereCollider.radius - (waterDistance + colliderBorderOffset));
     }
     
     public void OnReload(InputAction.CallbackContext ctx)
@@ -356,14 +370,19 @@ public class FishControllerRB : MonoBehaviour
     {
         if (IsJumping)
         {
-            if (!inWater && !((!IsJumping) && rb.linearVelocity.y > 0.001f))
+            if (!inWater && (rb.linearVelocity.y < 0.01f))
             {
                 isGrounded = GroundCheckRaycast();
+                if (!isGrounded)
+                {
+                    Debug.Log("Ground after jump isGround not met");
+                }
 
                 IsJumping = !isGrounded;
             }
             else
             {
+                Debug.Log("Ground after jump not valid");
                 isGrounded = false;
             }
         }
@@ -394,8 +413,19 @@ public class FishControllerRB : MonoBehaviour
                     out RaycastHit hit,
                     groundDistance + 0.1f))
             {
-                return Vector3.Dot(hit.normal, Vector3.up) >= 0.7f;
+                if (Vector3.Dot(hit.normal, Vector3.up) >= 0.7f)
+                {
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("Ground not flat enough");
+                }
             }
+        }
+        else
+        {
+            Debug.Log("Cant find ground sphere detect");
         }
         return false;
     }
@@ -532,6 +562,29 @@ public class FishControllerRB : MonoBehaviour
 
             canSplash = false;
             StartCoroutine(Delay(spillCooldown, () => { canSplash = true; }));
+        }
+    }
+    
+    private void WaterCheck()
+    {
+        if (Physics.CheckSphere(
+                waterCheck.position,
+                waterDistance,
+                waterLayer))
+        {
+            if (!inWater)
+            {
+                FishyEvents.OnWaterEntered?.Invoke();
+                IsJumping = false;
+            }
+
+            inWater = true;
+            inWaterThisFrame = true;
+            waterExitTime = Time.time + waterExitGrace;
+        }
+        else
+        {
+            inWaterThisFrame = false;
         }
     }
 
@@ -914,32 +967,43 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Water") || other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
-        {
-            if (!inWater && !isAtSurface)
-            {
-                FishyEvents.OnWaterEntered?.Invoke(other.ClosestPoint(transform.position));
-            }
-        }
-        if (other.CompareTag("Water"))
-        {
-            inWater = true;
-            // Debug.Log("Water triggered");
-            IsJumping = false;
-        }
+        // if (other.CompareTag("Water") || other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
+        // {
+        //     if (!inWater && !isAtSurface)
+        //     {
+        //         FishyEvents.OnWaterEntered?.Invoke(other.ClosestPoint(transform.position));
+        //     }
+        // }
+        // if (other.CompareTag("Water"))
+        // {
+        //     inWater = true;
+        //     // Debug.Log("Water triggered");
+        //     IsJumping = false;
+        // }
         if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
         {
             // Debug.Log("Surface trigger");
             if (inWater)
             {
                 if (IsJumping) IsJumping = false;
-                isAtSurface = true;
                 if (other.CompareTag("PuddleSurface"))
                 {
                     onSpillSurface = true;
                 }
                 surfaceNormal = other.transform.up;
                 curSurfacePos = other.ClosestPoint(transform.position);
+                if (!isAtSurface)
+                {
+                    if (transform.position.y > curSurfacePos.y)
+                    {
+                        FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
+                    }
+                    else
+                    {
+                        Debug.Log("Fishy Height: " + transform.position.y + ", Surface height: " + curSurfacePos.y);
+                    }
+                }
+                isAtSurface = true;
                 rb.linearVelocity = Vector3.zero;
                 surfaceHeight = other.transform.position.y;
             }
@@ -963,13 +1027,24 @@ public class FishControllerRB : MonoBehaviour
             // Debug.Log("Water surface trigger stay");
             if (inWater && !isJumping)
             {
+                surfaceNormal = other.transform.up;
+                curSurfacePos = other.ClosestPoint(transform.position);
+                if (!isAtSurface)
+                {
+                    if (transform.position.y > curSurfacePos.y)
+                    {
+                        FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
+                    }
+                    else
+                    {
+                        Debug.Log("Fishy Height: " + transform.position.y + ", Surface height: " + curSurfacePos.y);
+                    }
+                }
                 isAtSurface = true;
                 if (other.CompareTag("PuddleSurface"))
                 {
                     onSpillSurface = true;
                 }
-                surfaceNormal = other.transform.up;
-                curSurfacePos = other.ClosestPoint(transform.position);
                 onSurfaceThisFrame = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
                 surfaceHeight = other.transform.position.y;
@@ -977,14 +1052,14 @@ public class FishControllerRB : MonoBehaviour
                 surfaceExitTime = Time.time + surfaceExitGrace;
             }
         }
-        if (other.CompareTag("Water"))
-        {
-            // Debug.Log("Water trigger stay");
-            inWater = true;
-            inWaterThisFrame = true;
-            
-            waterExitTime = Time.time + waterExitGrace;
-        }
+        // if (other.CompareTag("Water"))
+        // {
+        //     // Debug.Log("Water trigger stay");
+        //     inWater = true;
+        //     inWaterThisFrame = true;
+        //     
+        //     waterExitTime = Time.time + waterExitGrace;
+        // }
     }
 
     private void OnTriggerExit(Collider other)
@@ -996,12 +1071,12 @@ public class FishControllerRB : MonoBehaviour
             onSpillSurface = false;
         }
 
-        if (other.CompareTag("Water"))
-        {
-            // Debug.Log("Water trigger exit");
-            FishyEvents.OnMovingWaterEnd?.Invoke();
-            inWater = false;
-        }
+        // if (other.CompareTag("Water"))
+        // {
+        //     // Debug.Log("Water trigger exit");
+        //     FishyEvents.OnMovingWaterEnd?.Invoke();
+        //     inWater = false;
+        // }
     }
 
     private void LateUpdate()
@@ -1107,10 +1182,17 @@ public class FishControllerRB : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        if (groundCheck == null) return;
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
+        }
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
+        if (waterCheck != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(waterCheck.position, waterDistance);
+        }
     }
 #endif
 }
