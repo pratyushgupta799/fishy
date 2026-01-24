@@ -4,6 +4,7 @@ using UnityEngine;
 public class Level1Manager : MonoBehaviour
 {
     [SerializeField] private Transform fishy;
+    [SerializeField] private GameObject planeOfDeath;
     
     void Start()
     {

@@ -16,6 +16,8 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     [SerializeField] private float puddleHeightOffset = 0.2f;
     [SerializeField] private float puddleRaiseDuration = 0.5f;
 
+    [SerializeField] private float rotationSnapStartFrom = 30f;
+
     private GameObject droppedPuddle;
     
     [SerializeField, Range(0f, 180f)] private float minTiltToSpill = 70f;

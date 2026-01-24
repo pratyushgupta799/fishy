@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 public class PuddleManager : MonoBehaviour
 {
     [SerializeField] private PuddleBehaviour puddleWater;
+    [SerializeField] private PuddleBehaviour bigPuddleWater;
+    private PuddleBehaviour[] bigPuddles;
     private PuddleBehaviour[] puddleWaters;
     private PuddleBehaviour[] spillPuddles;
 
@@ -26,6 +28,7 @@ public class PuddleManager : MonoBehaviour
         
         puddleWaters = new PuddleBehaviour[8];
         spillPuddles = new PuddleBehaviour[4];
+        bigPuddles = new PuddleBehaviour[2];
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
@@ -40,6 +43,12 @@ public class PuddleManager : MonoBehaviour
         {
             spillPuddles[i] = Instantiate(puddleWater);
             spillPuddles[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < bigPuddles.Length; i++)
+        {
+            bigPuddles[i] = Instantiate(bigPuddleWater);
+            bigPuddles[i].gameObject.SetActive(false);
         }
     }
 
@@ -65,8 +74,22 @@ public class PuddleManager : MonoBehaviour
             activeSpillPuddles--;
         }
     }
-    
-    public void RaiseEvapouratableSpillPuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime, float evaporatedScale)
+
+    public void RaiseBigPuddle(Vector3 pos, float raiseTime, float raiseHeight)
+    {
+        for (int i = 0; i < bigPuddles.Length; i++)
+        {
+            if (bigPuddles[i].gameObject.activeSelf == false)
+            {
+                bigPuddles[i].transform.position = pos;
+                bigPuddles[i].Raise(raiseTime, raiseHeight);
+                break;
+            }
+        }
+    }
+
+    public void RaiseEvapouratableSpillPuddle(Vector3 pos, float raiseTime, float raiseHeight, float evaporateTime,
+        float evaporatedScale)
     {
         for (int i = 0; i < spillPuddles.Length; i++)
         {

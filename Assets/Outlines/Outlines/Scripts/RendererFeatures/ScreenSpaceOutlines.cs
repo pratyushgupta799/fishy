@@ -42,6 +42,8 @@ public class ScreenSpaceOutlines : ScriptableRendererFeature {
         public bool enableDynamicBatching;
         public bool enableInstancing;
 
+        public Shader outlineShader; // Add this
+        public Shader normalsShader; // Add this
     }
 
     private class ScreenSpaceOutlinePass : ScriptableRenderPass {

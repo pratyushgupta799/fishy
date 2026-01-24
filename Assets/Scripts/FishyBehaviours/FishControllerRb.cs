@@ -235,8 +235,14 @@ public class FishControllerRB : MonoBehaviour
         {
             if (value == false)
             {
+                Debug.Log("Surface transition stopped");
                 inSurfaceTransition = false;
                 surfaceTween?.Kill();
+            }
+            else
+            {
+                inSurfaceTransition = true;
+                Debug.Log("Surface transition started");
             }
         }
     }
@@ -244,13 +250,13 @@ public class FishControllerRB : MonoBehaviour
     private void OnEnable()
     {
         FishyEvents.OnFishyMoveStateChanged += StateManagement;
-        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
+        FishyEvents.OnSurfaceReachedFromAir += SurfaceDip;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= StateManagement;
-        FishyEvents.OnSurfaceReachedFromAir += SurfaceTransition;
+        FishyEvents.OnSurfaceReachedFromAir += SurfaceDip;
     }
 
     private void Awake()
@@ -351,7 +357,10 @@ public class FishControllerRB : MonoBehaviour
 
         if (up < 0f)
         {
-            InSurfaceTransition = false;
+            if (InSurfaceTransition)
+            {
+                InSurfaceTransition = false;
+            }
         }
     }
 
@@ -373,16 +382,11 @@ public class FishControllerRB : MonoBehaviour
             if (!inWater && (rb.linearVelocity.y < 0.01f))
             {
                 isGrounded = GroundCheckRaycast();
-                if (!isGrounded)
-                {
-                    Debug.Log("Ground after jump isGround not met");
-                }
 
                 IsJumping = !isGrounded;
             }
             else
             {
-                Debug.Log("Ground after jump not valid");
                 isGrounded = false;
             }
         }
@@ -397,37 +401,6 @@ public class FishControllerRB : MonoBehaviour
                 isGrounded = false;
             }
         }
-    }
-
-    private bool GroundCheckRaycast()
-    {
-        if (Physics.CheckSphere(
-                groundCheck.position,
-                groundDistance,
-                ~fishyLayer,
-                QueryTriggerInteraction.Ignore))
-        {
-            if (Physics.Raycast(
-                    groundCheck.position,
-                    Vector3.down,
-                    out RaycastHit hit,
-                    groundDistance + 0.1f))
-            {
-                if (Vector3.Dot(hit.normal, Vector3.up) >= 0.7f)
-                {
-                    return true;
-                }
-                else
-                {
-                    Debug.Log("Ground not flat enough");
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Cant find ground sphere detect");
-        }
-        return false;
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
@@ -453,15 +426,20 @@ public class FishControllerRB : MonoBehaviour
                 return;
             }
 
-            if (!IsJumping && isAtSurface)
+            if ((!IsJumping && isAtSurface) || InSurfaceTransition)
             {
-                InSurfaceTransition = false;
+                Debug.Log("jump from surface");
+                IsJumpingFromSurface = true;
+                if (InSurfaceTransition)
+                {
+                    InSurfaceTransition = false;
+                }
+                
                 jumpHeld = true;
                 rb.useGravity = true;
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, minJumpForceWater, rb.linearVelocity.z);
 
                 jumpMoveFactor = jumpMoveFactorFromWater;
-                IsJumpingFromSurface = true;
 
                 FishyEvents.OnJumpFromWater?.Invoke(groundCheck.position);
 
@@ -607,7 +585,7 @@ public class FishControllerRB : MonoBehaviour
             
             wasMoving = isMoving;
             
-            if (isAtSurface)
+            if (isAtSurface || InSurfaceTransition)
             {
                 SurfaceMovement();
             }
@@ -633,6 +611,10 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceMovement()
     {
+        if (IsJumpingFromSurface && rb.linearVelocity.y > 0f)
+        {
+            return;
+        }
         FishyEvents.SetState(FishyStates.OnSurface);
         rb.useGravity = false;
         rb.mass = underWaterMass;
@@ -676,9 +658,9 @@ public class FishControllerRB : MonoBehaviour
         }
 
         // snap to surface
-        if (up >= 0 && !IsJumping)
+        if (!IsJumpingFromSurface)
         {
-            if (!inSurfaceTransition)
+            if (!InSurfaceTransition)
             {
                 rb.position = Vector3.Lerp(rb.position,
                     new Vector3(rb.position.x, curSurfacePos.y + surfaceHeightOffset, rb.position.z),
@@ -689,37 +671,36 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    private void SurfaceTransition(Vector3 pos)
+    private void SurfaceDip(Vector3 pos)
     {
         var freeSpaceBelow = GetFreeSpaceBelow(maxSurfaceDip);
-        
-        Debug.Log("Surface Transition space below: " + freeSpaceBelow);
-        InSurfaceTransition = true;
-        surfaceTween = transform
-            .DOMoveY(transform.position.y - freeSpaceBelow, 0.25f)
-            .SetLoops(2, LoopType.Yoyo)
-            .SetEase(Ease.OutQuad)
-            .OnComplete(() => inSurfaceTransition = false);
-    }
-    
-    float GetFreeSpaceBelow(float maxDistance)
-    {
-        if (Physics.Raycast(
-                groundCheck.position,
-                Vector3.down,
-                out RaycastHit hit,
-                maxDistance,
-                ~fishyLayer,
-                QueryTriggerInteraction.Ignore))
-        {
-            return hit.distance;
-        }
 
-        return maxDistance;
+        InSurfaceTransition = true;
+
+        surfaceTween = DOTween.Sequence()
+            .Append(rb.DOMoveY(pos.y, 0.1f))
+            .Append(
+                rb.DOMoveY(-freeSpaceBelow, 0.25f)
+                    .SetRelative(true)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .SetEase(Ease.OutQuad)
+            )
+            .OnComplete(() =>
+            {
+                InSurfaceTransition = false;
+            });
     }
 
     private void WaterMovement()
     {
+        if (InSurfaceTransition)
+        {
+            return;
+        }
+        else
+        {
+            Debug.Log("Not in surface transition");
+        }
         FishyEvents.SetState(FishyStates.InWater);
         rb.useGravity = false;
         rb.mass = underWaterMass;
@@ -861,6 +842,225 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
+    private void Flop()
+    {
+        // Debug.Log("Flop");
+        Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
+        Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
+        rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
+        rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
+        jumpMoveFactor = jumpMoveFactorFromGround;
+    }
+
+    private void StateManagement(FishyStates state)
+    {
+        if (state == FishyStates.InAir)
+        {
+            canTwirl = true;
+        }
+
+        if (state == FishyStates.InWater || state == FishyStates.OnSurface)
+        {
+            animator.SetBool("inWater", true);
+            flopStarted = false;
+        }
+        else
+        {
+            animator.SetBool("inWater", false);
+            animator.SetBool("isSwiming", false);
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (CollisionUtils.HitByWithVelocity(other, 0.5f))
+        {
+            if (IsJumpingFromSurface)
+            {
+                IsJumpingFromSurface = false;
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
+        {
+            if(IsJumpingFromSurface && rb.linearVelocity.y > 0f)
+            {
+                return;
+            }
+            // Debug.Log("Surface trigger");
+            if (inWater)
+            {
+                if (IsJumping) IsJumping = false;
+                if (other.CompareTag("PuddleSurface"))
+                {
+                    onSpillSurface = true;
+                }
+                surfaceNormal = other.transform.up;
+                curSurfacePos = other.ClosestPoint(transform.position);
+                if (!isAtSurface)
+                {
+                    if (transform.position.y > curSurfacePos.y)
+                    {
+                        FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
+                    }
+                    else
+                    {
+                        Debug.Log("Fishy Height: " + transform.position.y + ", Surface height: " + curSurfacePos.y);
+                    }
+                }
+                isAtSurface = true;
+                rb.linearVelocity = Vector3.zero;
+                surfaceHeight = other.transform.position.y;
+            }
+        }
+        if (other.CompareTag("Death"))
+        {
+            CheckPointManager.Instance.LoadLastCheckpoint();
+            Debug.Log("Death trigger");
+        }
+
+        if (other.CompareTag("CheckpointTrigger"))
+        {
+            CheckPointManager.Instance.SetCheckPoint(other.gameObject);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
+        {
+            if(IsJumpingFromSurface && rb.linearVelocity.y > 0f)
+            {
+                return;
+            }
+            // Debug.Log("Water surface trigger stay");
+            if (inWater && !isJumping)
+            {
+                surfaceNormal = other.transform.up;
+                curSurfacePos = other.ClosestPoint(transform.position);
+                if (!isAtSurface)
+                {
+                    if (transform.position.y > curSurfacePos.y)
+                    {
+                        FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
+                    }
+                    else
+                    {
+                        Debug.Log("Fishy Height: " + transform.position.y + ", Surface height: " + curSurfacePos.y);
+                    }
+                }
+                isAtSurface = true;
+                if (other.CompareTag("PuddleSurface"))
+                {
+                    onSpillSurface = true;
+                }
+                onSurfaceThisFrame = true;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+                surfaceHeight = other.transform.position.y;
+                
+                surfaceExitTime = Time.time + surfaceExitGrace;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
+        {
+            // Debug.Log("Surface trigger exit");
+            isAtSurface = false;
+            onSpillSurface = false;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (!onSurfaceThisFrame && isAtSurface)
+        {
+            isAtSurface = false;
+            onSpillSurface = false;
+        }
+        else
+        {
+            // Debug.Log("is on surface this frame");
+        }
+
+        if (!inWaterThisFrame && inWater)
+        {
+            inWater = false;
+            isAtSurface = false;
+            onSpillSurface = false;
+            FishyEvents.OnMovingWaterEnd?.Invoke();
+        }
+        else
+        {
+            // Debug.Log("is in water this frame");
+        }
+
+        if (Time.time > waterExitTime)
+        {
+            inWaterThisFrame = false;
+        }
+        else
+        {
+            // Debug.Log("water grace " + waterExitGrace + " current time " + Time.time);
+        }
+        
+        if (Time.time > surfaceExitTime)
+        {
+            onSurfaceThisFrame = false;
+        }
+        else
+        {
+            // Debug.Log("surface grace " + surfaceExitGrace + " current time " + Time.time);
+        }
+    }
+
+    public void LockMovement(bool forward, bool right, bool up)
+    {
+        forwardLocked = forward;
+        if (forward)
+        {
+            snapRotationSideways = true;
+        }
+        rightLocked = right;
+        upLocked = up;
+    }
+
+    #region Helpers
+
+    private bool GroundCheckRaycast()
+    {
+        if (Physics.CheckSphere(
+                groundCheck.position,
+                groundDistance,
+                ~fishyLayer,
+                QueryTriggerInteraction.Ignore))
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    float GetFreeSpaceBelow(float maxDistance)
+    {
+        if (Physics.Raycast(
+                groundCheck.position,
+                Vector3.down,
+                out RaycastHit hit,
+                maxDistance,
+                ~fishyLayer,
+                QueryTriggerInteraction.Ignore))
+        {
+            return hit.distance;
+        }
+
+        return maxDistance;
+    }
+
     private void RotateTo(Vector3 target)
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, 
@@ -908,16 +1108,6 @@ public class FishControllerRB : MonoBehaviour
             turnSmoothTime * 0.1f * Time.deltaTime);
     }
 
-    private void Flop()
-    {
-        // Debug.Log("Flop");
-        Vector3 flopDirectionBase = new Vector3(rb.linearVelocity.x, flopForce, rb.linearVelocity.z);
-        Vector3 flopDirection = GetFlopDirectionNoise(flopDirectionBase);
-        rb.linearVelocity = 1.5f * flopForce * flopDirection.normalized;
-        rb.AddTorque(GetFlopRotationNoise(), ForceMode.Impulse);
-        jumpMoveFactor = jumpMoveFactorFromGround;
-    }
-
     private Vector3 GetFlopDirectionNoise(Vector3 direction)
     {
         direction.x += Random.Range(-flopDirectionNoise.x, flopDirectionNoise.x);
@@ -933,193 +1123,6 @@ public class FishControllerRB : MonoBehaviour
         direction.y += Random.Range(-flopRotationNoise.y, flopRotationNoise.y);
         direction.z += Random.Range(-flopRotationNoise.z, flopRotationNoise.z);
         return direction;
-    }
-
-    private void StateManagement(FishyStates state)
-    {
-        if (state == FishyStates.InAir)
-        {
-            canTwirl = true;
-        }
-
-        if (state == FishyStates.InWater || state == FishyStates.OnSurface)
-        {
-            animator.SetBool("inWater", true);
-            flopStarted = false;
-        }
-        else
-        {
-            animator.SetBool("inWater", false);
-            animator.SetBool("isSwiming", false);
-        }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (CollisionUtils.HitByWithVelocity(other, 0.5f))
-        {
-            if (IsJumpingFromSurface)
-            {
-                IsJumpingFromSurface = false;
-            }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // if (other.CompareTag("Water") || other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
-        // {
-        //     if (!inWater && !isAtSurface)
-        //     {
-        //         FishyEvents.OnWaterEntered?.Invoke(other.ClosestPoint(transform.position));
-        //     }
-        // }
-        // if (other.CompareTag("Water"))
-        // {
-        //     inWater = true;
-        //     // Debug.Log("Water triggered");
-        //     IsJumping = false;
-        // }
-        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
-        {
-            // Debug.Log("Surface trigger");
-            if (inWater)
-            {
-                if (IsJumping) IsJumping = false;
-                if (other.CompareTag("PuddleSurface"))
-                {
-                    onSpillSurface = true;
-                }
-                surfaceNormal = other.transform.up;
-                curSurfacePos = other.ClosestPoint(transform.position);
-                if (!isAtSurface)
-                {
-                    if (transform.position.y > curSurfacePos.y)
-                    {
-                        FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
-                    }
-                    else
-                    {
-                        Debug.Log("Fishy Height: " + transform.position.y + ", Surface height: " + curSurfacePos.y);
-                    }
-                }
-                isAtSurface = true;
-                rb.linearVelocity = Vector3.zero;
-                surfaceHeight = other.transform.position.y;
-            }
-        }
-        if (other.CompareTag("Death"))
-        {
-            CheckPointManager.Instance.LoadLastCheckpoint();
-            Debug.Log("Death trigger");
-        }
-
-        if (other.CompareTag("CheckpointTrigger"))
-        {
-            CheckPointManager.Instance.SetCheckPoint(other.gameObject);
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
-        {
-            // Debug.Log("Water surface trigger stay");
-            if (inWater && !isJumping)
-            {
-                surfaceNormal = other.transform.up;
-                curSurfacePos = other.ClosestPoint(transform.position);
-                if (!isAtSurface)
-                {
-                    if (transform.position.y > curSurfacePos.y)
-                    {
-                        FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
-                    }
-                    else
-                    {
-                        Debug.Log("Fishy Height: " + transform.position.y + ", Surface height: " + curSurfacePos.y);
-                    }
-                }
-                isAtSurface = true;
-                if (other.CompareTag("PuddleSurface"))
-                {
-                    onSpillSurface = true;
-                }
-                onSurfaceThisFrame = true;
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-                surfaceHeight = other.transform.position.y;
-                
-                surfaceExitTime = Time.time + surfaceExitGrace;
-            }
-        }
-        // if (other.CompareTag("Water"))
-        // {
-        //     // Debug.Log("Water trigger stay");
-        //     inWater = true;
-        //     inWaterThisFrame = true;
-        //     
-        //     waterExitTime = Time.time + waterExitGrace;
-        // }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
-        {
-            // Debug.Log("Surface trigger exit");
-            isAtSurface = false;
-            onSpillSurface = false;
-        }
-
-        // if (other.CompareTag("Water"))
-        // {
-        //     // Debug.Log("Water trigger exit");
-        //     FishyEvents.OnMovingWaterEnd?.Invoke();
-        //     inWater = false;
-        // }
-    }
-
-    private void LateUpdate()
-    {
-        if (!onSurfaceThisFrame && isAtSurface)
-        {
-            isAtSurface = false;
-            onSpillSurface = false;
-        }
-        else
-        {
-            // Debug.Log("is on surface this frame");
-        }
-
-        if (!inWaterThisFrame && inWater)
-        {
-            inWater = false;
-            isAtSurface = false;
-            onSpillSurface = false;
-            FishyEvents.OnMovingWaterEnd?.Invoke();
-        }
-        else
-        {
-            // Debug.Log("is in water this frame");
-        }
-
-        if (Time.time > waterExitTime)
-        {
-            inWaterThisFrame = false;
-        }
-        else
-        {
-            // Debug.Log("water grace " + waterExitGrace + " current time " + Time.time);
-        }
-        
-        if (Time.time > surfaceExitTime)
-        {
-            onSurfaceThisFrame = false;
-        }
-        else
-        {
-            // Debug.Log("surface grace " + surfaceExitGrace + " current time " + Time.time);
-        }
     }
 
     Vector3 CamForwardFlat()
@@ -1139,7 +1142,7 @@ public class FishControllerRB : MonoBehaviour
         // Debug.Log("CamRight: " + camRight);
         return camRight;
     }
-
+    
     public void SnapFishyTo(Vector3 location, Quaternion rotation)
     {
         rb.linearVelocity = Vector3.zero;
@@ -1148,18 +1151,7 @@ public class FishControllerRB : MonoBehaviour
         
         Debug.Log("Fishy's position snapped to " + location);
     }
-
-    public void LockMovement(bool forward, bool right, bool up)
-    {
-        forwardLocked = forward;
-        if (forward)
-        {
-            snapRotationSideways = true;
-        }
-        rightLocked = right;
-        upLocked = up;
-    }
-
+    
     public void UnlockMovement()
     {
         snapRotationSideways = false;
@@ -1178,6 +1170,8 @@ public class FishControllerRB : MonoBehaviour
     {
         return isDashing;
     }
+
+    #endregion
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()

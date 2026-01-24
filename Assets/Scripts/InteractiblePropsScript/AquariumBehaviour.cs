@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class AquariumBehaviour : MonoBehaviour
@@ -5,13 +6,18 @@ public class AquariumBehaviour : MonoBehaviour
     [SerializeField] private Collider impactHitCollider;
     [SerializeField] private MeshCollider meshCollider;
     [SerializeField] private Mesh brokenGlassMesh;
-    [SerializeField] private float breakSpeed = 5f;   // your threshold
-
+    [SerializeField] private GameObject waterStream;
+    [SerializeField] private float waterStreamBlinkTime;
+    [SerializeField] private Transform puddleLocation;
+    [SerializeField] private GameObject aquariumWater;
+    [SerializeField] private float aquariumWaterFallDelta;
+    
     private MeshFilter meshFilter;
 
     void Start()
     {
         meshFilter = GetComponent<MeshFilter>();
+        waterStream.SetActive(false);
     }
 
     void OnCollisionEnter(Collision col)
@@ -32,6 +38,18 @@ public class AquariumBehaviour : MonoBehaviour
             impactHitCollider.enabled = false;
             
             meshCollider.sharedMesh = meshFilter.mesh;
+            waterStream.SetActive(true);
+            
+            PuddleManager.Instance.RaiseBigPuddle(puddleLocation.position, waterStreamBlinkTime, 0.02f);
+            aquariumWater.transform.DOMoveY(
+                aquariumWater.transform.position.y - aquariumWaterFallDelta,
+                waterStreamBlinkTime
+            );
+
+            DOVirtual.DelayedCall(waterStreamBlinkTime, () =>
+            {
+                waterStream.SetActive(false);
+            });
         }
     }
 }
