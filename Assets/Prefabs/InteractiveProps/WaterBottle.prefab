@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0014572144, y: 1.081, z: -0.0015546083}
-  m_LocalScale: {x: 0.5430627, y: 0.009026988, z: 0.54740506}
+  m_LocalScale: {x: 0.5430627, y: 0.009026988, z: 0.43728128}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6344720787949084828}
@@ -411,7 +411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.915
+      value: -20.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
       propertyPath: m_LocalPosition.y
@@ -419,7 +419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.245
+      value: -30.29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
       propertyPath: m_LocalRotation.w
@@ -518,9 +518,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5682676395329557522}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2812540073799375621}
   m_SourcePrefab: {fileID: 100100000, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}
 --- !u!1 &8286526786725409973 stripped
 GameObject:
@@ -574,9 +571,15 @@ MonoBehaviour:
   puddleHeightOffset: 0.2
   puddleRaiseDuration: 0.5
   minTiltToSpill: 70
-  checkpointIndex: 2
+  checkpointIndex: 10
+  fallSnapEnabled: 0
+  rotationSnapStartFrom: 30
+  targetFall: {fileID: 0}
   glassFall: {fileID: 0}
   waterSpillSFX: {fileID: 0}
+  minRotToSnap: 30
+  snapTorque: 5
+  snapAngularDamping: 2
 --- !u!64 &731172629520510006
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -797,18 +800,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1890910595786045333, guid: e68008b9b0323734a89d8f3af25aa3a2, type: 3}
---- !u!114 &2812540073799375621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8286526786725409973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc6e898622cfdf9439201195b9de76e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8769766976986197519 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dea7e1774ed3b234eb11b11e87d26425, type: 3}

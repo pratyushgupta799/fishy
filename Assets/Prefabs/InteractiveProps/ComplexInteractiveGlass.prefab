@@ -161,15 +161,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.763441
+      value: 2.271905
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1478219
+      value: -0.20342994
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -57.027084
+      value: 9.634968
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ec2f2d9412efdc408d3a0d88cf95b07, type: 3}
       propertyPath: m_LocalRotation.w
@@ -324,8 +324,14 @@ MonoBehaviour:
   puddleRaiseDuration: 0.5
   minTiltToSpill: 70
   checkpointIndex: 4
+  fallSnapEnabled: 0
+  rotationSnapStartFrom: 30
+  targetFall: {fileID: 0}
   glassFall: {fileID: 8300000, guid: 0d13298bad0ff734480c643f85f211db, type: 3}
   waterSpillSFX: {fileID: 8300000, guid: 588f7b53b7d8d2a47960fb9275488063, type: 3}
+  minRotToSnap: 30
+  snapTorque: 5
+  snapAngularDamping: 2
 --- !u!64 &3642839926613239226
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -531,7 +537,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 750897297488919289}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc6e898622cfdf9439201195b9de76e0, type: 3}
   m_Name: 

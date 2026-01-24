@@ -4,6 +4,7 @@ using DG.Tweening;
 using FishyUtilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Cursor = UnityEngine.Cursor;
 using Random = UnityEngine.Random;
@@ -320,7 +321,14 @@ public class FishControllerRB : MonoBehaviour
 
             if (rholdTimer >= rHoldTime)
             {
-                CheckPointManager.Instance.LoadLastCheckpoint();
+                if (CheckPointManager.Instance != null)
+                {
+                    CheckPointManager.Instance.LoadLastCheckpoint();
+                }
+                else
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
                 rholdTimer = 0;
             }
         }
@@ -373,6 +381,29 @@ public class FishControllerRB : MonoBehaviour
         forwardDirectional = Vector3.ProjectOnPlane(forward, transform.up);
         rightDirectional = Vector3.ProjectOnPlane(right, transform.up);
         upward = up * Vector3.up;
+    }
+    
+    private void WaterCheck()
+    {
+        if (Physics.CheckSphere(
+                waterCheck.position,
+                waterDistance,
+                waterLayer))
+        {
+            if (!inWater)
+            {
+                FishyEvents.OnWaterEntered?.Invoke();
+                IsJumping = false;
+            }
+
+            inWater = true;
+            inWaterThisFrame = true;
+            waterExitTime = Time.time + waterExitGrace;
+        }
+        else
+        {
+            inWaterThisFrame = false;
+        }
     }
 
     private void CheckGrounded()
@@ -542,29 +573,6 @@ public class FishControllerRB : MonoBehaviour
             StartCoroutine(Delay(spillCooldown, () => { canSplash = true; }));
         }
     }
-    
-    private void WaterCheck()
-    {
-        if (Physics.CheckSphere(
-                waterCheck.position,
-                waterDistance,
-                waterLayer))
-        {
-            if (!inWater)
-            {
-                FishyEvents.OnWaterEntered?.Invoke();
-                IsJumping = false;
-            }
-
-            inWater = true;
-            inWaterThisFrame = true;
-            waterExitTime = Time.time + waterExitGrace;
-        }
-        else
-        {
-            inWaterThisFrame = false;
-        }
-    }
 
     private void MoveCharacter()
     {
@@ -673,7 +681,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void SurfaceDip(Vector3 pos)
     {
-        var freeSpaceBelow = GetFreeSpaceBelow(maxSurfaceDip);
+        var freeSpaceBelow = GetFreeSpaceBelow(maxSurfaceDip, pos);
 
         InSurfaceTransition = true;
 
@@ -696,10 +704,6 @@ public class FishControllerRB : MonoBehaviour
         if (InSurfaceTransition)
         {
             return;
-        }
-        else
-        {
-            Debug.Log("Not in surface transition");
         }
         FishyEvents.SetState(FishyStates.InWater);
         rb.useGravity = false;
@@ -741,6 +745,10 @@ public class FishControllerRB : MonoBehaviour
 
     private void GroundMovement()
     {
+        if (InSurfaceTransition)
+        {
+            return;
+        }
         rb.mass = 1f;
         FishyEvents.SetState(FishyStates.OnGround);
         forward.y = 0f;
@@ -1045,19 +1053,26 @@ public class FishControllerRB : MonoBehaviour
         return false;
     }
     
-    float GetFreeSpaceBelow(float maxDistance)
+    float GetFreeSpaceBelow(float maxDistance, Vector3 pos)
     {
+        // 1. Get the very bottom center point of the collider in world space
+        Vector3 rayStart = new Vector3(sphereCollider.bounds.center.x,
+            sphereCollider.bounds.min.y,
+            sphereCollider.bounds.center.z);
+
+        // 2. Fire the ray
         if (Physics.Raycast(
-                groundCheck.position,
+                rayStart,
                 Vector3.down,
                 out RaycastHit hit,
                 maxDistance,
                 ~fishyLayer,
                 QueryTriggerInteraction.Ignore))
         {
-            return hit.distance;
+            return hit.distance - (transform.position.y - pos.y);
         }
 
+        Debug.DrawRay(rayStart, Vector3.down * maxDistance, Color.red);
         return maxDistance;
     }
 

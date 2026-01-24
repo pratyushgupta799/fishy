@@ -17,7 +17,7 @@ public class CheckPointManager : MonoBehaviour
     
     private int currentCheckpoint = 0;
 
-    [SerializeField] [ReadOnly] private List<GameObject> changedPrefab;
+    private List<GameObject> changedPrefab;
     
     public int CurrentCheckpointIndex { get { return currentCheckpoint; } private set { currentCheckpoint = value; } }
 
@@ -32,6 +32,7 @@ public class CheckPointManager : MonoBehaviour
             Instance = this;
         }
         
+        changedPrefab = new List<GameObject>();
         FishyEvents.OnCheckpointChanged?.Invoke(currentCheckpoint);
     }
 
@@ -66,11 +67,11 @@ public class CheckPointManager : MonoBehaviour
         
         for (int i = 0; i < changedPrefab.Count; i++)
         {
-            if (changedPrefab[i].GetComponent<StateManager>() != null)
+            if (changedPrefab[i].GetComponent<IInteractible>() != null)
             {
                 try
                 {
-                    changedPrefab[i].GetComponent<StateManager>().RestoreDefault();
+                    changedPrefab[i].GetComponent<IInteractible>().RestoreState();
                 }
                 catch (Exception e)
                 {
@@ -91,6 +92,13 @@ public class CheckPointManager : MonoBehaviour
     
     public void AddChangedPrefab(GameObject prefab)
     {
-        changedPrefab.Add(prefab);
+        try
+        {
+            changedPrefab.Add(prefab);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Problem in " + prefab.transform.name + ": " + e.Message);
+        }
     }
 }
