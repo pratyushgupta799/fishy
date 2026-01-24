@@ -196,7 +196,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
 
         if (distMoved > posThreshold || angleChanged > rotThreshold)
         {
-            SetDiry();
+            SetDirty();
         }
     }
 
@@ -223,7 +223,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
         isDirty = false;
     }
 
-    public void SetDiry()
+    public void SetDirty()
     {
         if (isDirty) return;
         isDirty = true;

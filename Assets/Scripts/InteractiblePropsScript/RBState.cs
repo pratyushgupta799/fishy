@@ -1,34 +1,36 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class GuitarStandBehaviour : MonoBehaviour, IInteractible
+[RequireComponent(typeof(Rigidbody))]
+public class RBState : MonoBehaviour, IInteractible
 {
-    private Rigidbody rb;
+    [SerializeField] private int checkpointIndex = 100;
     
     private Vector3 initPos;
     private Quaternion initRot;
 
     private bool isDirty = false;
     
-    [SerializeField] private int checkpointIndex = 22;
+    private Rigidbody rb;
     
-    void Awake()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
+        initPos = transform.position;
+        initRot =  transform.rotation;
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
+    void OnCollisionEnter(Collision collision)
     {
-        initPos = transform.position;
-        initRot = transform.rotation;
-    }
+        // Define small thresholds to ignore "noise"
+        float posThreshold = 0.01f; // 1cm
+        float rotThreshold = 0.05f;  // 0.5 degrees
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (CollisionUtils.HitByWithVelocity(collision, "Player", 2f))
+        float distMoved = Vector3.Distance(transform.position, initPos);
+        float angleChanged = Quaternion.Angle(transform.rotation, initRot);
+
+        if (distMoved > posThreshold || angleChanged > rotThreshold)
         {
-            rb.isKinematic = false;
             SetDirty();
         }
     }
@@ -47,8 +49,6 @@ public class GuitarStandBehaviour : MonoBehaviour, IInteractible
     {
         if (CheckPointManager.Instance.CurrentCheckpointIndex <= checkpointIndex)
         {
-            rb.isKinematic = true;
-            
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
