@@ -30,44 +30,37 @@ public class PauseUIController : MonoBehaviour
 
     public void OnPauseToggle(InputAction.CallbackContext context)
     {
-        Debug.Log("OnPauseToggle");
-        paused = !paused;
-        Time.timeScale = paused ? 0f : 1f;
-        if (paused)
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        pauseMenuPanel.SetActive(paused);
+        PauseToggle();
     }
     
     private void OnContinueClicked()
     {
-        Debug.Log("OnPauseToggle");
-        paused = !paused;
-        Time.timeScale = paused ? 0f : 1f;
-        if (paused)
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        pauseMenuPanel.SetActive(paused);
+        PauseToggle();
     }
     
     private void OnLastCpClicked()
     {
         CheckPointManager.Instance.LoadLastCheckpoint();
-        GameManager.Instance.UnpauseGame();
+        PauseToggle();
     }
 
     private void OnExitClicked()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void PauseToggle()
+    {
+        paused = !paused;
+        Time.timeScale = paused ? 0f : 1f;
+        if (paused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        pauseMenuPanel.SetActive(paused);
     }
 }
