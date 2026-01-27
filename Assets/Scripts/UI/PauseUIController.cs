@@ -35,7 +35,7 @@ public class PauseUIController : MonoBehaviour
     
     private void OnContinueClicked()
     {
-        Debug.Log("Continue clicked");
+        // Debug.Log("Continue clicked");
         PauseToggle();
     }
     

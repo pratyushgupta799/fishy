@@ -5948,11 +5948,11 @@ MonoBehaviour:
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
-  m_PointAction: {fileID: 0}
+  m_PointAction: {fileID: -3361051382371781151, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
   m_MoveAction: {fileID: -7727162320909493766, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
   m_SubmitAction: {fileID: 1882855797409206852, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
   m_CancelAction: {fileID: 1197639380640269424, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
-  m_LeftClickAction: {fileID: 1882855797409206852, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
+  m_LeftClickAction: {fileID: -7284693384740655866, guid: dc0e35dc8bae40745a59f3477c496e43, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
   m_ScrollWheelAction: {fileID: 0}
@@ -15561,7 +15561,6 @@ GameObject:
   - component: {fileID: 413402634}
   - component: {fileID: 413402636}
   - component: {fileID: 413402635}
-  - component: {fileID: 413402637}
   m_Layer: 5
   m_Name: PausePanel
   m_TagString: Untagged
@@ -15630,18 +15629,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413402633}
   m_CullTransparentMesh: 1
---- !u!225 &413402637
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413402633}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1001 &415932196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61104,7 +61091,6 @@ GameObject:
   - component: {fileID: 1247018172}
   - component: {fileID: 1247018174}
   - component: {fileID: 1247018173}
-  - component: {fileID: 1247018175}
   m_Layer: 5
   m_Name: Continue
   m_TagString: Untagged
@@ -61145,7 +61131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -61230,18 +61216,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247018171}
   m_CullTransparentMesh: 1
---- !u!225 &1247018175
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247018171}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1001 &1248679091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102578,5 +102552,5 @@ SceneRoots:
   - {fileID: 507473281}
   - {fileID: 677140243}
   - {fileID: 1375728852}
-  - {fileID: 1474220424}
   - {fileID: 247186274}
+  - {fileID: 1474220424}
