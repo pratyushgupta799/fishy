@@ -1,8 +1,21 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    private Canvas pauseMenu;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     
     void Awake()
     {
@@ -11,6 +24,9 @@ public class GameManager : MonoBehaviour
         //#else
         //    Debug.unityLogger.logEnabled = false;
         //#endif
+        
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
         
         if (Instance != null && Instance != this)
         {
@@ -23,5 +39,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        pauseMenu = GameObject.FindWithTag("PauseMenu").GetComponent<Canvas>();
+    }
 
+    public void PauseGame()
+    {
+        pauseMenu.enabled = true;
+        Time.timeScale = 0f;
+    }
+
+    public void UnpauseGame()
+    {
+        Time.timeScale = 1f;
+    }
 }

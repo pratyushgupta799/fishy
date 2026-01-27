@@ -16,6 +16,7 @@ public class GlassBehaviour : MonoBehaviour, IInteractible
     [SerializeField] private float puddleHeightOffset = 0.2f;
     [SerializeField] private float puddleRaiseDuration = 0.5f;
 
+    private MaterialPropertyBlock waterMaterial;
     
     private GameObject droppedPuddle;
 

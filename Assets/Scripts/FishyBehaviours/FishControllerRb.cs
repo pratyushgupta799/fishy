@@ -236,14 +236,14 @@ public class FishControllerRB : MonoBehaviour
         {
             if (value == false)
             {
-                Debug.Log("Surface transition stopped");
+                // Debug.Log("Surface transition stopped");
                 inSurfaceTransition = false;
                 surfaceTween?.Kill();
             }
             else
             {
                 inSurfaceTransition = true;
-                Debug.Log("Surface transition started");
+                // Debug.Log("Surface transition started");
             }
         }
     }
@@ -440,7 +440,7 @@ public class FishControllerRB : MonoBehaviour
         {
             if ((!IsJumping && isGrounded) || (canFlopJump && (!inWater && !isGrounded)))
             {
-                Debug.Log("jump from ground");
+                // Debug.Log("jump from ground");
                 flopStarted = false;
                 canFlopJump = false;
                 // canFlop = false;
@@ -459,7 +459,7 @@ public class FishControllerRB : MonoBehaviour
 
             if ((!IsJumping && isAtSurface) || InSurfaceTransition)
             {
-                Debug.Log("jump from surface");
+                // Debug.Log("jump from surface");
                 IsJumpingFromSurface = true;
                 if (InSurfaceTransition)
                 {

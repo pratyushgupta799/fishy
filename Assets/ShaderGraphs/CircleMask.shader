@@ -2,6 +2,7 @@ Shader "UI/CircleMask"
 {
     Properties
     {
+        _MainTex ("Texture", 2D) = "white" {}
         _Center ("Center", Vector) = (0.5, 0.5, 0, 0)
         _Radius ("Radius", Range(0, 1)) = 0
         _Color ("Color", Color) = (0, 0, 0, 1)
@@ -9,7 +10,7 @@ Shader "UI/CircleMask"
     
     SubShader
     {
-        Tags { "Queue"="Overlay" }
+        Tags { "Queue"="Overlay" "RenderType"="Transparent"}
         Pass
         {
             Blend SrcAlpha OneMinusSrcAlpha
@@ -21,6 +22,7 @@ Shader "UI/CircleMask"
             #pragma fragment frag
             #include "UnityCG.cginc"
 
+            sampler2D _MainTex;
             float4 _Center;
             float _Radius;
             float _Soft;
