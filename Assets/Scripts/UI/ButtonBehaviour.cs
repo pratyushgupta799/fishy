@@ -10,13 +10,6 @@ public class ButtonBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private Vector3 startPos;
     private Vector3 startScale;
 
-    private Button button;
-
-    private void OnEnable()
-    {
-        button = GetComponent<Button>();
-    }
-
     void Start()
     {
         rect = GetComponent<RectTransform>();
