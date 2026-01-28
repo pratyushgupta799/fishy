@@ -41,17 +41,6 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        pauseMenu = GameObject.FindWithTag("PauseMenu").GetComponent<Canvas>();
-    }
-
-    public void PauseGame()
-    {
-        pauseMenu.enabled = true;
-        Time.timeScale = 0f;
-    }
-
-    public void UnpauseGame()
-    {
-        Time.timeScale = 1f;
+        
     }
 }

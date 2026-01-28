@@ -22,7 +22,7 @@ namespace EZhex1991.EZSoftBone
             Unified,
         }
         
-        public static float visualLerp = 200f;
+        // public static float visualLerp = 1f;
 
         public enum DeltaTimeMode
         {
@@ -159,17 +159,17 @@ namespace EZhex1991.EZSoftBone
                     if (childBones.Count == 1)
                     {
                         Bone childBone = childBones[0];
-                        // transform.rotation *= Quaternion.FromToRotation(childBone.localPosition,
-                        //     transform.InverseTransformVector(childBone.worldPosition - worldPosition));
-                        Quaternion targetRot =
-                            transform.rotation * Quaternion.FromToRotation(childBone.localPosition,
-                                transform.InverseTransformVector(childBone.worldPosition - worldPosition));
-
-                        transform.rotation = Quaternion.Slerp(
-                            transform.rotation,
-                            targetRot,
-                            1f - Mathf.Exp(-visualLerp * Time.deltaTime)
-                        );
+                        transform.rotation *= Quaternion.FromToRotation(childBone.localPosition,
+                            transform.InverseTransformVector(childBone.worldPosition - worldPosition));
+                        // Quaternion targetRot =
+                        //     transform.rotation * Quaternion.FromToRotation(childBone.localPosition,
+                        //         transform.InverseTransformVector(childBone.worldPosition - worldPosition));
+                        //
+                        // transform.rotation = Quaternion.Slerp(
+                        //     transform.rotation,
+                        //     targetRot,
+                        //     1f - Mathf.Exp(-visualLerp * Time.deltaTime)
+                        // );
 
                         if (siblingRotationConstraints)
                         {
@@ -201,12 +201,12 @@ namespace EZhex1991.EZSoftBone
                             }
                         }
                     }
-                    // transform.position = worldPosition;
-                    transform.position = Vector3.Lerp(
-                        transform.position,
-                        worldPosition,
-                        1f - Mathf.Exp(-visualLerp * Time.deltaTime)
-                    );
+                    transform.position = worldPosition;
+                    // transform.position = Vector3.Lerp(
+                    //     transform.position,
+                    //     worldPosition,
+                    //     1f - Mathf.Exp(-visualLerp * Time.deltaTime)
+                    // );
                 }
 
                 if (systemSpace != null) systemPosition = systemSpace.InverseTransformPoint(worldPosition);
@@ -368,6 +368,7 @@ namespace EZhex1991.EZSoftBone
         }
         private void Update()
         {
+            
             RevertTransforms(startDepth);
         }
         private void LateUpdate()
@@ -575,6 +576,7 @@ namespace EZhex1991.EZSoftBone
 
         private void UpdateStructures(float deltaTime)
         {
+            // Debug.Log($"DeltaTime: {deltaTime}, Iterations: {iterations}, GlobalRadius: {globalRadius}");
             if (deltaTime <= DeltaTime_Min) return;
 
             // radius

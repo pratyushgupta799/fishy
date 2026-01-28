@@ -262,6 +262,9 @@ public class FishControllerRB : MonoBehaviour
 
     private void Awake()
     {
+        var pi = GetComponent<PlayerInput>();
+        pi.defaultControlScheme = null;
+        
         _frontSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
         _backSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
         _leftSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
@@ -1164,7 +1167,7 @@ public class FishControllerRB : MonoBehaviour
         transform.position = location;
         transform.rotation = rotation;
         
-        Debug.Log("Fishy's position snapped to " + location);
+        // Debug.Log("Fishy's position snapped to " + location);
     }
     
     public void UnlockMovement()
