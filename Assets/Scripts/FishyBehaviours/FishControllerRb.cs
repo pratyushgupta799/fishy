@@ -262,8 +262,8 @@ public class FishControllerRB : MonoBehaviour
 
     private void Awake()
     {
-        var pi = GetComponent<PlayerInput>();
-        pi.defaultControlScheme = null;
+        // var pi = GetComponent<PlayerInput>();
+        // pi.defaultControlScheme = null;
         
         _frontSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
         _backSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();

@@ -252,7 +252,7 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource CreateSource()
     {
-        AudioSource source = Instantiate(audioSourcePrefab);
+        AudioSource source = Instantiate(audioSourcePrefab, transform);
         source.gameObject.SetActive(false);
         pool.Add(source);
         return source;
