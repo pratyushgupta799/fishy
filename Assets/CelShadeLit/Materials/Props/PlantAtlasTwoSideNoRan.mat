@@ -7,16 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pots
-  m_Shader: {fileID: -6465566751694194690, guid: 65336977064c269479f3ddebf1d7cc4c, type: 3}
-  m_Parent: {fileID: 2100000, guid: 31e32b1b0e4c8da4da4e926d6fb253bd, type: 2}
+  m_Name: PlantAtlasTwoSideNoRan
+  m_Shader: {fileID: -6465566751694194690, guid: fa3e1fb9303e5914186c5d3e6b54f70b, type: 3}
+  m_Parent: {fileID: 2100000, guid: 139b4174762b1364da78ee3b401b9793, type: 2}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _ADDITIONAL_LIGHTS
-  - _ADDITIONAL_LIGHT_SHADOWS
-  - _MAIN_LIGHT_SHADOWS
-  - _MAIN_LIGHT_SHADOWS_CASCADE
-  - _SHADOWS_SOFT
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -30,13 +25,12 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
-    m_Colors:
-    - _AmbientColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
-    - _BaseColor: {r: 0.21698111, g: 0.16068885, b: 0.16068885, a: 1}
+    m_Floats:
+    - _RandomColor: 0
+    m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4068162859695982652
+--- !u!114 &8942849964602159305
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
