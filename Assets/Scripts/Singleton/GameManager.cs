@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         //#endif
         
         Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 1;
+        QualitySettings.vSyncCount = 0;
         
         if (Instance != null && Instance != this)
         {

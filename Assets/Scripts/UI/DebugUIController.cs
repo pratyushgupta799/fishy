@@ -13,6 +13,7 @@ public class DebugUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI checkpointText;
     [SerializeField] private TextMeshProUGUI playerSpeedVector;
     [SerializeField] private TextMeshProUGUI playerSpeed;
+    [SerializeField] private TextMeshProUGUI fpsText;
     
     private Rigidbody fish;
 
@@ -41,6 +42,9 @@ public class DebugUIController : MonoBehaviour
             playerSpeedVector.text = fish.linearVelocity.ToString();
             playerSpeed.text = fish.linearVelocity.magnitude.ToString();
         }
+        
+        float fps = 1.0f / Time.unscaledDeltaTime;
+        fpsText.SetText("{0} FPS", Mathf.RoundToInt(fps));
     }
     
     private void UpdateState(FishyStates state)
