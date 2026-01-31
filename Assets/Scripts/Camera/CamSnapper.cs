@@ -1,7 +1,7 @@
+using System;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
-
 
 public class CamSnapper : MonoBehaviour
 {
@@ -11,6 +11,16 @@ public class CamSnapper : MonoBehaviour
     [SerializeField] private bool lockForward;
     [SerializeField] private bool lockSideway;
     [SerializeField] private bool lockUpward;
+
+    [Serializable]
+    public enum SnapperCenter
+    {
+        x,
+        z,
+        none
+    }
+
+    [SerializeField] private SnapperCenter snapperCenter;
 
     private void Awake()
     {
@@ -24,6 +34,14 @@ public class CamSnapper : MonoBehaviour
             // Debug.Log("Cam snapper zone entered");
             SnapCam.Priority = 1;
             fishy.LockMovement(lockForward, lockSideway, lockUpward);
+            if (snapperCenter == SnapperCenter.x)
+            {
+                fishy.SnapToX(other.transform.position.x);
+            }
+            else
+            {
+                fishy.SnapToZ(other.transform.position.z);
+            }
         }
     }
     

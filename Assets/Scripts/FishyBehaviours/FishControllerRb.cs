@@ -177,6 +177,12 @@ public class FishControllerRB : MonoBehaviour
     private bool inSurfaceTransition;
     private Tween surfaceTween;
     
+    // cam snapper
+    private float xSnap;
+    private float zSnap;
+    private bool snapToX;
+    private bool snapToZ;
+    
     // properties
     private bool IsJumping
     {
@@ -1028,6 +1034,18 @@ public class FishControllerRB : MonoBehaviour
         {
             // Debug.Log("surface grace " + surfaceExitGrace + " current time " + Time.time);
         }
+
+        if (snapToX)
+        {
+            transform.position = Vector3.Lerp(transform.position,
+                new Vector3(xSnap, transform.position.y, transform.position.z), turnSmoothTime);
+        }
+
+        if (snapToZ)
+        {
+            transform.position = Vector3.Lerp(transform.position,
+                new Vector3(transform.position.x, transform.position.y, zSnap), turnSmoothTime);
+        }
     }
 
     public void LockMovement(bool forward, bool right, bool up)
@@ -1169,6 +1187,18 @@ public class FishControllerRB : MonoBehaviour
         
         // Debug.Log("Fishy's position snapped to " + location);
     }
+
+    public void SnapToX(float x)
+    {
+        snapToX = true;
+        xSnap = x;
+    }
+
+    public void SnapToZ(float z)
+    {
+        snapToZ = true;
+        zSnap = z;
+    }
     
     public void UnlockMovement()
     {
@@ -1176,6 +1206,8 @@ public class FishControllerRB : MonoBehaviour
         forwardLocked = false;
         rightLocked = false;
         upLocked = false;
+        snapToX = false;
+        snapToZ = false;
     }
     
     IEnumerator Delay(float t, Action a)
