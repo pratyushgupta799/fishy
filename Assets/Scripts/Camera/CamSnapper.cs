@@ -12,6 +12,8 @@ public class CamSnapper : MonoBehaviour
     [SerializeField] private bool lockSideway;
     [SerializeField] private bool lockUpward;
 
+    private float playerOverlap = 0;
+
     [Serializable]
     public enum SnapperCenter
     {
@@ -31,6 +33,7 @@ public class CamSnapper : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            playerOverlap++;
             // Debug.Log("Cam snapper zone entered");
             SnapCam.Priority = 1;
             fishy.LockMovement(lockForward, lockSideway, lockUpward);
@@ -49,6 +52,11 @@ public class CamSnapper : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (playerOverlap >= 1)
+            {
+                playerOverlap--;
+                return;
+            }
             // Debug.Log("Cam snapper zone exited");
             FishyEvents.OnCamSnapZoneExit?.Invoke();
             SnapCam.Priority = -1;
