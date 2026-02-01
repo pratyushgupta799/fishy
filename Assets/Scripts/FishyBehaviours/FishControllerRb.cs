@@ -644,6 +644,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (inWater)
         {
+            Debug.Log("Fishy in water");
             bool isMoving = rb.linearVelocity.sqrMagnitude > 0.01f;
             
             if (isMoving && !wasMoving)
@@ -671,6 +672,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
+            Debug.Log("Fishy outside water");
             rb.freezeRotation = false;
             if (isGrounded)
             {
@@ -687,9 +689,11 @@ public class FishControllerRB : MonoBehaviour
     {
         if (IsJumpingFromSurface && rb.linearVelocity.y > 0f)
         {
+            Debug.Log("Surface movement cancelled coz jumping from surface and vertical velocity is above 0");
             return;
         }
         FishyEvents.SetState(FishyStates.OnSurface);
+        Debug.Log("Cur surface pos: " + curSurfacePos.y);
         rb.useGravity = false;
         rb.mass = underWaterMass;
             
@@ -740,9 +744,15 @@ public class FishControllerRB : MonoBehaviour
                     new Vector3(rb.position.x, curSurfacePos.y + surfaceHeightOffset, rb.position.z),
                     10f * Time.deltaTime);
             }
+            else
+            {
+                Debug.Log("On surface and in surface transition");
+            }
             Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
             RotateTo(direction);
         }
+        
+        Debug.Log("In surface movement state");
     }
 
     private void SurfaceDip(Vector3 pos)
@@ -769,6 +779,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (InSurfaceTransition)
         {
+            Debug.Log("Water movement cancelled coz surface transition");
             return;
         }
         FishyEvents.SetState(FishyStates.InWater);
@@ -813,6 +824,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (InSurfaceTransition)
         {
+            Debug.Log("Ground movement cancelled coz surface transition");
             return;
         }
         rb.mass = 1f;
@@ -914,6 +926,7 @@ public class FishControllerRB : MonoBehaviour
                 RotateTo(target);
             }
         }
+        Debug.Log("In air movement state");
     }
 
     private void Flop()
@@ -949,9 +962,14 @@ public class FishControllerRB : MonoBehaviour
     {
         if (CollisionUtils.HitByWithVelocity(other, 0.5f))
         {
-            if (IsJumpingFromSurface)
+            if (IsJumping)
             {
-                IsJumpingFromSurface = false;
+                IsJumping = false;
+            }
+
+            if (InSurfaceTransition)
+            {
+                InSurfaceTransition = false;
             }
         }
     }
@@ -1052,7 +1070,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!onSurfaceThisFrame && isAtSurface)
+        if (!onSurfaceThisFrame)
         {
             isAtSurface = false;
             onSpillSurface = false;
@@ -1086,6 +1104,7 @@ public class FishControllerRB : MonoBehaviour
         if (Time.time > surfaceExitTime)
         {
             onSurfaceThisFrame = false;
+            // Debug.Log("Not on surface this frame");
         }
         else
         {
