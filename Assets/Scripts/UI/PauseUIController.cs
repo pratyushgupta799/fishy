@@ -14,11 +14,15 @@ public class PauseUIController : MonoBehaviour
     [SerializeField] private GameObject pauseMenuPanel;
     private bool paused;
     
+    // input actions
+    private InputAction togglePause;
+    
     private void OnEnable()
     {
         continueButton.onClick.AddListener(OnContinueClicked);
         lastCpButton.onClick.AddListener(OnLastCpClicked);
         exitButton.onClick.AddListener(OnExitClicked);
+        InputManager.Instance.OnActionReady += InitActions;
     }
     
     private void OnDisable()
@@ -26,6 +30,17 @@ public class PauseUIController : MonoBehaviour
         continueButton.onClick.RemoveListener(OnContinueClicked);
         lastCpButton.onClick.RemoveListener(OnLastCpClicked);
         exitButton.onClick.RemoveListener(OnExitClicked);
+        InputManager.Instance.OnActionReady -= InitActions;
+    }
+
+    private void InitActions(InputActionAsset action)
+    {
+        Debug.Log("Initiating actions for PauseUIController");
+        if (action != null)
+        {
+            togglePause = action["Pause"];
+            togglePause.performed += OnPauseToggle;
+        }
     }
 
     public void OnPauseToggle(InputAction.CallbackContext context)

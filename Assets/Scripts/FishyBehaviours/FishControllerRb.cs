@@ -309,7 +309,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void InitActions(InputActionAsset actions)
     {
-        Debug.Log("Initialising actions");
+        Debug.Log("Initialising actions for fishy");
         if (actions != null)
         {
             jump = actions["Jump"];

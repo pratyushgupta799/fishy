@@ -28,6 +28,23 @@ public class CamSnapper : MonoBehaviour
     {
         fishy = GameObject.FindGameObjectWithTag("Player").GetComponent<FishControllerRB>();
     }
+
+    private void OnEnable()
+    {
+        FishyEvents.LastCheckpointLoaded += OnCheckPointChanged;
+    }
+
+    private void OnDisable()
+    {
+        FishyEvents.LastCheckpointLoaded -= OnCheckPointChanged;
+    }
+
+    private void OnCheckPointChanged()
+    {
+        Debug.Log("OnCheckPointChanged Event");
+        playerOverlap = 0;
+        Debug.Log("Player overlap " + playerOverlap);
+    }
     
     void OnTriggerEnter(Collider other)
     {
