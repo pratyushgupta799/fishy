@@ -2987,11 +2987,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishy: {fileID: 75920559}
-  playerInput: {fileID: 155744518}
-  keyboardTexts:
-  - {fileID: 1563878987}
-  gamepadTexts:
-  - {fileID: 1621941622}
 --- !u!4 &80046153
 Transform:
   m_ObjectHideFlags: 0
@@ -5602,17 +5597,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155578659}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &155744518 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3680098967911132246, guid: cb2890ad9d94668418ed6389c3e2f33f, type: 3}
-  m_PrefabInstance: {fileID: 3065641782137022123}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &164911272 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7303276640546361775, guid: 4ed8816a35fcb2a46993df3903dbba2f, type: 3}
@@ -11646,7 +11630,7 @@ GameObject:
   - component: {fileID: 337274577}
   m_Layer: 0
   m_Name: Text3Gp
-  m_TagString: Untagged
+  m_TagString: TextGp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22646,11 +22630,11 @@ GameObject:
   - component: {fileID: 471233774}
   m_Layer: 0
   m_Name: Text2Kb
-  m_TagString: Untagged
+  m_TagString: TextKb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &471233773
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31748,11 +31732,11 @@ GameObject:
   - component: {fileID: 577260623}
   m_Layer: 0
   m_Name: Text3Kb
-  m_TagString: Untagged
+  m_TagString: TextKb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &577260622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -73645,7 +73629,7 @@ GameObject:
   - component: {fileID: 1421389447}
   m_Layer: 0
   m_Name: Text2Gp
-  m_TagString: Untagged
+  m_TagString: TextGp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78279,11 +78263,11 @@ GameObject:
   - component: {fileID: 1563878987}
   m_Layer: 0
   m_Name: TextKb
-  m_TagString: Untagged
+  m_TagString: TextKb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1563878987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80421,7 +80405,7 @@ GameObject:
   - component: {fileID: 1621941622}
   m_Layer: 0
   m_Name: TextGp
-  m_TagString: Untagged
+  m_TagString: TextGp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

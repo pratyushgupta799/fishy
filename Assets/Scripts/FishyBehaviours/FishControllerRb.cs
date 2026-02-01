@@ -183,6 +183,13 @@ public class FishControllerRB : MonoBehaviour
     private bool snapToX;
     private bool snapToZ;
     
+    // Input Actions
+    private InputAction jump;
+    private InputAction move;
+    private InputAction moveVertical;
+    private InputAction shake;
+    private InputAction reload;
+    
     // properties
     private bool IsJumping
     {
@@ -231,7 +238,6 @@ public class FishControllerRB : MonoBehaviour
             }
         }
     }
-    
     private bool InSurfaceTransition
     {
         get
@@ -258,18 +264,44 @@ public class FishControllerRB : MonoBehaviour
     {
         FishyEvents.OnFishyMoveStateChanged += StateManagement;
         FishyEvents.OnSurfaceReachedFromAir += SurfaceDip;
+        
+        jump.started += OnJump;
+        jump.canceled += OnJump;
+        
+        move.performed += OnMove;
+        move.canceled += OnMove;
+        
+        moveVertical.performed += OnMoveVertical;
+        moveVertical.canceled += OnMoveVertical;
+        
+        shake.performed += OnShake;
+        
+        reload.started += OnReload;
+        reload.canceled += OnReload;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= StateManagement;
-        FishyEvents.OnSurfaceReachedFromAir += SurfaceDip;
+        FishyEvents.OnSurfaceReachedFromAir -= SurfaceDip;
+        
+        jump.started -= OnJump;
+        jump.canceled -= OnJump;
+        
+        move.performed -= OnMove;
+        move.canceled -= OnMove;
+        
+        moveVertical.performed -= OnMoveVertical;
+        moveVertical.canceled -= OnMoveVertical;
+        
+        shake.performed -= OnShake;
+        
+        reload.started -= OnReload;
+        reload.canceled -= OnReload;
     }
 
     private void Awake()
     {
-        // var pi = GetComponent<PlayerInput>();
-        // pi.defaultControlScheme = null;
         
         _frontSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
         _backSpillBlob = Instantiate(waterSpill).GetComponent<SpillBlobBehaviour>();
@@ -283,6 +315,13 @@ public class FishControllerRB : MonoBehaviour
         colliderCenter.transform.position = sphereCollider.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
         animator.enabled = true;
+        
+        var actions = InputManager.Instance.GetComponent<PlayerInput>().actions;
+        jump = actions["Jump"];
+        move = actions["Move"];
+        moveVertical = actions["VerticalMove"];
+        shake = actions["Shake"];
+        reload = actions["Reload"];
     }
 
     private void Update()
