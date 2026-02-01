@@ -1221,8 +1221,10 @@ public class FishControllerRB : MonoBehaviour
     public void SnapFishyTo(Vector3 location, Quaternion rotation)
     {
         rb.linearVelocity = Vector3.zero;
+        sphereCollider.enabled = false;
         transform.position = location;
         transform.rotation = rotation;
+        sphereCollider.enabled = true;
         
         // Debug.Log("Fishy's position snapped to " + location);
     }
