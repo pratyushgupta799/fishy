@@ -13,14 +13,20 @@ public class InputManager : MonoBehaviour
     [SerializeField] private List<TextMeshPro> keyboardTexts;
     [SerializeField] private List<TextMeshPro> gamepadTexts;
 
+    public event System.Action<InputActionAsset> OnActionReady;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
         {
+            Debug.Log("Duplicate InputManager instance destroyed");
             Destroy(gameObject);
+            return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        playerInput = GetComponent<PlayerInput>();
     }
 
     void OnEnable()
@@ -30,9 +36,14 @@ public class InputManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    void Start()
+    {
+    }
+
     void OnDisable()
     {
-        playerInput.onControlsChanged -= OnControlsChanged;
+        if (playerInput != null)
+            playerInput.onControlsChanged -= OnControlsChanged;
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
@@ -69,6 +80,7 @@ public class InputManager : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("Scene loaded " + scene.name);
         keyboardTexts = new List<TextMeshPro>();
         gamepadTexts = new List<TextMeshPro>();
 
@@ -85,6 +97,8 @@ public class InputManager : MonoBehaviour
             keyboardTexts.Add(kb.GetComponent<TextMeshPro>());
         }
         
+        Debug.Log("firing OnActionReady event");
+        OnActionReady?.Invoke(playerInput.actions);
         OnControlsChanged(playerInput);
     }
 }

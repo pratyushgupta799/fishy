@@ -34,6 +34,7 @@ public class CamSnapper : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerOverlap++;
+            Debug.Log("Player overlap: " + playerOverlap);
             // Debug.Log("Cam snapper zone entered");
             SnapCam.Priority = 1;
             fishy.LockMovement(lockForward, lockSideway, lockUpward);
@@ -41,7 +42,7 @@ public class CamSnapper : MonoBehaviour
             {
                 fishy.SnapToX(other.transform.position.x);
             }
-            else
+            else if (snapperCenter == SnapperCenter.z)
             {
                 fishy.SnapToZ(other.transform.position.z);
             }
@@ -52,12 +53,13 @@ public class CamSnapper : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (playerOverlap >= 1)
+            playerOverlap--;
+            Debug.Log("Player overlap: " + playerOverlap);
+            if (playerOverlap > 0)
             {
-                playerOverlap--;
                 return;
             }
-            // Debug.Log("Cam snapper zone exited");
+            Debug.Log("Cam snapper zone exited");
             FishyEvents.OnCamSnapZoneExit?.Invoke();
             SnapCam.Priority = -1;
             fishy.UnlockMovement();

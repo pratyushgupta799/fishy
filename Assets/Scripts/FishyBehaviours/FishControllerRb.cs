@@ -264,26 +264,16 @@ public class FishControllerRB : MonoBehaviour
     {
         FishyEvents.OnFishyMoveStateChanged += StateManagement;
         FishyEvents.OnSurfaceReachedFromAir += SurfaceDip;
-        
-        jump.started += OnJump;
-        jump.canceled += OnJump;
-        
-        move.performed += OnMove;
-        move.canceled += OnMove;
-        
-        moveVertical.performed += OnMoveVertical;
-        moveVertical.canceled += OnMoveVertical;
-        
-        shake.performed += OnShake;
-        
-        reload.started += OnReload;
-        reload.canceled += OnReload;
+        Debug.Log("fishy on enable fired");
+        InputManager.Instance.OnActionReady += InitActions;
     }
     
     private void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= StateManagement;
         FishyEvents.OnSurfaceReachedFromAir -= SurfaceDip;
+        
+        InputManager.Instance.OnActionReady -= InitActions;
         
         jump.started -= OnJump;
         jump.canceled -= OnJump;
@@ -315,13 +305,41 @@ public class FishControllerRB : MonoBehaviour
         colliderCenter.transform.position = sphereCollider.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
         animator.enabled = true;
+    }
+
+    private void InitActions(InputActionAsset actions)
+    {
+        Debug.Log("Initialising actions");
+        if (actions != null)
+        {
+            jump = actions["Jump"];
+            move = actions["Move"];
+            moveVertical = actions["VerticalMove"];
+            shake = actions["Shake"];
+            reload = actions["Reload"];
+        }
+        else
+        {
+            Debug.LogError("Actions are null");
+        }
+
+        jump.started += OnJump;
+        jump.canceled += OnJump;
         
-        var actions = InputManager.Instance.GetComponent<PlayerInput>().actions;
-        jump = actions["Jump"];
-        move = actions["Move"];
-        moveVertical = actions["VerticalMove"];
-        shake = actions["Shake"];
-        reload = actions["Reload"];
+        move.performed += OnMove;
+        move.canceled += OnMove;
+        
+        moveVertical.performed += OnMoveVertical;
+        moveVertical.canceled += OnMoveVertical;
+        
+        shake.performed += OnShake;
+        
+        reload.started += OnReload;
+        reload.canceled += OnReload;
+    }
+
+    private void Start()
+    {
     }
 
     private void Update()
@@ -1233,12 +1251,14 @@ public class FishControllerRB : MonoBehaviour
     {
         snapToX = true;
         xSnap = x;
+        Debug.Log("Snapped to X");
     }
 
     public void SnapToZ(float z)
     {
         snapToZ = true;
         zSnap = z;
+        Debug.Log("Snapped to Z");
     }
     
     public void UnlockMovement()
