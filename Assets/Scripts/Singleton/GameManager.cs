@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [SerializeField] private int frameCap = 30;
 
     private Canvas pauseMenu;
 
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
         //    Debug.unityLogger.logEnabled = false;
         //#endif
         
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = frameCap;
         QualitySettings.vSyncCount = 0;
         
         if (Instance != null && Instance != this)
