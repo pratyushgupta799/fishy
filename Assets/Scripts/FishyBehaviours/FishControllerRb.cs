@@ -738,7 +738,7 @@ public class FishControllerRB : MonoBehaviour
         // snap to surface
         if (!IsJumpingFromSurface)
         {
-            if (!InSurfaceTransition)
+            if (!InSurfaceTransition && !(upward.y < 0))
             {
                 rb.position = Vector3.Lerp(rb.position,
                     new Vector3(rb.position.x, curSurfacePos.y + surfaceHeightOffset, rb.position.z),
@@ -746,7 +746,7 @@ public class FishControllerRB : MonoBehaviour
             }
             else
             {
-                Debug.Log("On surface and in surface transition");
+                // Debug.Log("On surface and in surface transition");
             }
             Vector3 direction = Vector3.ProjectOnPlane(transform.forward, surfaceNormal);
             RotateTo(direction);
