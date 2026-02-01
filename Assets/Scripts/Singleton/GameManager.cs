@@ -25,17 +25,17 @@ public class GameManager : MonoBehaviour
         //    Debug.unityLogger.logEnabled = false;
         //#endif
         
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 30;
         QualitySettings.vSyncCount = 0;
         
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
     }
 
