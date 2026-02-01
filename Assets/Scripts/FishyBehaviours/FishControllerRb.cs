@@ -644,7 +644,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (inWater)
         {
-            Debug.Log("Fishy in water");
+            // Debug.Log("Fishy in water");
             bool isMoving = rb.linearVelocity.sqrMagnitude > 0.01f;
             
             if (isMoving && !wasMoving)
@@ -672,7 +672,7 @@ public class FishControllerRB : MonoBehaviour
         }
         else
         {
-            Debug.Log("Fishy outside water");
+            // Debug.Log("Fishy outside water");
             rb.freezeRotation = false;
             if (isGrounded)
             {
@@ -689,11 +689,11 @@ public class FishControllerRB : MonoBehaviour
     {
         if (IsJumpingFromSurface && rb.linearVelocity.y > 0f)
         {
-            Debug.Log("Surface movement cancelled coz jumping from surface and vertical velocity is above 0");
+            // Debug.Log("Surface movement cancelled coz jumping from surface and vertical velocity is above 0");
             return;
         }
         FishyEvents.SetState(FishyStates.OnSurface);
-        Debug.Log("Cur surface pos: " + curSurfacePos.y);
+        // Debug.Log("Cur surface pos: " + curSurfacePos.y);
         rb.useGravity = false;
         rb.mass = underWaterMass;
             
@@ -752,7 +752,7 @@ public class FishControllerRB : MonoBehaviour
             RotateTo(direction);
         }
         
-        Debug.Log("In surface movement state");
+        // Debug.Log("In surface movement state");
     }
 
     private void SurfaceDip(Vector3 pos)
@@ -779,7 +779,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (InSurfaceTransition)
         {
-            Debug.Log("Water movement cancelled coz surface transition");
+            // Debug.Log("Water movement cancelled coz surface transition");
             return;
         }
         FishyEvents.SetState(FishyStates.InWater);
@@ -824,7 +824,7 @@ public class FishControllerRB : MonoBehaviour
     {
         if (InSurfaceTransition)
         {
-            Debug.Log("Ground movement cancelled coz surface transition");
+            // Debug.Log("Ground movement cancelled coz surface transition");
             return;
         }
         rb.mass = 1f;
@@ -926,7 +926,7 @@ public class FishControllerRB : MonoBehaviour
                 RotateTo(target);
             }
         }
-        Debug.Log("In air movement state");
+        // Debug.Log("In air movement state");
     }
 
     private void Flop()
