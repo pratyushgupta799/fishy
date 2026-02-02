@@ -2764,6 +2764,7 @@ MonoBehaviour:
   lockForward: 0
   lockSideway: 0
   lockUpward: 0
+  snapperCenter: 0
 --- !u!65 &172876294
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3422,8 +3423,7 @@ MonoBehaviour:
   - {fileID: 321991819}
   - {fileID: 952805230}
   - {fileID: 1936508811}
-  loadFromCheckpoint: 1
-  changedPrefab: []
+  loadFromCheckpoint: 0
 --- !u!4 &210888076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 81181004589490243, guid: 61dc7cf5ab021f84ca0542d8aba9ddff, type: 3}
@@ -13180,6 +13180,7 @@ MonoBehaviour:
   lockForward: 1
   lockSideway: 0
   lockUpward: 0
+  snapperCenter: 0
 --- !u!65 &824856409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20682,6 +20683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   puddleWater: {fileID: -7943608341053422256, guid: f9f7422c0a1b7e442a167142d2c0702f, type: 3}
+  bigPuddleWater: {fileID: 0}
 --- !u!4 &1310194870
 Transform:
   m_ObjectHideFlags: 0
@@ -26919,6 +26921,7 @@ MonoBehaviour:
   lockForward: 0
   lockSideway: 0
   lockUpward: 0
+  snapperCenter: 0
 --- !u!1 &1864597297
 GameObject:
   m_ObjectHideFlags: 0
