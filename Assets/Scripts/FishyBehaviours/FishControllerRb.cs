@@ -459,6 +459,10 @@ public class FishControllerRB : MonoBehaviour
             if (!inWater)
             {
                 FishyEvents.OnWaterEntered?.Invoke();
+            }
+
+            if (rb.linearVelocity.y < 0)
+            {
                 IsJumping = false;
             }
 
@@ -961,10 +965,10 @@ public class FishControllerRB : MonoBehaviour
     {
         if (CollisionUtils.HitByWithVelocity(other, 0.5f))
         {
-            if (IsJumping)
-            {
-                IsJumping = false;
-            }
+            // if (IsJumping)
+            // {
+            //     IsJumping = false;
+            // }
 
             if (InSurfaceTransition)
             {
