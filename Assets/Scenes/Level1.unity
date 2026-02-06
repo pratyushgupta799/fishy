@@ -6416,7 +6416,7 @@ MonoBehaviour:
   - {fileID: 1951878456}
   - {fileID: 469031943}
   - {fileID: 1823433899}
-  loadFromCheckpoint: 7
+  loadFromCheckpoint: 1
 --- !u!1 &210167900
 GameObject:
   m_ObjectHideFlags: 0
@@ -12464,14 +12464,14 @@ RectTransform:
   m_GameObject: {fileID: 368875311}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -454}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &368875313
@@ -12486,8 +12486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: LShift on water to spill
-  hintTextGamepad: X on water to spill
+  hintTextKeyboard: Press LSHIFT on water to spill out water
+  hintTextGamepad: Press X on water to spill out water
 --- !u!114 &368875314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12508,7 +12508,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LShift on water to spill
+  m_text: Press LSHIFT on water to spill out water
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -12517,8 +12517,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12535,8 +12535,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 91.2
-  m_fontSizeBase: 91.2
+  m_fontSize: 70.6
+  m_fontSizeBase: 70.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -40849,14 +40849,14 @@ RectTransform:
   m_GameObject: {fileID: 849889123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -558}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &849889125
@@ -40871,8 +40871,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: LShift in water to dash
-  hintTextGamepad: X in water to dash
+  hintTextKeyboard: Press LSHIFT underwater to dash
+  hintTextGamepad: Press X underwater to dash
 --- !u!114 &849889126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40893,7 +40893,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LShift in water to dash
+  m_text: Press LSHIFT underwater to dash
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -40902,8 +40902,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -40920,8 +40920,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 91.2
-  m_fontSizeBase: 91.2
+  m_fontSize: 80.6
+  m_fontSizeBase: 80.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -43222,14 +43222,14 @@ RectTransform:
   m_GameObject: {fileID: 917101553}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &917101555
@@ -43244,8 +43244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: WASD to Move
-  hintTextGamepad: Left Stick to Move
+  hintTextKeyboard: Press WASD to swim around
+  hintTextGamepad: Use LEFT STICK to swim around
 --- !u!114 &917101556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43266,7 +43266,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WASD to Move
+  m_text: Press WASD to swim around
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -43275,8 +43275,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -44328,7 +44328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6724545361423743899, guid: 87ddc998887bf2f4082f97a34230047f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1118078
+      value: 4.31
       objectReference: {fileID: 0}
     - target: {fileID: 6724545361423743899, guid: 87ddc998887bf2f4082f97a34230047f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -44336,7 +44336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6724545361423743899, guid: 87ddc998887bf2f4082f97a34230047f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.473404
+      value: -14.21
       objectReference: {fileID: 0}
     - target: {fileID: 6724545361423743899, guid: 87ddc998887bf2f4082f97a34230047f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -47108,14 +47108,14 @@ RectTransform:
   m_GameObject: {fileID: 1010085715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1010085717
@@ -47138,7 +47138,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E to go up
+  m_text: Press E to swim up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -47147,8 +47147,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -47229,8 +47229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: E to go up
-  hintTextGamepad: Rt to go up
+  hintTextKeyboard: Press E to swim up
+  hintTextGamepad: Press RT to swim up
 --- !u!4 &1010847495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4945716909596291880, guid: 4994742e0b1d4f148b7532fa1504fdca, type: 3}
@@ -57865,14 +57865,14 @@ RectTransform:
   m_GameObject: {fileID: 1187122644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1187122646
@@ -57887,8 +57887,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: Hold R to reset
-  hintTextGamepad: Hold Y to reset
+  hintTextKeyboard: Press R to reset
+  hintTextGamepad: Press Y to reset
 --- !u!114 &1187122647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57909,7 +57909,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hold R to reset
+  m_text: Press R to reset
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -57918,8 +57918,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -58518,14 +58518,14 @@ RectTransform:
   m_GameObject: {fileID: 1212985253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1212985255
@@ -58540,8 +58540,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: LShift to stall mid air
-  hintTextGamepad: X to stall mid air
+  hintTextKeyboard: Press LSHIFT mid-air to stall
+  hintTextGamepad: Press X mid-air to stall
 --- !u!114 &1212985256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58562,7 +58562,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LShift to stall mid air
+  m_text: Press LSHIFT mid-air to stall
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -58571,8 +58571,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -65617,14 +65617,14 @@ RectTransform:
   m_GameObject: {fileID: 1260531273}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1260531275
@@ -65639,8 +65639,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: Move mouse to move camera
-  hintTextGamepad: Use Right stick to move camera
+  hintTextKeyboard: Move MOUSE to look around
+  hintTextGamepad: Use RIGHT STICK to look around
 --- !u!114 &1260531276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65661,7 +65661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Move mouse to move camera
+  m_text: Move MOUSE to look around
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -65670,8 +65670,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -70689,7 +70689,7 @@ Transform:
   m_GameObject: {fileID: 1375728848}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.752, y: -0.772, z: -6.405}
+  m_LocalPosition: {x: 12.944, y: -0.772, z: -1.117}
   m_LocalScale: {x: 0.31, y: 0.31, z: 0.31}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -71039,14 +71039,14 @@ RectTransform:
   m_GameObject: {fileID: 1390614860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1262.1, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1390614862
@@ -71061,8 +71061,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: Q to go down
-  hintTextGamepad: LT to go down
+  hintTextKeyboard: Press Q to swim down
+  hintTextGamepad: Press LT to swim down
 --- !u!114 &1390614863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71083,7 +71083,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Q to go down
+  m_text: Press Q to swim down
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -71092,8 +71092,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -74592,7 +74592,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8529671884877334847, guid: db9e0ad2a04cb5740a2d7c40b5388153, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.073
+      value: 24.31
       objectReference: {fileID: 0}
     - target: {fileID: 8529671884877334847, guid: db9e0ad2a04cb5740a2d7c40b5388153, type: 3}
       propertyPath: m_LocalPosition.y
@@ -74600,7 +74600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8529671884877334847, guid: db9e0ad2a04cb5740a2d7c40b5388153, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.919
+      value: -12.65
       objectReference: {fileID: 0}
     - target: {fileID: 8529671884877334847, guid: db9e0ad2a04cb5740a2d7c40b5388153, type: 3}
       propertyPath: m_LocalRotation.w
@@ -78772,14 +78772,14 @@ RectTransform:
   m_GameObject: {fileID: 1600678203}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4154, y: 1.4154, z: 1.4154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736376880}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -464}
+  m_AnchoredPosition: {x: 0, y: -521}
   m_SizeDelta: {x: 1599.93, y: 115.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1600678205
@@ -78794,8 +78794,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e0ad8c109d8b743acfa967da68ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintTextKeyboard: Space to Jump, Hold to jump Higher
-  hintTextGamepad: A to Jump, Hold to jump higher
+  hintTextKeyboard: Hold SPACE to jump higher!
+  hintTextGamepad: Hold A to jump higher!
 --- !u!114 &1600678206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78816,7 +78816,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Space to Jump, Hold to jump Higher
+  m_text: Hold SPACE to jump higher!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
   m_sharedMaterial: {fileID: -6912822948595702108, guid: 883a5a092eddbf54fb18eaf0af56960c, type: 2}
@@ -78825,8 +78825,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286316533
-  m_fontColor: {r: 0.9620702, g: 1, b: 0.48113203, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
