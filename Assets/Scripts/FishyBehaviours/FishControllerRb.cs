@@ -205,6 +205,7 @@ public class FishControllerRB : MonoBehaviour
                 isJumping = false;
                 isJumpingFromGround = false;
                 isJumpingFromSurface = false;
+                FishyEvents.SetJumpState(FishyJumpState.NotJumping);
             }
         }
     }
@@ -216,10 +217,11 @@ public class FishControllerRB : MonoBehaviour
         }
         set
         {
-            if (value == true)
+            if (value)
             {
                 isJumping = true;
                 isJumpingFromSurface = true;
+                FishyEvents.SetJumpState(FishyJumpState.JumpingFromWater);
             }
         }
     }
@@ -231,10 +233,11 @@ public class FishControllerRB : MonoBehaviour
         }
         set
         {
-            if (value == true)
+            if (value)
             {
                 isJumping = true;
                 isJumpingFromGround = true;
+                FishyEvents.SetJumpState(FishyJumpState.JumpingFromGround);
             }
         }
     }

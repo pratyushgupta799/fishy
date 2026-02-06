@@ -9,4 +9,11 @@ namespace FishyUtilities
         InAir,
         OnSurface
     }
+
+    public enum FishyJumpState
+    {
+        NotJumping,
+        JumpingFromGround,
+        JumpingFromWater
+    }
 }

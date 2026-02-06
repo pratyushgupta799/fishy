@@ -6,6 +6,7 @@ using UnityEngine;
 public static class FishyEvents
 {
     public static event Action<FishyStates> OnFishyMoveStateChanged;
+    public static event Action<FishyJumpState> OnFishyJumpStateChanged;
   
     public static Action<int> OnDeathTimerChanged;
   
@@ -59,5 +60,16 @@ public static class FishyEvents
         }
         
         lastState = newState;
+    }
+    
+    private static FishyJumpState lastJumpState;
+
+    public static void SetJumpState(FishyJumpState newState)
+    {
+        if(newState == lastJumpState) return; 
+        
+        OnFishyJumpStateChanged?.Invoke(newState);
+        
+        lastJumpState = newState;
     }
 }

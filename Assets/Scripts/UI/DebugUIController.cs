@@ -9,6 +9,7 @@ using UnityEngine.Serialization;
 public class DebugUIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI stateText;
+    [SerializeField] private TextMeshProUGUI jumpStateText;
     [SerializeField] private TextMeshProUGUI deathTimerText;
     [SerializeField] private TextMeshProUGUI checkpointText;
     [SerializeField] private TextMeshProUGUI playerSpeedVector;
@@ -20,6 +21,7 @@ public class DebugUIController : MonoBehaviour
     void OnEnable()
     {
         FishyEvents.OnFishyMoveStateChanged += UpdateState;
+        FishyEvents.OnFishyJumpStateChanged += UpdateJumpState;
         FishyEvents.OnDeathTimerChanged += UpdateDeathTimer;
         FishyEvents.OnCheckpointChanged += UpdateCheckpoint;
     }
@@ -27,6 +29,7 @@ public class DebugUIController : MonoBehaviour
     void OnDisable()
     {
         FishyEvents.OnFishyMoveStateChanged -= UpdateState;
+        FishyEvents.OnFishyJumpStateChanged -= UpdateJumpState;
         FishyEvents.OnDeathTimerChanged -= UpdateDeathTimer;
         FishyEvents.OnCheckpointChanged -= UpdateCheckpoint;
     }
@@ -50,6 +53,11 @@ public class DebugUIController : MonoBehaviour
     private void UpdateState(FishyStates state)
     {
         stateText.text = state.ToString();
+    }
+
+    private void UpdateJumpState(FishyJumpState state)
+    {
+        jumpStateText.text = state.ToString();
     }
     
     private void UpdateDeathTimer(int time)
