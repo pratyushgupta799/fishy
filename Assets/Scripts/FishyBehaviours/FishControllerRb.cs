@@ -190,6 +190,10 @@ public class FishControllerRB : MonoBehaviour
     private InputAction shake;
     private InputAction reload;
     
+    // states
+    private FishyStates curFishyState;
+    private FishyJumpState curFishyJumpState;
+    
     // properties
     private bool IsJumping
     {
@@ -206,6 +210,7 @@ public class FishControllerRB : MonoBehaviour
                 isJumpingFromGround = false;
                 isJumpingFromSurface = false;
                 FishyEvents.SetJumpState(FishyJumpState.NotJumping);
+                curFishyJumpState = FishyJumpState.NotJumping;
             }
         }
     }
@@ -222,6 +227,7 @@ public class FishControllerRB : MonoBehaviour
                 isJumping = true;
                 isJumpingFromSurface = true;
                 FishyEvents.SetJumpState(FishyJumpState.JumpingFromWater);
+                curFishyJumpState = FishyJumpState.JumpingFromWater;
             }
         }
     }
@@ -238,6 +244,7 @@ public class FishControllerRB : MonoBehaviour
                 isJumping = true;
                 isJumpingFromGround = true;
                 FishyEvents.SetJumpState(FishyJumpState.JumpingFromGround);
+                curFishyJumpState = FishyJumpState.JumpingFromGround;
             }
         }
     }
@@ -947,6 +954,7 @@ public class FishControllerRB : MonoBehaviour
 
     private void StateManagement(FishyStates state)
     {
+        curFishyState = state;
         if (state == FishyStates.InAir)
         {
             canTwirl = true;
@@ -1307,6 +1315,30 @@ public class FishControllerRB : MonoBehaviour
         return isDashing;
     }
 
+    #endregion
+    
+    #region ACCESSORS
+
+    public FishyStates GetFishyState()
+    {
+        return curFishyState;
+    }
+
+    public FishyJumpState GetFishyJumpState()
+    {
+        return curFishyJumpState;
+    }
+    
+    public bool IsMoving()
+    {
+        return (Math.Abs(rb.linearVelocity.x) + Math.Abs(rb.linearVelocity.z)) > float.Epsilon;
+    }
+
+    public bool CanTwirl()
+    {
+        return canTwirl;
+    }
+    
     #endregion
 
 #if UNITY_EDITOR

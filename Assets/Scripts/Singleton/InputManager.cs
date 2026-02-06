@@ -14,6 +14,8 @@ public class InputManager : MonoBehaviour
     [SerializeField] private List<TextMeshPro> gamepadTexts;
 
     public event System.Action<InputActionAsset> OnActionReady;
+    
+    public InputAction Look => playerInput.actions["Look"];
 
     void Awake()
     {
