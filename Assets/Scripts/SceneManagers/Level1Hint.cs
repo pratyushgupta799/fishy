@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FishyUtilities;
 using UnityEngine;
 
@@ -42,12 +43,12 @@ public class Level1Hint : MonoBehaviour
     {
         if (fishy.IsMoving() && !moved)
         {
-            moved = true;
+            StartCoroutine(Delay(1, () => { moved = true; }));
         }
 
-        if (!camMoved)
+        if (!camMoved && (InputManager.Instance.Look.ReadValue<Vector2>() != Vector2.zero))
         {
-            camMoved = InputManager.Instance.Look.ReadValue<Vector2>() != Vector2.zero;
+            StartCoroutine(Delay(1, () => { camMoved = true; }));
         }
         
         HideAll();
@@ -125,5 +126,11 @@ public class Level1Hint : MonoBehaviour
     public void DuckieCollected()
     {
         duckieCollected = true;
+    }
+    
+    IEnumerator Delay(float t, Action a)
+    {
+        yield return new WaitForSeconds(t);
+        a();
     }
 }
