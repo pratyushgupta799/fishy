@@ -271,7 +271,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_DeltaTimeMode: 0
   m_ConstantDeltaTime: 0.016
-  m_Iterations: 10
+  m_Iterations: 1
   m_SleepThreshold: 0.05
   m_GravityAligner: {fileID: 0}
   m_Gravity: {x: 0, y: 0, z: 0}
@@ -397,7 +397,7 @@ Transform:
   m_GameObject: {fileID: 2878895915518720674}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.049, z: 0.185}
+  m_LocalPosition: {x: -0.024, y: -0.049, z: 0.185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -536,7 +536,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0199, y: 1.723, z: 0.594}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1487234796680223801}
   - {fileID: 5879929320518313707}
@@ -624,7 +624,7 @@ MonoBehaviour:
   airGravityScale: 1
   groundCheck: {fileID: 8335179064403096338}
   wallCheck: {fileID: 5879929320518313707}
-  groundDistance: 0.14
+  groundDistance: 0.12
   wallDistance: 0.1
   fishyLayer:
     serializedVersion: 2
@@ -1134,7 +1134,7 @@ Transform:
   m_GameObject: {fileID: 7893252750552434039}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: -0.057, z: 0.059}
+  m_LocalPosition: {x: 0.002, y: -0.085, z: 0.054}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

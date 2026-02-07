@@ -13,11 +13,13 @@ public class HintText : MonoBehaviour
     private void Awake()
     {
         gameObject.SetActive(false);
+        textMesh = GetComponent<TextMeshProUGUI>();
     }
 
     private void OnEnable()
     {
         InputManager.Instance.GetComponent<PlayerInput>().onControlsChanged += OnControlsChanged;
+        OnControlsChanged(InputManager.Instance.GetComponent<PlayerInput>());
     }
 
     private void OnDisable()
@@ -27,6 +29,7 @@ public class HintText : MonoBehaviour
 
     private void OnControlsChanged(PlayerInput playerInput)
     {
+        Debug.Log("Control scheme changed to: " + playerInput.currentControlScheme);
         if(playerInput.currentControlScheme == "Keyboard&Mouse")
         {
             textMesh.text = hintTextKeyboard;
