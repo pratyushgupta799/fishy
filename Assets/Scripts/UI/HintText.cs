@@ -29,7 +29,7 @@ public class HintText : MonoBehaviour
 
     private void OnControlsChanged(PlayerInput playerInput)
     {
-        Debug.Log("Control scheme changed to: " + playerInput.currentControlScheme);
+        // Debug.Log("Control scheme changed to: " + playerInput.currentControlScheme);
         if(playerInput.currentControlScheme == "Keyboard&Mouse")
         {
             textMesh.text = hintTextKeyboard;

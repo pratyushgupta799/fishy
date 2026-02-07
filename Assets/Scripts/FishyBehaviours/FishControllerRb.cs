@@ -974,16 +974,14 @@ public class FishControllerRB : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (CollisionUtils.HitByWithVelocity(other, 0.5f))
+        foreach (var contact in other.contacts)
         {
-            // if (IsJumping)
-            // {
-            //     IsJumping = false;
-            // }
-
-            if (InSurfaceTransition)
+            // normal pointing up = you hit the bottom
+            if (contact.normal.y > 0.5f &&
+                CollisionUtils.HitByWithVelocity(other, 0.5f))
             {
                 InSurfaceTransition = false;
+                break;
             }
         }
     }
