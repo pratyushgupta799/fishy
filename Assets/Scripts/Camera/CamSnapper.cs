@@ -41,9 +41,9 @@ public class CamSnapper : MonoBehaviour
 
     private void OnCheckPointChanged()
     {
-        Debug.Log("OnCheckPointChanged Event");
+        // Debug.Log("OnCheckPointChanged Event");
         playerOverlap = 0;
-        Debug.Log("Player overlap " + playerOverlap);
+        // Debug.Log("Player overlap " + playerOverlap);
     }
     
     void OnTriggerEnter(Collider other)

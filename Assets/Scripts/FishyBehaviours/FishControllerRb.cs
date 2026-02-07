@@ -1157,8 +1157,10 @@ public class FishControllerRB : MonoBehaviour
                 ~fishyLayer,
                 QueryTriggerInteraction.Ignore))
         {
+            Debug.Log("on ground");
             return true;
         }
+        Debug.Log("not on ground");
         return false;
     }
     
