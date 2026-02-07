@@ -1047,7 +1047,7 @@ public class FishControllerRB : MonoBehaviour
                 curSurfacePos = other.ClosestPoint(transform.position);
                 if (!isAtSurface)
                 {
-                    if (transform.position.y > curSurfacePos.y)
+                    if (sphereCollider.bounds.center.y > curSurfacePos.y)
                     {
                         FishyEvents.OnSurfaceReachedFromAir.Invoke(curSurfacePos);
                     }
