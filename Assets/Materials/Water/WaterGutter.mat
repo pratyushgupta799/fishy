@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterPlants
+  m_Name: WaterGutter
   m_Shader: {fileID: -6465566751694194690, guid: 8984680828604c841ad9540bbf8d8bdb, type: 3}
   m_Parent: {fileID: 2100000, guid: 47b3e7f9741f96b4194b94979bd04cc3, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -43,14 +43,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Distance: 2.1
-    - _FoamAmount: 0.39
-    - _Opacity: 0.496
-    - _OpacityDepth: 0.21
-    - _TiledFoam: 1
-    - _TiledFoamScale: 0.7
+    - _Distance: 0.59
+    - _FoamOpacity: 1
+    - _FoamScale: 20
+    - _UVBasedTiledFoam: 1
+    - _WaterfallFoam: 1
     m_Colors:
-    - _Color1: {r: 0.06728373, g: 0.494999, b: 0.6792453, a: 0}
-    - _Color2: {r: 0.25729796, g: 0.74509263, b: 0.9245283, a: 0}
+    - _Color1: {r: 0.20558916, g: 0.3312112, b: 0.41509432, a: 0}
+    - _Color2: {r: 0.17577429, g: 0.4716981, b: 0.45502633, a: 0}
+    - _WaterfallFoamColor: {r: 0.40236738, g: 0.6226415, b: 0.60915536, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
