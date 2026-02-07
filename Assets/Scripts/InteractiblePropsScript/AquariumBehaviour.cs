@@ -40,7 +40,7 @@ public class AquariumBehaviour : MonoBehaviour
             meshCollider.sharedMesh = meshFilter.mesh;
             waterStream.SetActive(true);
             
-            PuddleManager.Instance.RaiseBigPuddle(puddleLocation.position, waterStreamBlinkTime, 0.02f);
+            PuddleManager.Instance.RaiseAquariumPuddle(puddleLocation.position, waterStreamBlinkTime, 0.02f);
             aquariumWater.transform.DOMoveY(
                 aquariumWater.transform.position.y - aquariumWaterFallDelta,
                 waterStreamBlinkTime

@@ -6,9 +6,11 @@ public class PuddleManager : MonoBehaviour
 {
     [SerializeField] private PuddleBehaviour puddleWater;
     [SerializeField] private PuddleBehaviour bigPuddleWater;
+    [SerializeField] private PuddleBehaviour aquariumPuddleWater;
     private PuddleBehaviour[] bigPuddles;
     private PuddleBehaviour[] puddleWaters;
     private PuddleBehaviour[] spillPuddles;
+    private PuddleBehaviour[] aquariumPuddles;
 
     private int activeSpillPuddles = 0;
     
@@ -29,6 +31,7 @@ public class PuddleManager : MonoBehaviour
         puddleWaters = new PuddleBehaviour[8];
         spillPuddles = new PuddleBehaviour[4];
         bigPuddles = new PuddleBehaviour[2];
+        aquariumPuddles = new PuddleBehaviour[1];
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
@@ -49,6 +52,12 @@ public class PuddleManager : MonoBehaviour
         {
             bigPuddles[i] = Instantiate(bigPuddleWater);
             bigPuddles[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < aquariumPuddles.Length; i++)
+        {
+            aquariumPuddles[i] = Instantiate(aquariumPuddleWater);
+            aquariumPuddles[i].gameObject.SetActive(false);
         }
     }
 
@@ -83,6 +92,19 @@ public class PuddleManager : MonoBehaviour
             {
                 bigPuddles[i].transform.position = pos;
                 bigPuddles[i].Raise(raiseTime, raiseHeight);
+                break;
+            }
+        }
+    }
+
+    public void RaiseAquariumPuddle(Vector3 pos, float raiseTime, float raiseHeight)
+    {
+        for (int i = 0; i < aquariumPuddles.Length; i++)
+        {
+            if (aquariumPuddles[i].gameObject.activeSelf == false)
+            {
+                aquariumPuddles[i].transform.position = pos;
+                aquariumPuddles[i].Raise(raiseTime, raiseHeight);
                 break;
             }
         }
