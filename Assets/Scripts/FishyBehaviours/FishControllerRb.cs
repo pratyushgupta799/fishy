@@ -1070,15 +1070,15 @@ public class FishControllerRB : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
-        {
-            // Debug.Log("Surface trigger exit");
-            isAtSurface = false;
-            onSpillSurface = false;
-        }
-    }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("WaterSurface") || other.CompareTag("PuddleSurface"))
+    //     {
+    //         // Debug.Log("Surface trigger exit");
+    //         isAtSurface = false;
+    //         onSpillSurface = false;
+    //     }
+    // }
 
     private void LateUpdate()
     {
